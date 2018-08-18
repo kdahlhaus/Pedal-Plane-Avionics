@@ -1,3 +1,5 @@
+// Copyright 2018 by Kevin Dahlhausen
+
 #ifndef switch_h
 #define switch_h
 

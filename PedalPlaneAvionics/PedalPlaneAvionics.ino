@@ -1,3 +1,5 @@
+// Copyright 2018 by Kevin Dahlhausen
+
 #include <Events.h>
 #include <EventQueue.h>
 #include <EventDispatcher.h>

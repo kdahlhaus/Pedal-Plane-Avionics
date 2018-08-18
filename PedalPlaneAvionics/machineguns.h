@@ -1,3 +1,4 @@
+// Copyright 2018 by Kevin Dahlhausen
 #ifndef machineguns_h
 #define machineguns_h
 
