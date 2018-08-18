@@ -5,4 +5,5 @@ enum AvionicsEvents
     MOTOR_STOP,
     MACHINEGUNS_START,
     MACHINEGUNS_STOP,
+    DROP_BOMB,
 };
