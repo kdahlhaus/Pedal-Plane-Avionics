@@ -26,10 +26,8 @@ Switch machinegun_switch(0, 0, MACHINEGUNS_START, MACHINEGUNS_STOP);
 MachineGuns machineguns;
 Motor motor;
 
-// this allows using instance.member_function as an event callback
-#define MEMBER_CALLBACK(instance, member_function) [&instance](int event, int param){instance.onEvent(event,param);}
 
-void setup() 
+void setup()
 {
     Serial.begin(9600);
     while(!Serial && !Serial.available()){}
@@ -37,17 +35,16 @@ void setup()
 
     Log.begin(LOG_LEVEL_VERBOSE, &Serial);
 
-     //event_dispatcher.addEventListener(MACHINEGUNS_START, [&machineguns](int event, int param){ machineguns.onEvent(event, param);});
     event_dispatcher.addEventListener(MACHINEGUNS_START, MEMBER_CALLBACK(machineguns, onEvent));
-    event_dispatcher.addEventListener(MACHINEGUNS_STOP, [&machineguns](int event, int param){ machineguns.onEvent(event, param);});
+    event_dispatcher.addEventListener(MACHINEGUNS_STOP, MEMBER_CALLBACK(machineguns, onEvent));
 
     tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_START);}, 1500); // TESTING DELETE ME
     tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_STOP);}, 1750); // TESTING DELETE ME
-    
+
     Log.trace(F("setup complete"));
 }
 
-void loop() 
+void loop()
 {
   event_dispatcher.run();
   tasker.loop();
