@@ -7,7 +7,15 @@ This is very much a work-in-progress.
     1. cd to your Arduino libs directory.
         (The default is ~/Arduino/libraries on Linux
         or ~/Documents/Arduino/libraries on Windows)
-    2. clone https://github.com/kdahlhaus/EventSystem
-    3. Use the library manager to add:
+    2. clone https://github.com/kdahlhaus/EventSystem .
+    3. clone  https://github.com/kroimon/Arduino-SerialCommand (or see below)
+        (note that this is not the one in the Arduino lib manager)
+    4. Use the library manager to add:
         * ArduinoLog (or https://github.com/thijse/Arduino-Log/)
         * Tasker
+
+
+* You can optionally clone the git repositories somewhere else and make a symbolic link in the IDE's libraries directory using the library name in library.properties, which may not be the same name as the repository)  For example:
+    Windows:
+        mklink /D C:\Users\kevin\Documents\Arduino\libraries\Arduino-SerialCommand C:\Users\kevin\prog\arduino\libs\Arduino-SerialCommand
+* If you use UECIDE, replace the Arduino directory above with "UECIDE"

@@ -6,10 +6,12 @@
 #include <EventDispatcher.h>
 #include <Tasker.h>
 
+// pedal plane avionics headers
 #include "avionics_events.h"
 #include "interpreter.h"
 #include "machineguns.h"
 #include "motor.h"
+#include "output.h"
 #include "sound.h"
 #include "switch.h"
 
@@ -22,9 +24,15 @@ Tasker tasker;
 Switch motor_switch(0, 0, MOTOR_START, -1);
 Switch machinegun_switch(0, 0, MACHINEGUNS_START, MACHINEGUNS_STOP);
 
+// output objects
+Output onboard_LED(LED_BUILTIN, ONBOARD_LED_ON, ONBOARD_LED_OFF);
+
 // domain objects
 MachineGuns machineguns;
 Motor motor;
+
+// other
+SerialInterpreter serialInterpreter;
 
 
 void setup()
@@ -51,4 +59,6 @@ void loop()
 
   motor_switch.update();
   machinegun_switch.update();
+
+  serialInterpreter.update();
 }
