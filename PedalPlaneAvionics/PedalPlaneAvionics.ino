@@ -15,8 +15,6 @@
 #include "sound.h"
 #include "switch.h"
 
-#include "AudioSampleP51preview.h"
-
 EventQueue q;
 EventDispatcher event_dispatcher(&q);
 
