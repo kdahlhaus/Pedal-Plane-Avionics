@@ -15,13 +15,15 @@
 #include "sound.h"
 #include "switch.h"
 
+#include "AudioSampleP51preview.h"
+
 EventQueue q;
 EventDispatcher event_dispatcher(&q);
 
 Tasker tasker;
 
 // input objects
-Switch motor_switch(0, 0, MOTOR_START, -1);
+Switch motor_switch(0, 0, MOTOR_START);
 Switch machinegun_switch(0, 0, MACHINEGUNS_START, MACHINEGUNS_STOP);
 
 // output objects
@@ -40,7 +42,6 @@ void setup()
     Serial.begin(9600);
     while(!Serial && !Serial.available()){}
 
-
     Log.begin(LOG_LEVEL_VERBOSE, &Serial);
 
     event_dispatcher.addEventListener(MACHINEGUNS_START, MEMBER_CALLBACK(machineguns, onEvent));
@@ -54,11 +55,12 @@ void setup()
 
 void loop()
 {
-  event_dispatcher.run();
-  tasker.loop();
+    event_dispatcher.run();
+    tasker.loop();
 
-  motor_switch.update();
-  machinegun_switch.update();
+    // debounce and send events for all switches
+    motor_switch.update();
+    machinegun_switch.update();
 
-  serialInterpreter.update();
+    serialInterpreter.update();
 }
