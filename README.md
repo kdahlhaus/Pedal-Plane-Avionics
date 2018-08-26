@@ -7,7 +7,7 @@ This is very much a work-in-progress.
     1. cd to your Arduino libs directory.
         (The default is ~/Arduino/libraries on Linux
         or ~/Documents/Arduino/libraries on Windows)
-    2. clone https://github.com/kdahlhaus/EventSystem 
+    2. clone https://github.com/kdahlhaus/EventSystem                
     3. clone  https://github.com/kroimon/Arduino-SerialCommand (or see below)
         (note that this is not the one in the Arduino lib manager)
     4. clone https://github.com/thomasfredericks/Bounce2.git
@@ -19,4 +19,7 @@ This is very much a work-in-progress.
 * You can optionally clone the git repositories somewhere else and make a symbolic link to the library under the IDE's libraries directory.  For example:
     Windows:
         mklink /D C:\Users\kevin\Documents\Arduino\libraries\Arduino-SerialCommand C:\Users\kevin\prog\arduino\libs\Arduino-SerialCommand
+    Linux:
+        ln -s ~/prog/arduino/libs/Arduino-SerialCommand/ ~/apps/arduino-1.8.5/libraries/
+
 * If you use UECIDE, replace the Arduino directory above with "UECIDE"
