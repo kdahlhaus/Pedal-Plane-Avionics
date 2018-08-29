@@ -8,12 +8,12 @@
 
 void MachineGuns::start()
 {
-    Log.trace(F("MachineGuns::start\n"));
+    Log.trace(F("MachineGuns::start\\n"));
 }
 
 void MachineGuns::stop()
 {
-    Log.trace(F("MachineGuns::stop\n"));
+    Log.trace(F("MachineGuns::stop\\n"));
 }
 
 void MachineGuns::onEvent(int event, int param)

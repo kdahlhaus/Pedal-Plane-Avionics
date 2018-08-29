@@ -1,4 +1,4 @@
-// Copyright 2018 by Kevin Dahlhausen
+  // Copyright 2018 by Kevin Dahlhausen
 
 // libraries
 #include <ArduinoLog.h>
@@ -12,7 +12,7 @@
 #include "machineguns.h"
 #include "motor.h"
 #include "output.h"
-#include "sound.h"
+#include "sound_manager.h"
 #include "switch.h"
 
 EventQueue q;
@@ -45,14 +45,25 @@ void setup()
     event_dispatcher.addEventListener(MACHINEGUNS_START, MEMBER_CALLBACK(machineguns, onEvent));
     event_dispatcher.addEventListener(MACHINEGUNS_STOP, MEMBER_CALLBACK(machineguns, onEvent));
 
-    tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_START);}, 1500); // TESTING DELETE ME
-    tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_STOP);}, 1750); // TESTING DELETE ME
+    //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_START);}, 3500); // TESTING DELETE ME
+    //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_STOP);}, 3750); // TESTING DELETE ME
 
-    Log.trace(F("setup complete"));
+    theSoundManager->setup();
+
+    Log.trace(F("setup complete\n"));
 }
+
+bool first_loop = true;
 
 void loop()
 {
+    if (first_loop)
+    {
+        void *handle = theSoundManager->play("startup.wav", 1, false);
+        Log.trace(F("startup handle = %d\n"), (int)handle);
+        first_loop = false;
+    }
+
     event_dispatcher.run();
     tasker.loop();
 
