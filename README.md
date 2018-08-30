@@ -23,3 +23,17 @@ This is very much a work-in-progress.
         ln -s ~/prog/arduino/libs/Arduino-SerialCommand/ ~/apps/arduino-1.8.5/libraries/
 
 * If you use UECIDE, replace the Arduino directory above with "UECIDE"
+
+
+##Sounds                                                         
+
+    If using TMRpcm, sounds must be WAV files, 8 bit, 32000 Hz sample rate, mono.
+
+
+    All sounds are located in the root directory of the SD card with the following names:
+
+        "startup.wav" - played automatically once on power up.   I use the sound of gyro winding up.
+        "machguns.wav" - machine guns
+        "mostart.wav" - motor start sound
+        "morun.wav" - motor running sound
+        "mostop.wav" - motor stopping sound
