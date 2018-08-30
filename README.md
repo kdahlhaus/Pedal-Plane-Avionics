@@ -25,7 +25,7 @@ This is very much a work-in-progress.
 * If you use UECIDE, replace the Arduino directory above with "UECIDE"
 
 
-##Sounds                                                         
+## Sounds                                                         
 
     If using TMRpcm, sounds must be WAV files, 8 bit, 32000 Hz sample rate, mono.
 
