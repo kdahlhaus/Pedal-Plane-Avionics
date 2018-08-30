@@ -3,6 +3,8 @@
 #ifndef _interpreter_h
 #define _interpreter_h
 
+#define SERIALCOMMAND_DEBUG 1
+
 #include <SerialCommand.h>
 
 class SerialInterpreter

@@ -20,15 +20,7 @@ class Output
         void setHigh() { Log.trace(F("setHigh")); digitalWrite(pin, HIGH); } 
         void setLow() { Log.trace(F("setLow")); digitalWrite(pin, LOW); }
 
-        void onEvent(int event, int param)
-        {
-            if (event == high_event) {
-                setHigh();
-            }
-            else if (event == low_event) {
-                setLow();
-            }
-        }
+        void onEvent(int event, int param);
 
     protected:
         int pin;

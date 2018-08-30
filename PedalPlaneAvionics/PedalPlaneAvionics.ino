@@ -45,6 +45,9 @@ void setup()
     event_dispatcher.addEventListener(MACHINEGUNS_START, MEMBER_CALLBACK(machineguns, onEvent));
     event_dispatcher.addEventListener(MACHINEGUNS_STOP, MEMBER_CALLBACK(machineguns, onEvent));
 
+    event_dispatcher.addEventListener(ONBOARD_LED_ON, MEMBER_CALLBACK(onboard_LED, onEvent));
+    event_dispatcher.addEventListener(ONBOARD_LED_OFF, MEMBER_CALLBACK(onboard_LED, onEvent));
+
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_START);}, 3500); // TESTING DELETE ME
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_STOP);}, 3750); // TESTING DELETE ME
 
