@@ -1,4 +1,4 @@
-  // Copyright 2018 by Kevin Dahlhausen
+// Copyright 2018 by Kevin Dahlhausen
 
 // libraries
 #include <ArduinoLog.h>
