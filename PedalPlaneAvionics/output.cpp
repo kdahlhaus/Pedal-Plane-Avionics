@@ -2,13 +2,11 @@
 
 void Output::onEvent(int event, int param)
 {
-        {
-            Log.trace(F("Output %d event: %d"), pin, event);
-            if (event == high_event) {
-                setHigh();
-            }
-            else if (event == low_event) {
-                setLow();
-            }
-        }         
+    Log.trace(F("Output %d event: %d"), pin, event);
+    if (event == this->high_event) {
+        setHigh();
+    }
+    else if (event == this->low_event) {
+        setLow();
+    }
 }

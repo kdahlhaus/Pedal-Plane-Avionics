@@ -37,3 +37,4 @@ This is very much a work-in-progress.
         "mostart.wav" - motor start sound
         "morun.wav" - motor running sound
         "mostop.wav" - motor stopping sound
+        "bombdrop.wav" - bomb dropping sound

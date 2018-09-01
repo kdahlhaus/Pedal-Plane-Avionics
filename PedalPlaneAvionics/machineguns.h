@@ -5,6 +5,9 @@
 class MachineGuns
 {
     public:
+
+        MachineGuns();
+
         // start firing
         void start();
 

@@ -1,14 +1,11 @@
 // Copyright 2018 by Kevin Dahlhausen
 
-#include <ArduinoLog.h>
-
 #include "motor.h"
+
+#include <ArduinoLog.h>
 #include "avionics_events.h"
 #include "sound_manager.h"
-
-
-#define MOTOR_SOUND_PRIORITY 3
-
+#include "sound_priorities.h"
 
 
 Motor::Motor()
@@ -23,7 +20,7 @@ void Motor::start()
 
     //already running - should it restart? naw
     if (state != stopped) { return; }
-
+    sound_handle = theSoundManager->play("mostart.wav", MOTOR_SOUND_PRIORITY, false);
 }
 
 void Motor::stop()
@@ -31,7 +28,7 @@ void Motor::stop()
     Log.trace(F("Motor::stop\n"));
     if (state == stopped || state == stopping) { return; }
     state = stopping;
-    sound_handle = theSoundManager->play("mostop.wav", MOTOR_SOUND_PRIORITY, true);
+    sound_handle = theSoundManager->play("mostop.wav", MOTOR_SOUND_PRIORITY, false);
 
 }
 
