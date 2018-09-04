@@ -16,7 +16,8 @@ Motor::Motor()
 
 void Motor::start()
 {
-    Log.trace(F("Motor::start\n"));
+    Log.trace("Motor::start\n");
+    Log.trace(F("FMotor::start\n"));
 
     //already running - should it restart? naw
     if (state != stopped) { return; }
@@ -70,11 +71,11 @@ void Motor::onEvent(int event, int param)
     switch (event)
     {
         case MOTOR_START: 
-            this->start();
+            start();
             break;
 
         case MOTOR_STOP:
-            this->stop();
+            stop();
             break;
     }
 } 

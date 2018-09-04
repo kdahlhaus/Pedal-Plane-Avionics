@@ -16,13 +16,13 @@ MachineGuns::MachineGuns()
 
 void MachineGuns::start()
 {
-    Log.trace(F("MachineGuns::start\\n"));
+    Log.trace(F("MachineGuns::start\n"));
     // MACHINEGUN_PRIORITY
 }
 
 void MachineGuns::stop()
 {
-    Log.trace(F("MachineGuns::stop\\n"));
+    Log.trace(F("MachineGuns::stop\n"));
 }
 
 void MachineGuns::onEvent(int event, int param)

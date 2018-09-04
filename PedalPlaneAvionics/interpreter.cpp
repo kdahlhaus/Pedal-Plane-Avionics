@@ -5,7 +5,7 @@
 #include "avionics_events.h"
 #include "send_event.h"
 
-void unrecognized(const char *command) { Log.trace("unrecognized command: %s", command); }
+void unrecognized(const char *command) { Log.trace(F("unrecognized command: %s\n"), command); }
 
 void onboard_LED_on() { Log.trace(F("sending on\n")); send_event(ONBOARD_LED_ON); }
 void onboard_LED_off() { Log.trace(F("sending off\n")); send_event(ONBOARD_LED_OFF); }

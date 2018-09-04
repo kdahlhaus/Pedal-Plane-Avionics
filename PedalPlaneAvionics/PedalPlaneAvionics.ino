@@ -45,6 +45,7 @@ void setup()
 
     Log.begin(LOG_LEVEL_VERBOSE, &Serial);
 
+
     // would like the objects to auto-register.  there is an error on the lambda when
     // doing this from within a member function, so these are here until that is
     // worked-around.
