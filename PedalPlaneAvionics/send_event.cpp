@@ -1,10 +1,10 @@
 #include "send_event.h"
-#
+
 #include <EventQueue.h>
 
-extern EventQueue q;
+EventQueue q;
 
-void send_event(int event_code) 
+void send_event(int event_code, void *param) 
 {
-    q.enqueueEvent(event_code, 0);
+    q.enqueueEvent(event_code, param);
 }

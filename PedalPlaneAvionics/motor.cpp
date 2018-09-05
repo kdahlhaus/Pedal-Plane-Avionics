@@ -6,11 +6,15 @@
 #include "avionics_events.h"
 #include "sound_manager.h"
 #include "sound_priorities.h"
+#include "register_event_listener.h"
 
 
 Motor::Motor()
 {
     state = stopped;
+    register_event_listener(MOTOR_START, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
+    register_event_listener(MOTOR_STOP, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
+
 }
 
 
@@ -66,7 +70,7 @@ void Motor::update()
  
 
 
-void Motor::onEvent(int event, int param)
+void Motor::onEvent(int event, void *param)
 {
     switch (event)
     {

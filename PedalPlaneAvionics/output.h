@@ -5,28 +5,18 @@
 
 #include <ArduinoLog.h>
 
-
 class Output
 {
     public:
-        Output(int pin, int high_event, int low_event)
-        {
-            Log.trace("Output(pin=%d...\n", pin);
-            pinMode(pin, OUTPUT);
-            this->pin = pin;
-            this->high_event = high_event;
-            this->low_event = low_event;
-        }
-
+        Output(int pin, int high_event, int low_event);
         void setHigh();
         void setLow();
-        void onEvent(int event, int param);
+        void onEvent(int event, void *param);
 
     protected:
         int pin;
         int high_event;
         int low_event;
-
 };
 
 #endif

@@ -13,7 +13,7 @@ class Sound
         void stop();
         bool is_playing();
  
-        void onEvent(int event, int param);
+        void onEvent(int event, void *param);
 
     protected:
         const char *file_name;

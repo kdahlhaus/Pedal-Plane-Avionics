@@ -2,7 +2,6 @@
 
 // libraries
 #include <ArduinoLog.h>
-#include <EventQueue.h>
 #include <EventDispatcher.h>
 #include <Tasker.h>
 
@@ -17,10 +16,9 @@
 #include "sound_priorities.h"
 #include "switch.h"
 
-EventQueue q;
-EventDispatcher event_dispatcher(&q);
 
 Tasker tasker;
+extern EventDispatcher event_dispatcher;
 
 // input objects
 Switch motor_switch(0, 0, MOTOR_START);
@@ -44,21 +42,6 @@ void setup()
     while(!Serial && !Serial.available()){}
 
     Log.begin(LOG_LEVEL_VERBOSE, &Serial);
-
-
-    // would like the objects to auto-register.  there is an error on the lambda when
-    // doing this from within a member function, so these are here until that is
-    // worked-around.
-    event_dispatcher.addEventListener(MACHINEGUNS_START, MEMBER_CALLBACK(machineguns, onEvent));
-    event_dispatcher.addEventListener(MACHINEGUNS_STOP, MEMBER_CALLBACK(machineguns, onEvent));
-
-    event_dispatcher.addEventListener(MOTOR_START, MEMBER_CALLBACK(motor, onEvent));
-    event_dispatcher.addEventListener(MOTOR_STOP, MEMBER_CALLBACK(motor, onEvent));
-
-    event_dispatcher.addEventListener(DROP_BOMB, MEMBER_CALLBACK(bomb_drop, onEvent));
-
-    event_dispatcher.addEventListener(ONBOARD_LED_ON, MEMBER_CALLBACK(onboard_LED, onEvent));
-    event_dispatcher.addEventListener(ONBOARD_LED_OFF, MEMBER_CALLBACK(onboard_LED, onEvent));
 
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_START);}, 3500); // TESTING DELETE ME
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_STOP);}, 3750); // TESTING DELETE ME

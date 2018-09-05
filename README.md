@@ -13,7 +13,8 @@ This is very much a work-in-progress.
     4. clone https://github.com/thomasfredericks/Bounce2.git
     5. clone https://github.com/adafruit/Adafruit_Sensor.git
     6. clone https://github.com/adafruit/Adafruit_LIS3DH
-    7. Use the library manager to add:
+    7  clone https://github.com/janelia-arduino/Functor.git
+    8. Use the library manager to add:
         * ArduinoLog (or https://github.com/thijse/Arduino-Log/)
         * Tasker
 
@@ -40,3 +41,22 @@ This is very much a work-in-progress.
         "morun.wav" - motor running sound
         "mostop.wav" - motor stopping sound
         "bombdrop.wav" - bomb dropping sound
+
+
+## Functors
+    ARDUINO:
+        after:
+            Sketch uses 17802 bytes (57%) of program storage space. Maximum is 30720 bytes.
+            Global variables use 1725 bytes (84%) of dynamic memory, leaving 323 bytes for local variables. Maximum is 2048 bytes.
+    UECIDE:
+        before using:  
+            Memory usage
+            • Program size: 21,440 bytes
+            • Memory size: 1,596 bytes
+            • Compilation took 8.889 seconds.
+        after:
+            Memory usage
+            • Program size: 23,184 bytes
+            • Memory size: 1,722 bytes
+            • Compilation took 8.772 seconds.
+
