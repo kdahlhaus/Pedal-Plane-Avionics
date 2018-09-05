@@ -44,6 +44,9 @@ This is very much a work-in-progress.
 
 
 ## Functors
+    This is a branch that uses Rich Hickey's functors for event handlers.  It allows the domain objects to register themselves in 
+    their constructors.  Requires the functors branch of the event library. And https://github.com/janelia-arduino/Functor.git
+
     ARDUINO:
         before:
             Sketch uses 17332 bytes (56%) of program storage space. Maximum is 30720 bytes.
