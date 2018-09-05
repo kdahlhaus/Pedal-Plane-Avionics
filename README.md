@@ -11,7 +11,9 @@ This is very much a work-in-progress.
     3. clone  https://github.com/kroimon/Arduino-SerialCommand (or see below)
         (note that this is not the one in the Arduino lib manager)
     4. clone https://github.com/thomasfredericks/Bounce2.git
-    5. Use the library manager to add:
+    5. clone https://github.com/adafruit/Adafruit_Sensor.git
+    6. clone https://github.com/adafruit/Adafruit_LIS3DH
+    7. Use the library manager to add:
         * ArduinoLog (or https://github.com/thijse/Arduino-Log/)
         * Tasker
 
