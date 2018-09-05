@@ -45,6 +45,9 @@ This is very much a work-in-progress.
 
 ## Functors
     ARDUINO:
+        before:
+            Sketch uses 17332 bytes (56%) of program storage space. Maximum is 30720 bytes.
+            Global variables use 1605 bytes (78%) of dynamic memory, leaving 443 bytes for local variables. Maximum is 2048 bytes.
         after:
             Sketch uses 17802 bytes (57%) of program storage space. Maximum is 30720 bytes.
             Global variables use 1725 bytes (84%) of dynamic memory, leaving 323 bytes for local variables. Maximum is 2048 bytes.
