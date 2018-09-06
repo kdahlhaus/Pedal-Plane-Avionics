@@ -43,8 +43,10 @@ void setup()
 
     Log.begin(LOG_LEVEL_VERBOSE, &Serial);
 
+    // TODO: figure out why registrations don't work before setup. They should.
     bomb_drop.register_el();
     machineguns.register_el();
+    motor.register_el();
 
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_START);}, 3500); // TESTING DELETE ME
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_STOP);}, 3750); // TESTING DELETE ME
@@ -71,6 +73,7 @@ void loop()
     // debounce and send events for all switches
     motor_switch.update();
     machinegun_switch.update();
-
+    theSoundManager->update();
     serialInterpreter.update();
+    motor.update();
 }

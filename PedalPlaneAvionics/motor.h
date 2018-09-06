@@ -18,11 +18,13 @@ class Motor
         void onEvent(int event, void *param);
 
         void update();
+        void register_el();
 
     protected:
 
         enum State {
             stopped,
+            waiting_for_starting,
             starting,
             running,
             stopping

@@ -53,6 +53,7 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=570,334
 #define HANDLE_TO_INDEX(h) ((int)(h)-1)
 
 typedef struct ChannelInfo_s {
+    const char *filename;
     int priority; 
     bool loop;
     AudioPlaySdWav& sdWav;
@@ -124,6 +125,7 @@ void *SoundManager::play(const char *filename, int priority, bool loop)
     channels[min_priority_channel].priority = priority;
     channels[min_priority_channel].sdWav.play(filename);
     channels[min_priority_channel].loop = loop;
+    channels[min_priority_channel].filename = filename;
     
     return (void *)(min_priority_channel + 1); // sound 'handle' is channel + 1
 }
@@ -138,6 +140,15 @@ void SoundManager::update()
     sgtl5000_1.volume(vol); 
 
     // TODO: Handle 'loop' sounds
+    for (int i=0; i<NUMBER_OF_CHANNELS; i++)
+    {
+        if (channels[i].loop && !channels[i].sdWav.isPlaying())
+        {
+            channels[i].sdWav.play(channels[i].filename);
+            Log.trace("restarted %s\n", channels[i].filename);
+        }
+    }
+
 }
 
 
@@ -147,12 +158,16 @@ void SoundManager::stop(void *handle)
     if (handle && channels[index].sdWav.isPlaying())
     {
         channels[index].sdWav.stop();
+        channels[index].loop = false;
+        channels[index].priority = -1;
     }
 }
 
 bool SoundManager::is_playing(void *handle)
 {
-    return handle && channels[HANDLE_TO_INDEX(handle)].sdWav.isPlaying(); 
+    bool ip = handle && channels[HANDLE_TO_INDEX(handle)].sdWav.isPlaying(); 
+    //Log.trace("ip(%d)=%b\n", (int)(handle), ip);
+    return ip;
 }
 
 void SoundManager::setup()

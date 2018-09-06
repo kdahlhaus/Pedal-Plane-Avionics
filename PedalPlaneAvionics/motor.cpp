@@ -12,19 +12,22 @@
 Motor::Motor()
 {
     state = stopped;
+}
+
+void Motor::register_el()
+{
     register_event_listener(MOTOR_START, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
     register_event_listener(MOTOR_STOP, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
 
 }
 
-
 void Motor::start()
 {
-    Log.trace("Motor::start\n");
     Log.trace(F("FMotor::start\n"));
 
     //already running - should it restart? naw
     if (state != stopped) { return; }
+    state = waiting_for_starting;
     sound_handle = theSoundManager->play("mostart.wav", MOTOR_SOUND_PRIORITY, false);
 }
 
@@ -33,6 +36,7 @@ void Motor::stop()
     Log.trace(F("Motor::stop\n"));
     if (state == stopped || state == stopping) { return; }
     state = stopping;
+    theSoundManager->stop(sound_handle);
     sound_handle = theSoundManager->play("mostop.wav", MOTOR_SOUND_PRIORITY, false);
 
 }
@@ -44,12 +48,21 @@ void Motor::update()
         case stopped:
             break;
 
+        case waiting_for_starting:
+            if (theSoundManager->is_playing(sound_handle))
+            {
+                state = starting;
+                Log.trace("starting\n");
+            }
+            break;
+
         case starting:
             if (theSoundManager->is_playing(sound_handle))
             {
                 break;
             }
             // starting sound ended
+            Log.trace("start sound ended\n");
             state = running;
             sound_handle = theSoundManager->play("morun.wav", MOTOR_SOUND_PRIORITY, true);
             break;
