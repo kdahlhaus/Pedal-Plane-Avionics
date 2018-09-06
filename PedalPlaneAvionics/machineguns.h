@@ -6,7 +6,7 @@ class MachineGuns
 {
     public:
 
-        MachineGuns();
+        void register_el();
 
         // start firing
         void start();
@@ -15,6 +15,9 @@ class MachineGuns
         void stop();
 
         void onEvent(int event, void *param);
+
+    protected:
+        void *handle; 
 };
 
 #endif

@@ -43,6 +43,9 @@ void setup()
 
     Log.begin(LOG_LEVEL_VERBOSE, &Serial);
 
+    bomb_drop.register_el();
+    machineguns.register_el();
+
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_START);}, 3500); // TESTING DELETE ME
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_STOP);}, 3750); // TESTING DELETE ME
 
