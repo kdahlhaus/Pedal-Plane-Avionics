@@ -1,11 +1,9 @@
 // Copyright 2018 by Kevin Dahlhausen
 
-// libraries
 #include <ArduinoLog.h>
 #include <EventDispatcher.h>
 #include <Tasker.h>
 
-// pedal plane avionics headers
 #include "avionics_events.h"
 #include "interpreter.h"
 #include "machineguns.h"
@@ -56,23 +54,26 @@ void setup()
     Log.trace(F("setup complete\n"));
 }
 
-bool first_loop = true;
+
+bool is_first_loop = true;
+
 
 void loop()
 {
-    if (first_loop)
+    if (is_first_loop)
     {
         void *handle = theSoundManager->play("startup.wav", STARTUP_PRIORITY, false);
         Log.trace(F("startup handle = %d\n"), (int)handle);
-        first_loop = false;
+        is_first_loop = false;
     }
 
     event_dispatcher.run();
     tasker.loop();
 
-    // debounce and send events for all switches
+    // debounce and send events for switches
     motor_switch.update();
     machinegun_switch.update();
+
     theSoundManager->update();
     serialInterpreter.update();
     motor.update();
