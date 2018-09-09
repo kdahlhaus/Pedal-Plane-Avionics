@@ -18,6 +18,9 @@ void machine_guns_stop() { send_event(MACHINEGUNS_STOP); }
 
 void bomb_drop() { send_event(DROP_BOMB); }
 
+void zoom1() { send_event(ZOOM1); }
+void zoom2() { send_event(ZOOM2); }
+void zoom3() { send_event(ZOOM3); }
 
 
 SerialInterpreter::SerialInterpreter()
@@ -35,4 +38,9 @@ SerialInterpreter::SerialInterpreter()
 
     serial_command.addCommand("bd", bomb_drop);
     serial_command.addCommand("db", bomb_drop);
+
+    serial_command.addCommand("z1", zoom1);
+    serial_command.addCommand("z2", zoom2);
+    serial_command.addCommand("z3", zoom3);
+    
 }

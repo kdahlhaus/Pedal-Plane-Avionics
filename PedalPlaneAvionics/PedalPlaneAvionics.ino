@@ -29,6 +29,9 @@ Output onboard_LED(LED_BUILTIN, ONBOARD_LED_ON, ONBOARD_LED_OFF);
 MachineGuns machineguns;
 Motor motor;
 Sound bomb_drop("bombdrop.wav", BOMB_DROP_PRIORITY, false, DROP_BOMB);
+Sound zoom1("zoom1.wav", ZOOM_PRIORITY, false, ZOOM1);
+Sound zoom2("zoom2.wav", ZOOM_PRIORITY, false, ZOOM2);
+Sound zoom3("zoom3.wav", ZOOM_PRIORITY, false, ZOOM3);
 
 // other
 SerialInterpreter serialInterpreter;
@@ -45,6 +48,9 @@ void setup()
     bomb_drop.register_el();
     machineguns.register_el();
     motor.register_el();
+    zoom1.register_el();
+    zoom2.register_el();
+    zoom3.register_el();
 
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_START);}, 3500); // TESTING DELETE ME
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_STOP);}, 3750); // TESTING DELETE ME
