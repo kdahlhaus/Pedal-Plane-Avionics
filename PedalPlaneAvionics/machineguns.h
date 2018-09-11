@@ -14,7 +14,10 @@ class MachineGuns
         // stop firing
         void stop();
 
-        void onEvent(int event, int param);
+        void onEvent(int event, void *param);
+
+    protected:
+        void *handle; 
 };
 
 #endif

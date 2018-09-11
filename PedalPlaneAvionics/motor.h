@@ -15,7 +15,7 @@ class Motor
         void start();
         void stop();
 
-        void onEvent(int event, int param);
+        void onEvent(int event, void *param);
 
         void update();
 
@@ -23,6 +23,7 @@ class Motor
 
         enum State {
             stopped,
+            waiting_for_starting,
             starting,
             running,
             stopping

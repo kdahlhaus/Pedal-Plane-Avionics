@@ -1,7 +1,7 @@
 #include "sound.h"
 
 #include <ArduinoLog.h>
-
+#include "register_event_listener.h"
 
 Sound::Sound(const char *file_name, int priority, bool loop, int start_event, int stop_event)
 {
@@ -11,7 +11,14 @@ Sound::Sound(const char *file_name, int priority, bool loop, int start_event, in
     handle = 0;
     this->priority = priority;
     this->loop = false;
+
+    register_event_listener(start_event, makeFunctor((EventListener *)0, (*this), &Sound::onEvent));
+    if (stop_event > 0)
+    {
+        register_event_listener(stop_event, makeFunctor((EventListener *)0, (*this), &Sound::onEvent));
+    } 
 }
+
 
 void Sound::start()
 {
@@ -34,9 +41,7 @@ bool Sound::is_playing()
     return handle && theSoundManager->is_playing(handle);
 }
  
-
-
-void Sound::onEvent(int event, int param)
+void Sound::onEvent(int event, void *param)
 {
     Log.trace(F("Sound('%s') event: %d\n"), file_name, event);
     if (event == start_event) {

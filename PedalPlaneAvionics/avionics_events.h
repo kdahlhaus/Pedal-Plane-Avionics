@@ -15,6 +15,8 @@ enum AvionicsEvents
 
     DROP_BOMB,
 
+    ZOOM1, ZOOM2, ZOOM3,
+
     ONBOARD_LED_ON,
     ONBOARD_LED_OFF,
 };

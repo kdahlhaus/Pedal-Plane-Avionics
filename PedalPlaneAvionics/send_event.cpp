@@ -1,10 +1,12 @@
 #include "send_event.h"
-#
+
 #include <EventQueue.h>
+#include <ArduinoLog.h>
 
-extern EventQueue q;
+EventQueue q;
 
-void send_event(int event_code) 
+void send_event(int event_code, void *param) 
 {
-    q.enqueueEvent(event_code, 0);
+    bool ok = q.enqueueEvent(event_code, param);
+    Log.trace("send_event(%d,) = %b\n", event_code, ok);
 }

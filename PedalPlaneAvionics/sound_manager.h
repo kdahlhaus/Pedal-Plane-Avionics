@@ -20,6 +20,8 @@ class SoundManager
 
         void setup();
 
+        void update();
+
 };
 
 extern SoundManager *theSoundManager;
