@@ -11,16 +11,14 @@ Sound::Sound(const char *file_name, int priority, bool loop, int start_event, in
     handle = 0;
     this->priority = priority;
     this->loop = false;
-}
 
-void Sound::register_el()
-{
     register_event_listener(start_event, makeFunctor((EventListener *)0, (*this), &Sound::onEvent));
     if (stop_event > 0)
     {
         register_event_listener(stop_event, makeFunctor((EventListener *)0, (*this), &Sound::onEvent));
-    }
+    } 
 }
+
 
 void Sound::start()
 {

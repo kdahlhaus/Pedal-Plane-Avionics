@@ -7,7 +7,7 @@
 #include "sound_manager.h"
 #include "sound_priorities.h"
 
-void MachineGuns::register_el()
+MachineGuns::MachineGuns()
 {
     register_event_listener(MACHINEGUNS_START, makeFunctor((EventListener *)0, (*this), &MachineGuns::onEvent));
     register_event_listener(MACHINEGUNS_STOP, makeFunctor((EventListener *)0, (*this), &MachineGuns::onEvent));

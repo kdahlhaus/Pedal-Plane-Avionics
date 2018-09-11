@@ -126,6 +126,16 @@ void *SoundManager::play(const char *filename, int priority, bool loop)
     channels[min_priority_channel].sdWav.play(filename);
     channels[min_priority_channel].loop = loop;
     channels[min_priority_channel].filename = filename;
+
+    // wait for sound to start playing
+    for (int i=0; i<20; i++)
+    {
+        if (channels[min_priority_channel].sdWav.isPlaying())
+        {
+            break;
+        }
+        delay(5);
+    }
     
     return (void *)(min_priority_channel + 1); // sound 'handle' is channel + 1
 }
@@ -133,18 +143,27 @@ void *SoundManager::play(const char *filename, int priority, bool loop)
 
 void SoundManager::update()
 {
-    // uncomment this if the optional volume
+    // comment this if the optional volume
     // pot was not added to the audio board
     float vol = analogRead(15);
     vol = vol / 1024;
     sgtl5000_1.volume(vol); 
 
-    // TODO: Handle 'loop' sounds
+    // handle 'loop' sounds
     for (int i=0; i<NUMBER_OF_CHANNELS; i++)
     {
         if (channels[i].loop && !channels[i].sdWav.isPlaying())
         {
             channels[i].sdWav.play(channels[i].filename);
+            // wait for sound to start playing
+            for (int i=0; i<20; i++)
+            {
+                if (channels[i].sdWav.isPlaying())
+                {
+                    break;
+                }
+                delay(5);
+            }
             Log.trace("restarted %s\n", channels[i].filename);
         }
     }

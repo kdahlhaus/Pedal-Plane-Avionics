@@ -6,7 +6,7 @@ class MachineGuns
 {
     public:
 
-        void register_el();
+        MachineGuns();
 
         // start firing
         void start();

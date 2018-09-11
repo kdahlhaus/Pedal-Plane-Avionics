@@ -12,7 +12,6 @@ class Sound
         void start();
         void stop();
         bool is_playing();
-        void register_el();
  
         void onEvent(int event, void *param);
 

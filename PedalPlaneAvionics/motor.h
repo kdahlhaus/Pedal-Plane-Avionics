@@ -18,7 +18,6 @@ class Motor
         void onEvent(int event, void *param);
 
         void update();
-        void register_el();
 
     protected:
 

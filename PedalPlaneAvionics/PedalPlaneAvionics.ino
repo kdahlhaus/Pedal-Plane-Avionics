@@ -14,27 +14,30 @@
 #include "sound_priorities.h"
 #include "switch.h"
 
-
 Tasker tasker;
 extern EventDispatcher event_dispatcher;
 
 // input objects
-Switch motor_switch(0, 0, MOTOR_START);
-Switch machinegun_switch(0, 0, MACHINEGUNS_START, MACHINEGUNS_STOP);
+Switch *motor_switch;
+Switch *machinegun_switch;
+Switch *bombdrop_switch;
 
 // output objects
-Output onboard_LED(LED_BUILTIN, ONBOARD_LED_ON, ONBOARD_LED_OFF);
+Output *onboard_LED;
 
 // domain objects
-MachineGuns machineguns;
-Motor motor;
-Sound bomb_drop("bombdrop.wav", BOMB_DROP_PRIORITY, false, DROP_BOMB);
-Sound zoom1("zoom1.wav", ZOOM_PRIORITY, false, ZOOM1);
-Sound zoom2("zoom2.wav", ZOOM_PRIORITY, false, ZOOM2);
-Sound zoom3("zoom3.wav", ZOOM_PRIORITY, false, ZOOM3);
+// allocated dynamically from setup() so they
+// can initialize pins and things as 
+// needed. 
+MachineGuns *machineguns;
+Motor *motor;
+Sound *bomb_drop;
+Sound *zoom1;
+Sound *zoom2;
+Sound *zoom3;
 
 // other
-SerialInterpreter serialInterpreter;
+SerialInterpreter *serialInterpreter;
 
 
 void setup()
@@ -44,20 +47,43 @@ void setup()
 
     Log.begin(LOG_LEVEL_VERBOSE, &Serial);
 
-    // TODO: figure out why registrations don't work before setup. They should.
-    bomb_drop.register_el();
-    machineguns.register_el();
-    motor.register_el();
-    zoom1.register_el();
-    zoom2.register_el();
-    zoom3.register_el();
+    // Inputs
+    motor_switch = new Switch(2, INPUT_PULLUP,  MOTOR_START);
+    machinegun_switch = new Switch(3, INPUT_PULLUP,  MACHINEGUNS_START, MACHINEGUNS_STOP);
+    bombdrop_switch = new Switch(4, INPUT_PULLUP, DROP_BOMB); 
+
+    // Domain Objects0
+    machineguns = new MachineGuns();
+    motor = new Motor();
+    bomb_drop = new Sound("bombdrop.wav", BOMB_DROP_PRIORITY, false, DROP_BOMB);
+    zoom1 = new Sound("zoom1.wav", ZOOM_PRIORITY, false, ZOOM1);
+    zoom2 = new Sound("zoom2.wav", ZOOM_PRIORITY, false, ZOOM2);
+    zoom3 = new Sound("zoom3.wav", ZOOM_PRIORITY, false, ZOOM3);
+ 
+
+    onboard_LED = new Output(LED_BUILTIN, ONBOARD_LED_ON, ONBOARD_LED_OFF);
+    theSoundManager->setup();
+    serialInterpreter = new SerialInterpreter();
 
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_START);}, 3500); // TESTING DELETE ME
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_STOP);}, 3750); // TESTING DELETE ME
-
-    theSoundManager->setup();
-
     Log.trace(F("setup complete\n"));
+}
+
+uint32_t FreeMem(){ // for Teensy 3.0
+    uint32_t stackTop;
+    uint32_t heapTop;
+
+    // current position of the stack.
+    stackTop = (uint32_t) &stackTop;
+
+    // current position of heap.
+    void* hTop = malloc(1);
+    heapTop = (uint32_t) hTop;
+    free(hTop);
+
+    // The difference is (approximately) the free, available ram.
+    return stackTop - heapTop;
 }
 
 
@@ -71,16 +97,17 @@ void loop()
         void *handle = theSoundManager->play("startup.wav", STARTUP_PRIORITY, false);
         Log.trace(F("startup handle = %d\n"), (int)handle);
         is_first_loop = false;
+        Log.trace(F("Free mem: %d\n"), FreeMem());
     }
 
     event_dispatcher.run();
     tasker.loop();
 
     // debounce and send events for switches
-    motor_switch.update();
-    machinegun_switch.update();
+    motor_switch->update();
+    machinegun_switch->update();
 
     theSoundManager->update();
-    serialInterpreter.update();
-    motor.update();
+    serialInterpreter->update();
+    motor->update();
 }

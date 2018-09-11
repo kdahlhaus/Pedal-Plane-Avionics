@@ -12,18 +12,14 @@
 Motor::Motor()
 {
     state = stopped;
-}
-
-void Motor::register_el()
-{
     register_event_listener(MOTOR_START, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
     register_event_listener(MOTOR_STOP, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
-
 }
+
 
 void Motor::start()
 {
-    Log.trace(F("FMotor::start\n"));
+    Log.trace(F("Motor::start\n"));
 
     //already running - should it restart? naw
     if (state != stopped) { return; }
