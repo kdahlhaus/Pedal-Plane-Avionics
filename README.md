@@ -14,7 +14,9 @@ This is very much a work-in-progress.
     5. clone https://github.com/adafruit/Adafruit_Sensor.git
     6. clone https://github.com/adafruit/Adafruit_LIS3DH
     7  clone https://github.com/janelia-arduino/Functor.git
-    8. Use the library manager to add:
+    8. clone https://github.com/jgillick/arduino-LEDFader.git LEDFader 
+        (note that library must be in dir LEDFader due to the name of the include files it contains)
+    9. Use the library manager to add:
         * ArduinoLog (or https://github.com/thijse/Arduino-Log/)
         * Tasker
 

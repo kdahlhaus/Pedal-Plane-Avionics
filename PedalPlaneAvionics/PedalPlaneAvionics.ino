@@ -8,6 +8,7 @@
 #include "interpreter.h"
 #include "machineguns.h"
 #include "motor.h"
+#include "navlights.h"
 #include "output.h"
 #include "sound.h"
 #include "sound_manager.h"
@@ -22,8 +23,6 @@ Switch *motor_switch;
 Switch *machinegun_switch;
 Switch *bombdrop_switch;
 
-// output objects
-Output *onboard_LED;
 
 // domain objects
 // allocated dynamically from setup() so they
@@ -35,6 +34,10 @@ Sound *bomb_drop;
 Sound *zoom1;
 Sound *zoom2;
 Sound *zoom3;
+
+// output objects
+Output *onboard_LED;
+Navlights *navlights; 
 
 // other
 SerialInterpreter *serialInterpreter;
@@ -61,7 +64,10 @@ void setup()
     zoom3 = new Sound("zoom3.wav", ZOOM_PRIORITY, false, ZOOM3);
  
 
+    //outputs
     onboard_LED = new Output(LED_BUILTIN, ONBOARD_LED_ON, ONBOARD_LED_OFF);
+    navlights = new Navlights();
+
     theSoundManager->setup();
     serialInterpreter = new SerialInterpreter();
 
@@ -111,4 +117,5 @@ void loop()
     theSoundManager->update();
     serialInterpreter->update();
     motor->update();
+    navlights->update();
 }

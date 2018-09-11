@@ -17,6 +17,8 @@ class SerialInterpreter
         serial_command.readSerial();
     }
 
+    friend void navlights_curve();
+
     protected:
         SerialCommand serial_command;
 };

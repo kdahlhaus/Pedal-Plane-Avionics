@@ -17,6 +17,9 @@ enum AvionicsEvents
 
     ZOOM1, ZOOM2, ZOOM3,
 
+    NAVLIGHTS_ON,
+    NAVLIGHTS_OFF,
+
     ONBOARD_LED_ON,
     ONBOARD_LED_OFF,
 };
