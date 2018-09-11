@@ -106,6 +106,7 @@ void loop()
     // debounce and send events for switches
     motor_switch->update();
     machinegun_switch->update();
+    bombdrop_switch->update();
 
     theSoundManager->update();
     serialInterpreter->update();
