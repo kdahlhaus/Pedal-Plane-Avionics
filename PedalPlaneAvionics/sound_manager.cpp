@@ -10,23 +10,29 @@
 #include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
-AudioPlaySdWav           playSoundWav0;  //xy=232,149
-AudioPlaySdWav           playSoundWav1;  //xy=233,236
-AudioPlaySdWav           playSoundWav2;  //xy=236,317
-AudioMixer4              mixer1;         //xy=505,183
-AudioMixer4              mixer2;         //xy=507,271
-AudioOutputI2S           i2s1;           //xy=732,231
-AudioConnection          patchCord1(playSoundWav0, 0, mixer1, 0);
-AudioConnection          patchCord2(playSoundWav0, 1, mixer2, 0);
-AudioConnection          patchCord3(playSoundWav1, 0, mixer1, 1);
-AudioConnection          patchCord4(playSoundWav1, 1, mixer2, 1);
-AudioConnection          patchCord5(playSoundWav2, 0, mixer1, 2);
-AudioConnection          patchCord6(playSoundWav2, 1, mixer2, 2);
-AudioConnection          patchCord7(mixer1, 0, i2s1, 0);
-AudioConnection          patchCord8(mixer2, 0, i2s1, 1);
-AudioControlSGTL5000     sgtl5000_1;     //xy=734,323
+AudioPlaySdWav           motorSdWav2;     //xy=172,314
+AudioPlaySdWav           playSdWav1;     //xy=173,175
+AudioPlaySdWav           playSdWav0;     //xy=174,118
+AudioPlaySdWav           motorSdWav1;     //xy=174,253
+AudioEffectFade          motorFade1;          //xy=347,252
+AudioEffectFade          motorFade2;          //xy=348,314
+AudioMixer4              sfxMixer1;         //xy=368,143
+AudioMixer4              finalMixer;         //xy=754,283
+AudioOutputI2S           i2s1;           //xy=900,284
+AudioConnection          patchCord1(motorSdWav2, 0, motorFade2, 0);
+AudioConnection          patchCord2(motorSdWav2, 1, motorFade2, 0);
+AudioConnection          patchCord3(playSdWav1, 0, sfxMixer1, 2);
+AudioConnection          patchCord4(playSdWav1, 1, sfxMixer1, 3);
+AudioConnection          patchCord5(playSdWav0, 0, sfxMixer1, 0);
+AudioConnection          patchCord6(playSdWav0, 1, sfxMixer1, 1);
+AudioConnection          patchCord7(motorSdWav1, 0, motorFade1, 0);
+AudioConnection          patchCord8(motorSdWav1, 1, motorFade1, 0);
+AudioConnection          patchCord9(motorFade1, 0, finalMixer, 1);
+AudioConnection          patchCord10(motorFade2, 0, finalMixer, 2);
+AudioConnection          patchCord11(sfxMixer1, 0, finalMixer, 0);
+AudioConnection          patchCord12(finalMixer, 0, i2s1, 0);
+AudioConnection          patchCord13(finalMixer, 0, i2s1, 1);
 // GUItool: end automatically generated code
-
 
 
 // Use these with the Teensy Audio Shield
