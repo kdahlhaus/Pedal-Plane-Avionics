@@ -58,10 +58,10 @@ void setup()
     // Domain Objects0
     machineguns = new MachineGuns();
     motor = new Motor();
-    bomb_drop = new Sound("bombdrop.wav", BOMB_DROP_PRIORITY, false, DROP_BOMB);
+    bomb_drop = new Sound("bombdrop.wav", BOMB_DROP_PRIORITY, false, DROP_BOMB, 0.20);
     zoom1 = new Sound("zoom1.wav", ZOOM_PRIORITY, false, ZOOM1);
-    zoom2 = new Sound("zoom2.wav", ZOOM_PRIORITY, false, ZOOM2);
-    zoom3 = new Sound("zoom3.wav", ZOOM_PRIORITY, false, ZOOM3);
+    zoom2 = new Sound("zoom2.wav", ZOOM_PRIORITY, false, ZOOM2, 0.5);
+    zoom3 = new Sound("zoom3.wav", ZOOM_PRIORITY, false, ZOOM3, 0.5);
  
 
     //outputs

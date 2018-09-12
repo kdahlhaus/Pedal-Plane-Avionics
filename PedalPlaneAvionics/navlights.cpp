@@ -4,6 +4,7 @@
 #include "avionics_events.h"
 #include "register_event_listener.h"
 #include <ArduinoLog.h>
+#include <Curve.h>
 
 #define FADE_TIME_MS 1000
 
@@ -11,7 +12,7 @@ Navlights::Navlights() :
     lights_on(false), fader(6)
 {
     off();
-    fader.set_curve(Curve::expontential);
+    fader.set_curve(Curve::exponential);
     register_event_listener(NAVLIGHTS_ON, makeFunctor((EventListener *)0, (*this), &Navlights::onEvent));
     register_event_listener(NAVLIGHTS_OFF, makeFunctor((EventListener *)0, (*this), &Navlights::onEvent));
 }

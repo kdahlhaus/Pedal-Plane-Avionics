@@ -18,6 +18,7 @@ class SerialInterpreter
     }
 
     friend void navlights_curve();
+    friend void set_gain();
 
     protected:
         SerialCommand serial_command;

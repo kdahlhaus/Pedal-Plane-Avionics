@@ -3,15 +3,10 @@
 #include <ArduinoLog.h>
 #include "register_event_listener.h"
 
-Sound::Sound(const char *file_name, int priority, bool loop, int start_event, int stop_event)
+Sound::Sound(const char *file_name, int priority, bool loop, int start_event, float gain, int stop_event):
+    file_name(file_name), start_event(start_event), stop_event(stop_event),
+    handle(0), priority(priority), loop(false), gain(gain)
 {
-    this->file_name = file_name;
-    this->start_event = start_event;
-    this->stop_event = stop_event;
-    handle = 0;
-    this->priority = priority;
-    this->loop = false;
-
     register_event_listener(start_event, makeFunctor((EventListener *)0, (*this), &Sound::onEvent));
     if (stop_event > 0)
     {
@@ -22,8 +17,8 @@ Sound::Sound(const char *file_name, int priority, bool loop, int start_event, in
 
 void Sound::start()
 {
-    handle = theSoundManager->play(file_name, priority, loop);        
-    Log.trace(F("Sound('%s').start: pri:%d, loop=%T handle:%d\n"), file_name, priority, loop, (int)handle);
+    handle = theSoundManager->play(file_name, priority, loop, gain);        
+    Log.trace(F("Sound('%s').start: pri:%d, loop=%T handle:%d gain:%F\n"), file_name, priority, loop, (int)handle, gain);
 }
 
 void Sound::stop()
@@ -39,6 +34,16 @@ void Sound::stop()
 bool Sound::is_playing()
 {
     return handle && theSoundManager->is_playing(handle);
+}
+
+void Sound::setGain(float gain)
+{
+    Log.trace(F("Sound setGain=%F\n"), gain);
+    this->gain=gain;
+    if (is_playing())
+    {
+        theSoundManager->setGain(handle, gain);
+    }
 }
  
 void Sound::onEvent(int event, void *param)

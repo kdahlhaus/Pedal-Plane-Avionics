@@ -9,7 +9,8 @@
 #include "register_event_listener.h"
 
 
-Motor::Motor()
+Motor::Motor() :
+    state(stopped), startGain(1.7), runGain(1.0)
 {
     state = stopped;
     register_event_listener(MOTOR_START, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
@@ -24,7 +25,7 @@ void Motor::start()
     //already running - should it restart? naw
     if (state != stopped) { return; }
     state = waiting_for_starting;
-    sound_handle = theSoundManager->play("mostart.wav", MOTOR_SOUND_PRIORITY, false);
+    sound_handle = theSoundManager->play("mostart.wav", MOTOR_SOUND_PRIORITY, false, startGain);
 }
 
 void Motor::stop()
@@ -60,7 +61,7 @@ void Motor::update()
             // starting sound ended
             Log.trace("start sound ended\n");
             state = running;
-            sound_handle = theSoundManager->play("morun.wav", MOTOR_SOUND_PRIORITY, true);
+            sound_handle = theSoundManager->play("morun.wav", MOTOR_SOUND_PRIORITY, true, runGain);
             break;
 
         case running:
@@ -76,9 +77,6 @@ void Motor::update()
     }
 }
 
- 
-
-
 void Motor::onEvent(int event, void *param)
 {
     switch (event)
@@ -92,3 +90,21 @@ void Motor::onEvent(int event, void *param)
             break;
     }
 } 
+
+void Motor::setStartGain(float gain)
+{
+    this->startGain=gain;
+    if (state==starting)
+    {
+        theSoundManager->setGain(sound_handle, gain);
+    }
+}
+
+void Motor::setRunGain(float gain)
+{
+    this->runGain=gain;
+    if (state==running)
+    {
+        theSoundManager->setGain(sound_handle, gain);
+    }
+}

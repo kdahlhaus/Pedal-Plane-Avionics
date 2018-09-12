@@ -16,6 +16,8 @@ class Motor
         void stop();
 
         void onEvent(int event, void *param);
+        void setStartGain(float gain);
+        void setRunGain(float gain);
 
         void update();
 
@@ -29,6 +31,9 @@ class Motor
             stopping
         };
         State state;
+
+        float startGain;
+        float runGain;
 
         void *sound_handle;
 };

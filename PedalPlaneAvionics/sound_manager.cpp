@@ -1,5 +1,5 @@
 // Copyright 2018 by Kevin Dahlhausen
-
+#include <stdio.h>
 #include "sound_manager.h"
 #include <ArduinoLog.h>
 
@@ -10,22 +10,23 @@
 #include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
-AudioPlaySdWav           playSoundWav3;     //xy=191,300
-AudioPlaySdWav           playSoundWav1;     //xy=193,137
-AudioPlaySdWav           playSoundWav2;     //xy=194,224
-AudioMixer4              mixer1;         //xy=387,184
-AudioMixer4              mixer2;         //xy=395,250
-AudioOutputI2S           i2s1;           //xy=570,219
-AudioConnection          patchCord1(playSoundWav3, 0, mixer1, 3);
-AudioConnection          patchCord2(playSoundWav3, 1, mixer2, 2);
-AudioConnection          patchCord3(playSoundWav1, 0, mixer1, 0);
+AudioPlaySdWav           playSoundWav0;  //xy=232,149
+AudioPlaySdWav           playSoundWav1;  //xy=233,236
+AudioPlaySdWav           playSoundWav2;  //xy=236,317
+AudioMixer4              mixer1;         //xy=505,183
+AudioMixer4              mixer2;         //xy=507,271
+AudioOutputI2S           i2s1;           //xy=732,231
+AudioConnection          patchCord1(playSoundWav0, 0, mixer1, 0);
+AudioConnection          patchCord2(playSoundWav0, 1, mixer2, 0);
+AudioConnection          patchCord3(playSoundWav1, 0, mixer1, 1);
 AudioConnection          patchCord4(playSoundWav1, 1, mixer2, 1);
 AudioConnection          patchCord5(playSoundWav2, 0, mixer1, 2);
-AudioConnection          patchCord6(playSoundWav2, 1, mixer2, 3);
+AudioConnection          patchCord6(playSoundWav2, 1, mixer2, 2);
 AudioConnection          patchCord7(mixer1, 0, i2s1, 0);
 AudioConnection          patchCord8(mixer2, 0, i2s1, 1);
-AudioControlSGTL5000     sgtl5000_1;     //xy=570,334
+AudioControlSGTL5000     sgtl5000_1;     //xy=734,323
 // GUItool: end automatically generated code
+
 
 
 // Use these with the Teensy Audio Shield
@@ -61,16 +62,19 @@ typedef struct ChannelInfo_s {
 } ChannelInfo;
 
 ChannelInfo channels[] = {
+    ChannelInfo(playSoundWav0),
     ChannelInfo(playSoundWav1),
-    ChannelInfo(playSoundWav2),
-    ChannelInfo(playSoundWav3)
+    ChannelInfo(playSoundWav2)
 };
 
 
 
-void *SoundManager::play(const char *filename, int priority, bool loop)
+void *SoundManager::play(const char *filename, int priority, bool loop, float gain)
 {
-    Log.trace(F("play(%s, %d, %b)\n"), filename, priority, loop);
+    char fbuf[10];
+    sprintf(fbuf, "%f", gain);
+    dtostrf(gain, 4, 2, fbuf);
+    Log.trace(F("play(%s, pri=%d, loop=%b, gain=%s)\n"), filename, priority, loop, fbuf);
 
     //find min priority
     int min_priority = 999;
@@ -127,6 +131,10 @@ void *SoundManager::play(const char *filename, int priority, bool loop)
     channels[min_priority_channel].loop = loop;
     channels[min_priority_channel].filename = filename;
 
+    mixer1.gain(min_priority_channel, gain);
+    mixer2.gain(min_priority_channel, gain);
+    
+
     // wait for sound to start playing
     for (int i=0; i<20; i++)
     {
@@ -138,6 +146,16 @@ void *SoundManager::play(const char *filename, int priority, bool loop)
     }
     
     return (void *)(min_priority_channel + 1); // sound 'handle' is channel + 1
+}
+
+void SoundManager::setGain(void *handle, float gain)
+{
+    if (is_playing(handle))
+    {
+        Log.trace(F("SM.setGain(%d, %F)\n"), HANDLE_TO_INDEX(handle), gain);
+        mixer1.gain(HANDLE_TO_INDEX(handle), gain);
+        mixer2.gain(HANDLE_TO_INDEX(handle), gain);
+    }
 }
 
 

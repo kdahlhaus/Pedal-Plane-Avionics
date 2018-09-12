@@ -12,11 +12,13 @@ class SoundManager
         // or null if the sound can't be found or played
         // higher #s reflect higher priority and may 
         // replace lower priority sounds
-        void *play(const char *filename, int priority, bool loop=false);
+        void *play(const char *filename, int priority, bool loop=false, float gain=1.0);
 
         void stop(void *handle);
 
         bool is_playing(void *handle);
+
+        void setGain(void *handle, float gain);
 
         void setup();
 

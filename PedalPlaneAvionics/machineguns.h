@@ -16,8 +16,11 @@ class MachineGuns
 
         void onEvent(int event, void *param);
 
+        void setGain(float gain);
+
     protected:
         void *handle; 
+        float gain;
 };
 
 #endif

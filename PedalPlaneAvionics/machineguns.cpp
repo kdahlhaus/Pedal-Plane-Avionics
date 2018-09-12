@@ -7,7 +7,8 @@
 #include "sound_manager.h"
 #include "sound_priorities.h"
 
-MachineGuns::MachineGuns()
+MachineGuns::MachineGuns() :
+    handle(0), gain(0.6)
 {
     register_event_listener(MACHINEGUNS_START, makeFunctor((EventListener *)0, (*this), &MachineGuns::onEvent));
     register_event_listener(MACHINEGUNS_STOP, makeFunctor((EventListener *)0, (*this), &MachineGuns::onEvent));
@@ -16,7 +17,7 @@ MachineGuns::MachineGuns()
 
 void MachineGuns::start()
 {
-    handle = theSoundManager->play("machguns.wav", MACHINEGUN_PRIORITY, true);
+    handle = theSoundManager->play("machguns.wav", MACHINEGUN_PRIORITY, true, gain);
     Log.trace(F("MachineGuns::start h=%d\n"), (int)handle);
     // MACHINEGUN_PRIORITY
 }
@@ -38,5 +39,14 @@ void MachineGuns::onEvent(int event, void *param)
         case MACHINEGUNS_STOP:
             this->stop();
             break;
+    }
+}
+
+void MachineGuns::setGain(float gain)
+{
+    this->gain=gain;
+    if (theSoundManager->is_playing(handle))
+    {
+        theSoundManager->setGain(handle, gain);
     }
 }
