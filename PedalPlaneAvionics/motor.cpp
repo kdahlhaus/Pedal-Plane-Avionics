@@ -15,6 +15,8 @@ Motor::Motor() :
     state = stopped;
     register_event_listener(MOTOR_START, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
     register_event_listener(MOTOR_STOP, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
+    register_event_listener(MOTOR_STARTER_START, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
+    register_event_listener(MOTOR_STARTER_STOP, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
 }
 
 

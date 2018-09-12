@@ -51,7 +51,7 @@ void setup()
     Log.begin(LOG_LEVEL_VERBOSE, &Serial);
 
     // Inputs
-    motor_switch = new Switch(2, INPUT_PULLUP,  MOTOR_START);
+    motor_switch = new Switch(2, INPUT_PULLUP,  MOTOR_STARTER_START, MOTOR_STARTER_STOP);
     machinegun_switch = new Switch(3, INPUT_PULLUP,  MACHINEGUNS_START, MACHINEGUNS_STOP);
     bombdrop_switch = new Switch(4, INPUT_PULLUP, DROP_BOMB); 
 
