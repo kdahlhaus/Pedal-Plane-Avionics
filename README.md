@@ -44,27 +44,12 @@ This is very much a work-in-progress.
         "mostop.wav" - motor stopping sound
         "bombdrop.wav" - bomb dropping sound
 
-
-## Functors
-    This is a branch that uses Rich Hickey's functors for event handlers.  It allows the domain objects to register themselves in 
-    their constructors.  Requires the functors branch of the event library. And https://github.com/janelia-arduino/Functor.git
-
-    ARDUINO:
-        before:
-            Sketch uses 17332 bytes (56%) of program storage space. Maximum is 30720 bytes.
-            Global variables use 1605 bytes (78%) of dynamic memory, leaving 443 bytes for local variables. Maximum is 2048 bytes.
-        after:
-            Sketch uses 17802 bytes (57%) of program storage space. Maximum is 30720 bytes.
-            Global variables use 1725 bytes (84%) of dynamic memory, leaving 323 bytes for local variables. Maximum is 2048 bytes.
-    UECIDE:
-        before using:  
-            Memory usage
-            • Program size: 21,440 bytes
-            • Memory size: 1,596 bytes
-            • Compilation took 8.889 seconds.
-        after:
-            Memory usage
-            • Program size: 23,184 bytes
-            • Memory size: 1,722 bytes
-            • Compilation took 8.772 seconds.
-
+    Future:
+        12345678.wav
+        mostart1
+        moidle1
+        morrun11
+        morrun12
+        morrun13
+        morrun13
+        mostop1
