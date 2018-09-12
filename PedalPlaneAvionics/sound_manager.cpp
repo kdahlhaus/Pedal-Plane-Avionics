@@ -51,8 +51,8 @@ AudioConnection          patchCord13(finalMixer, 0, i2s1, 1);
 //#define SDCARD_SCK_PIN   13
 
 
-// # of sounds that can play at once
-#define NUMBER_OF_CHANNELS 3 
+// # of SFX sounds that can play at once
+#define NUMBER_OF_CHANNELS 2 
 
 #define NO_CHANNEL -1
 #define NO_PRIORITY -1
@@ -68,11 +68,9 @@ typedef struct ChannelInfo_s {
 } ChannelInfo;
 
 ChannelInfo channels[] = {
-    ChannelInfo(playSoundWav0),
-    ChannelInfo(playSoundWav1),
-    ChannelInfo(playSoundWav2)
+    ChannelInfo(playSdWav0),
+    ChannelInfo(playSdWav1)
 };
-
 
 
 void *SoundManager::play(const char *filename, int priority, bool loop, float gain)
@@ -137,9 +135,8 @@ void *SoundManager::play(const char *filename, int priority, bool loop, float ga
     channels[min_priority_channel].loop = loop;
     channels[min_priority_channel].filename = filename;
 
-    mixer1.gain(min_priority_channel, gain);
-    mixer2.gain(min_priority_channel, gain);
-    
+    sfxMixer1.gain(min_priority_channel*2, gain);
+    sfxMixer1.gain(min_priority_channel*2+1, gain);
 
     // wait for sound to start playing
     for (int i=0; i<20; i++)
@@ -159,8 +156,8 @@ void SoundManager::setGain(void *handle, float gain)
     if (is_playing(handle))
     {
         Log.trace(F("SM.setGain(%d, %F)\n"), HANDLE_TO_INDEX(handle), gain);
-        mixer1.gain(HANDLE_TO_INDEX(handle), gain);
-        mixer2.gain(HANDLE_TO_INDEX(handle), gain);
+        sfxMixer1.gain(min_priority_channel*2, gain);
+        sfxMixer1.gain(min_priority_channel*2+1, gain);
     }
 }
 
