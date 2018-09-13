@@ -53,10 +53,7 @@ void set_gain()
         if (gain_str)
         {
             float gain = atof(gain_str);
-            if (strcmp(obj, "mos")==0) { motor->setStartGain(gain); };
-            if (strcmp(obj, "mor")==0) { motor->setRunGain(gain); };
-            if (strcmp(obj, "mg")==0) { machineguns->setGain(gain); };
-            if (strcmp(obj, "bd")==0) { bomb_drop->setGain(gain); };
+            //if (strcmp(obj, "mos")==0) { motor->setStartGain(gain); };
             Log.trace(F("set_gain: id:%s gain: %s %d\n"), obj, gain_str, (int)gain*100);
         }
     }

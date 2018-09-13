@@ -32,6 +32,7 @@ AudioConnection          patchCord10(motorFade2, 0, finalMixer, 2);
 AudioConnection          patchCord11(sfxMixer1, 0, finalMixer, 0);
 AudioConnection          patchCord12(finalMixer, 0, i2s1, 0);
 AudioConnection          patchCord13(finalMixer, 0, i2s1, 1);
+AudioControlSGTL5000     sgtl5000_1;     //xy=905,361
 // GUItool: end automatically generated code
 
 
@@ -156,8 +157,8 @@ void SoundManager::setGain(void *handle, float gain)
     if (is_playing(handle))
     {
         Log.trace(F("SM.setGain(%d, %F)\n"), HANDLE_TO_INDEX(handle), gain);
-        sfxMixer1.gain(min_priority_channel*2, gain);
-        sfxMixer1.gain(min_priority_channel*2+1, gain);
+        sfxMixer1.gain(HANDLE_TO_INDEX(handle)*2, gain);
+        sfxMixer1.gain(HANDLE_TO_INDEX(handle)*2+1, gain);
     }
 }
 

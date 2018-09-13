@@ -21,14 +21,10 @@ class Motor
         // until MOTOR_STARTER_STOP event received
         // otherwise will run the start sound once and transition
         // to starting sound
+        void stopStarter();
         
         void stop();
-
         void onEvent(int event, void *param);
-        void setStartGain(float gain);
-        void setIdleGain(float gain);
-        void setRunGain(float gain);
-
         void update();
 
     protected:
@@ -38,9 +34,7 @@ class Motor
             starter,
             starting,
             idle,
-            transitioning_to_run,
             running,
-            transitioning_to_stopped,
             fading
 
         };
@@ -53,7 +47,7 @@ class Motor
 
         typedef struct {
             AudioPlaySdWav sdWav;
-            AudioEffectFase fader;
+            AudioEffectFade fader;
             bool loop;
             uint32_t timeStarted;
         } SoundChannel;
@@ -82,7 +76,7 @@ class Motor
 
         inline bool currentChannelIsPlaying()
         {
-            currentChannel->sdWav.isPlaying();
+            return currentChannel->sdWav.isPlaying();
         }
 
         void changeFromStarterToStarting();
