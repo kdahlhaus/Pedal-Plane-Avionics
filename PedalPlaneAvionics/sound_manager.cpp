@@ -98,7 +98,7 @@ void *SoundManager::play(const char *filename, int priority, bool loop, float ga
     }
     if (min_priority_channel == NO_CHANNEL)
     {
-        for (int i=0; i<= NUMBER_OF_CHANNELS; i++)
+        for (int i=0; i<NUMBER_OF_CHANNELS; i++)
         {
             // determine channel w/minium priority that is less than new sound priority
             int channel_priority = channels[i].priority;

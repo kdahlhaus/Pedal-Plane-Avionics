@@ -46,8 +46,8 @@ class Motor
         float runGain;
 
         typedef struct {
-            AudioPlaySdWav sdWav;
-            AudioEffectFade fader;
+            AudioPlaySdWav &sdWav;
+            AudioEffectFade &fader;
             bool loop;
             uint32_t timeStarted;
         } SoundChannel;
@@ -71,7 +71,7 @@ class Motor
         inline bool soundStartDelayHasPassed()
         // has enough time passed since the sound started that isPlaying is valid?
         {
-            return millis() >= currentChannel->timeStarted + 4; // PJRC max 3 ms to start sound
+            return millis() >= currentChannel->timeStarted + 5; // PJRC max 3 ms to start sound
         }
 
         inline bool currentChannelIsPlaying()

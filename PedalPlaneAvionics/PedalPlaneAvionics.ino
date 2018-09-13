@@ -2,7 +2,7 @@
 
 #include <ArduinoLog.h>
 #include <EventDispatcher.h>
-#include <Tasker.h>
+//#include <Tasker.h>
 
 #include "avionics_events.h"
 #include "interpreter.h"
@@ -15,7 +15,7 @@
 #include "sound_priorities.h"
 #include "switch.h"
 
-Tasker tasker;
+//Tasker tasker;
 extern EventDispatcher event_dispatcher;
 
 // input objects
@@ -105,7 +105,7 @@ void loop()
     }
 
     event_dispatcher.run();
-    tasker.loop();
+    //tasker.loop();
 
     // debounce and send events for switches
     motor_switch->update();

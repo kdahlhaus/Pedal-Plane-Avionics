@@ -63,6 +63,8 @@ void zoom1() { send_event(ZOOM1); }
 void zoom2() { send_event(ZOOM2); }
 void zoom3() { send_event(ZOOM3); }
 
+void motor_starter_start() { send_event(MOTOR_STARTER_START); }
+void motor_starter_stop() { send_event(MOTOR_STARTER_STOP); }
 
 SerialInterpreter::SerialInterpreter()
 {
@@ -73,6 +75,9 @@ SerialInterpreter::SerialInterpreter()
 
     serial_command.addCommand("mo1", motor_start);
     serial_command.addCommand("mo0", motor_stop);
+
+    serial_command.addCommand("mos1", motor_starter_start);
+    serial_command.addCommand("mos0", motor_starter_stop);
 
     serial_command.addCommand("mg1", machine_guns_start);
     serial_command.addCommand("mg0", machine_guns_stop);
