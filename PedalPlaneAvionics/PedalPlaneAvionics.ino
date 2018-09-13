@@ -93,11 +93,9 @@ uint32_t FreeMem(){ // for Teensy 3.0
 }
 
 
-bool is_first_loop = true;
-
-
 void loop()
 {
+    static bool is_first_loop = true;
     if (is_first_loop)
     {
         void *handle = theSoundManager->play("startup.wav", STARTUP_PRIORITY, false);
