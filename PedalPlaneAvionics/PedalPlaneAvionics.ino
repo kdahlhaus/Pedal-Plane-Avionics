@@ -1,5 +1,7 @@
 // Copyright 2018 by Kevin Dahlhausen
 
+#define SERIALCOMMAND_DEBUG 1
+
 #include <ArduinoLog.h>
 #include <EventDispatcher.h>
 //#include <Tasker.h>
@@ -41,12 +43,17 @@ Navlights *navlights;
 
 // other
 SerialInterpreter *serialInterpreter;
+SerialInterpreter *bluetoothInterpreter;
 
 
 void setup()
 {
     Serial.begin(9600);
     while(!Serial && !Serial.available()){}
+
+    Serial1.begin(9600);
+    while(!Serial1 && !Serial1.available()){}
+    //delay(10) // alternative if it hangs
 
     Log.begin(LOG_LEVEL_VERBOSE, &Serial);
 
@@ -70,6 +77,7 @@ void setup()
 
     theSoundManager->setup();
     serialInterpreter = new SerialInterpreter();
+    bluetoothInterpreter = new SerialInterpreter(Serial1);
 
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_START);}, 3500); // TESTING DELETE ME
     //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_STOP);}, 3750); // TESTING DELETE ME
@@ -114,6 +122,7 @@ void loop()
 
     theSoundManager->update();
     serialInterpreter->update();
+    bluetoothInterpreter->update();
     motor->update();
     navlights->update();
 }

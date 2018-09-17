@@ -8,7 +8,12 @@
  * stop.wav
  */
 
+#include <ArduinoLog.h>
 #include <Audio.h>
+
+#define SHORT_FADE_TIME_MS 400
+#define LONG_FADE_TIME_MS 800
+
 
 class Motor
 {
@@ -24,14 +29,21 @@ class Motor
         void stopStarter();
         
         void stop();
+
+        void setSpeed(int speed);
+        // 0 - 100, TODO: define 0 speed, idle speed etc
+        
         void onEvent(int event, void *param);
         void update();
+
+
 
     protected:
 
         enum State {
             stopped,
-            starter,
+            starter_starting,
+            starter_looping,
             starting,
             idle,
             running,
@@ -44,6 +56,8 @@ class Motor
         float startingGain;
         float idleGain;
         float runGain;
+
+        int speed; // 0-100?
 
         typedef struct {
             AudioPlaySdWav &sdWav;
@@ -62,10 +76,14 @@ class Motor
         // (will complete any transitions and then transition to stopped)
         bool shouldStop;
 
+        // TODO: refactor to 'bool autoStartSequence'
+        bool shouldLoopStarter; // loop starting sound until MOTOR_STARTER_STOP?
+
         // state to change to after current fade
         State nextStateAfterFade;
+        int currentFadeTimeMs;
 
-        void fadeTo( const char *fileName, float gain, bool loop,  State nextState);
+        void fadeTo( const char *fileName, float gain, bool loop,  State nextState, int fadeTimeMs=SHORT_FADE_TIME_MS);
         // fade into the sound at fileName and transition to 'nextState'
 
         inline bool soundStartDelayHasPassed()

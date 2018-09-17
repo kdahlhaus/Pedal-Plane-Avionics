@@ -44,6 +44,13 @@ void navlights_curve() {
         
 }
 
+void motor_set_speed()
+{
+    char *speed_str = serialInterpreter->serial_command.next();
+    int speed = atoi(speed_str);
+    send_event(MOTOR_SET_SPEED, (void *)speed);
+}
+
 void set_gain()
 {
     char *obj = serialInterpreter->serial_command.next();
@@ -66,7 +73,8 @@ void zoom3() { send_event(ZOOM3); }
 void motor_starter_start() { send_event(MOTOR_STARTER_START); }
 void motor_starter_stop() { send_event(MOTOR_STARTER_STOP); }
 
-SerialInterpreter::SerialInterpreter()
+
+void addInterpreterCommands(SerialCommand &serial_command) 
 {
     serial_command.setDefaultHandler(unrecognized);
 
@@ -75,6 +83,8 @@ SerialInterpreter::SerialInterpreter()
 
     serial_command.addCommand("mo1", motor_start);
     serial_command.addCommand("mo0", motor_stop);
+
+    serial_command.addCommand("moss", motor_set_speed);
 
     serial_command.addCommand("mos1", motor_starter_start);
     serial_command.addCommand("mos0", motor_starter_stop);
@@ -94,5 +104,14 @@ SerialInterpreter::SerialInterpreter()
     serial_command.addCommand("z3", zoom3);
 
     serial_command.addCommand("sg", set_gain);
+} 
 
+
+SerialInterpreter::SerialInterpreter(Stream &serialToUse) :
+    serial_command(serialToUse)
+{
+    addInterpreterCommands(serial_command);
 }
+
+
+ 

@@ -8,7 +8,7 @@ This is very much a work-in-progress.
         (The default is ~/Arduino/libraries on Linux
         or ~/Documents/Arduino/libraries on Windows)
     2. clone https://github.com/kdahlhaus/EventSystem                
-    3. clone  https://github.com/kroimon/Arduino-SerialCommand (or see below)
+    3. clone https://github.com/kdahlhaus/Arduino-SerialCommand
         (note that this is not the one in the Arduino lib manager)
     4. clone https://github.com/thomasfredericks/Bounce2.git
     5. clone https://github.com/adafruit/Adafruit_Sensor.git
@@ -43,6 +43,26 @@ This is very much a work-in-progress.
         "morun.wav" - motor running sound
         "mostop.wav" - motor stopping sound
         "bombdrop.wav" - bomb dropping sound
+
+        bombdrop.wav
+        crash.wav
+        idle.wav
+        machguns.wav
+        morun.wav
+        mostart.wav
+        mostop.wav
+        rpm1.wav
+        starters.wav # starter start
+        starterl.wav # starter loop
+        starting.wav
+        startup.wav
+        stop.wav
+        System Volume Information
+        zoom1.wav
+        zoom2.wav
+        zoom3.wav
+
+
 
     Future:
         12345678.wav

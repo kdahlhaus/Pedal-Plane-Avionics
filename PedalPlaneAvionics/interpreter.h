@@ -3,14 +3,13 @@
 #ifndef _interpreter_h
 #define _interpreter_h
 
-#define SERIALCOMMAND_DEBUG 1
 
 #include <SerialCommand.h>
 
 class SerialInterpreter
 {
     public:
-    SerialInterpreter();
+        SerialInterpreter(Stream &serialToUse=Serial);
 
     void update()
     {
@@ -19,14 +18,12 @@ class SerialInterpreter
 
     friend void navlights_curve();
     friend void set_gain();
+    friend void motor_set_speed();
 
     protected:
         SerialCommand serial_command;
 };
 
 
-class BluetoothInterpreter
-{
-};
 
 #endif

@@ -13,12 +13,16 @@ extern AudioPlaySdWav motorSdWav2;
 extern AudioEffectFade motorFade1;
 extern AudioEffectFade motorFade2;
 
-#define FADE_TIME_MS 400
+
+// returns num elements in array x
+#define NUM_ELEMENTS(x)  (sizeof(x) / sizeof((x)[0]))  
+
+
 
 Motor::Motor() :
     state(stopped), starterGain(1.7), startingGain(1.7), idleGain(1.0), runGain(1.0),
     channel1({.sdWav=motorSdWav1, .fader=motorFade1}), channel2({.sdWav=motorSdWav2, .fader=motorFade2}),
-    shouldStop(false)
+    speed(0), shouldStop(false)
 {
     currentChannel = &channel1;
     nextChannel = &channel2;
@@ -27,6 +31,7 @@ Motor::Motor() :
     register_event_listener(MOTOR_STOP, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
     register_event_listener(MOTOR_STARTER_START, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
     register_event_listener(MOTOR_STARTER_STOP, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
+    register_event_listener(MOTOR_SET_SPEED, makeFunctor((EventListener *)0, (*this), &Motor::onEvent));
 }
 
 
@@ -36,21 +41,28 @@ void Motor::start(bool viaStarter)
 
     //already running - should it restart? naw
     if (state == stopped || (state == fading && nextStateAfterFade == stopped)) {
-        Log.trace(F("about to play stater.wav\n"));
-        currentChannel->sdWav.play("starter.wav");
+        Log.trace(F("about to play staters.wav\n"));
+        currentChannel->sdWav.play("starters.wav");
         currentChannel->fader.fadeIn(1);
         currentChannel->timeStarted = millis();
         currentChannel->loop = viaStarter;
-        state = starter;
+        state = starter_starting;
         shouldStop = false;
     }
+    shouldLoopStarter = viaStarter;
 }
 
 void Motor::stopStarter()
 {
-    if (state==starter) {
+    if (state==starter_looping) {
         changeFromStarterToStarting();
     } 
+    else if (state == starter_starting)
+    {
+        // at a minmum we want to play the entire starters.wav
+        shouldLoopStarter = false;
+        currentChannel->loop = false;
+    }
 }
 
 void Motor::stop()
@@ -59,18 +71,48 @@ void Motor::stop()
     shouldStop = true;
 }
 
-void Motor::fadeTo( const char *fileName, float gain, bool loop,  State nextState)
+void Motor::setSpeed(int speed)
+{
+    //TODO: refine seed ranges
+    Log.trace(F("setSpeed(%d)\n"), speed);
+
+    struct motor_speed_item {
+        const char *filename;
+        int upper_speed; // this or below to the next lower will play
+    };
+
+    static struct motor_speed_item speed_map[] = { 
+        {"idle.wav", 10},
+        {"rpm1.wav", 40},
+        {"rpm2.wav", 70},
+        {"rpm3.wav", 100}
+    };
+    static int num_entries = (int)NUM_ELEMENTS(speed_map);
+
+    for (int i=0; i<num_entries; i++) {
+        if (speed <= speed_map[i].upper_speed) {
+            // TODO: eliminate idle state and make it rpm0
+            State nextState = (i == 0) ? idle : running;
+            int fadeTimeMs = (i == 0) ? SHORT_FADE_TIME_MS : LONG_FADE_TIME_MS;
+            fadeTo(speed_map[i].filename, 1.0, true, nextState, fadeTimeMs);
+            return;
+        }
+    }
+}
+
+void Motor::fadeTo( const char *fileName, float gain, bool loop,  State nextState, int fadeTimeMs)
 {
     Log.trace(F("fadeTo(%s, .., %b, %d)\n"), fileName, loop, nextState);
 
-    // not worrying if the current sound is less than FADE_TIME_MS to the end 
+    // not worrying if the current sound is less than fadeTimeMs to the end 
     // if it is, then it will stop a bit short while the new sound fades in
     state = fading;
+    currentFadeTimeMs = fadeTimeMs;
     nextStateAfterFade = nextState;
     nextChannel->sdWav.play(fileName); 
     nextChannel->timeStarted = millis();
-    nextChannel->fader.fadeIn(FADE_TIME_MS);
-    currentChannel->fader.fadeOut(FADE_TIME_MS);
+    nextChannel->fader.fadeIn(fadeTimeMs);
+    currentChannel->fader.fadeOut(fadeTimeMs);
     currentChannel->timeStarted = millis();
 
     //swap pointers -> "current" channel is the new sound
@@ -81,13 +123,11 @@ void Motor::fadeTo( const char *fileName, float gain, bool loop,  State nextStat
 void Motor::changeFromStarterToStarting()
 {
     Log.trace("starter->starting\n");
-    fadeTo("starting.wav", startingGain, false, starting);
-    /*
+    //fadeTo("starting.wav", startingGain, false, starting, SHORT_FADE_TIME_MS);
     currentChannel->sdWav.play("starting.wav");
     currentChannel->timeStarted = millis();
     currentChannel->loop = false;
     state = starting;
-    */
 }
 
 
@@ -95,7 +135,7 @@ void Motor::update()
 {
     if ((state != fading) && shouldStop) {
         shouldStop = false;
-        fadeTo("stop.wav", 1.0, false, stopped);
+        fadeTo("stop.wav", 1.0, false, stopped, LONG_FADE_TIME_MS);
     }
 
     switch (state) {
@@ -107,7 +147,7 @@ void Motor::update()
             // ramping up
 
             // stop original channel? (which is now on nextChannel)
-            if ((millis() >= nextChannel->timeStarted + FADE_TIME_MS) ||
+            if ((millis() >= nextChannel->timeStarted + currentFadeTimeMs) ||
                 !nextChannel->sdWav.isPlaying()) {
                 Log.trace("fading - original channel faded, stopping it\n");
                 nextChannel->sdWav.stop();
@@ -127,17 +167,29 @@ void Motor::update()
         case stopped:
             break;
                                  
+        case starter_starting:
+            if (soundStartDelayHasPassed() && !currentChannelIsPlaying()) {
+                // change to starterl
+                currentChannel->sdWav.play("staterl.wav"); // TODO: fix typo in sound
+                currentChannel->timeStarted = millis();
+                state = starter_looping;
+                Log.trace(F("change to starter looping\n"));
+                
+            }
+            break;
 
-        case starter:
+        case starter_looping:
+            // TODO: shorten starter loop sound
             if (soundStartDelayHasPassed()) {
                 if (currentChannel->loop) {
                     if (!currentChannelIsPlaying()) {
-                        currentChannel->sdWav.play("starter.wav");
+                        currentChannel->sdWav.play("staterl.wav"); // TODO fix typo in sound
                         currentChannel->timeStarted = millis();
+                        Log.trace(F("starter loop restart\n"));
                     }
                 }
                 else {
-                    if ((currentChannel->sdWav.positionMillis() >= (currentChannel->sdWav.lengthMillis()-FADE_TIME_MS)) ||
+                    if ((currentChannel->sdWav.positionMillis() >= (currentChannel->sdWav.lengthMillis()-SHORT_FADE_TIME_MS)) ||
                         !currentChannelIsPlaying()) {
                             changeFromStarterToStarting();
                         }
@@ -148,7 +200,7 @@ void Motor::update()
 
         case starting:
             if (soundStartDelayHasPassed() && (
-                (currentChannel->sdWav.positionMillis() >= (currentChannel->sdWav.lengthMillis()-FADE_TIME_MS)) ||
+                (currentChannel->sdWav.positionMillis() >= (currentChannel->sdWav.lengthMillis()-SHORT_FADE_TIME_MS)) ||
                 !currentChannelIsPlaying())) {  
                     fadeTo("idle.wav", idleGain, true, idle); 
              }
@@ -165,7 +217,13 @@ void Motor::update()
             break;
 
         case running:
-            Log.trace(F("warning -> handle running state\n"));
+            //Log.trace(F("warning -> handle running state\n"));
+            if (soundStartDelayHasPassed() && !currentChannelIsPlaying()) {
+                currentChannel->sdWav.play("rpm1.wav");
+                currentChannel->timeStarted = millis();
+
+                // TODO add code for transition to running - maybe time or movment?
+            }
             break;
     }
 }
@@ -183,11 +241,23 @@ void Motor::onEvent(int event, void *param)
             break;
 
         case MOTOR_STARTER_START:
-            start(true);
+            if (state == stopped) {
+                start(true);
+            }
+            else {
+                // TODO: double function - stop motor, maybe rename the message sent by switch?
+                stop();
+            }
+            
             break;
 
         case MOTOR_STARTER_STOP:
             stopStarter();
+            break;
+
+        case MOTOR_SET_SPEED:
+            int new_speed = (int)(param);
+            setSpeed(new_speed);
             break;
     }
 } 

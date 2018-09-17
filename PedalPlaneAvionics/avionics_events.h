@@ -9,6 +9,7 @@ enum AvionicsEvents
 
     MOTOR_START = 1,
     MOTOR_STOP,
+    MOTOR_SET_SPEED, // param: speed 0-100
     MOTOR_STARTER_START,
     MOTOR_STARTER_STOP,
 
