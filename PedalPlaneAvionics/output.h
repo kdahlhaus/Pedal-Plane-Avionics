@@ -5,6 +5,10 @@
 
 #include <ArduinoLog.h>
 
+/*
+    A generic output that responds to events.
+*/
+
 class Output
 {
     public:

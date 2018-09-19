@@ -5,6 +5,10 @@
 
 #include <Bounce2.h>
 
+/*
+    A de-bounced digital input that sends events on transitions.
+*/
+
 class Switch
 {
     public:

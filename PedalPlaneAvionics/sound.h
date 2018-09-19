@@ -5,6 +5,10 @@
 
 #include "sound_manager.h"
 
+/*
+    A sound that is started/stopped by events or calls to start()/stop().
+*/
+
 class Sound
 {
     public:

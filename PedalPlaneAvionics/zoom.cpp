@@ -8,8 +8,8 @@
 
 
 
-#define RAW_ACCEL_TO_TRIGGER_ZOOM 3000
-#define MIN_TIME_BETWEEN_TRIGGERS 3000
+#define RAW_ACCEL_TO_TRIGGER_ZOOM 3200
+#define MIN_TIME_BETWEEN_TRIGGERS 4000
 
 #define LIS3DH_I2C_ADDRESS 0x18  // alt is 0x19
 
@@ -36,7 +36,7 @@ void Zoom::update()
     if ((abs(lis3dh.y) >= RAW_ACCEL_TO_TRIGGER_ZOOM || abs(lis3dh.x) >= RAW_ACCEL_TO_TRIGGER_ZOOM) &&
         millis() > timeOfLastZoom + MIN_TIME_BETWEEN_TRIGGERS) {
         //send_event(ZOOM2);
-        sounds[2]->start();
+        sounds[2]->start(); // TODO: use a random zoom
         timeOfLastZoom = millis();
         Log.trace("zoom!\n");
     }

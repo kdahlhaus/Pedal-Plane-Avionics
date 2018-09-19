@@ -14,6 +14,14 @@
 #define SHORT_FADE_TIME_MS 400
 #define LONG_FADE_TIME_MS 800
 
+/*
+ 
+   Handles the motor sound.
+   Starter sound plays as long as start-button held down.
+   Then transitions to starting sound for once play,
+   then to idle.
+
+*/
 
 class Motor
 {

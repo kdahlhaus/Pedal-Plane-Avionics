@@ -4,6 +4,11 @@
 #ifndef _sound_manager_h
 #define _sound_manager_h
 
+/*
+    Manages playing of multiple sounds at once.
+    Most often used by other objects and not directly.
+*/
+
 class SoundManager 
 {
     public:

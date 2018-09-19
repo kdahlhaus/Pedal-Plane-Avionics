@@ -2,6 +2,11 @@
 #ifndef machineguns_h
 #define machineguns_h
 
+/*
+    Plays the machine-gun sound on MACHINEGUNS_START event 
+    or call to start().
+*/
+
 class MachineGuns
 {
     public:

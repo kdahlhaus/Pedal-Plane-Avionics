@@ -1,10 +1,18 @@
 #ifndef _zoom_h_
 #define _zoom_h_
-#
+
 #include "sound.h"
 
 #include <Adafruit_LIS3DH.h>
 
+/*
+
+ Play a 'zoom' sound when acceleration of the plane
+ exceeds a set value.
+
+ Also responds to ZOOM1-ZOOMn messages to play the zooms.
+
+*/
 class Zoom
 {
     public:

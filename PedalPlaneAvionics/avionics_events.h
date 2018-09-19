@@ -3,6 +3,11 @@
 #ifndef _avionics_events_h
 #define _avionics_events_h
 
+/*
+    These are the events sent w/send_event and 
+    received by items calling register_event_handler.
+*/
+
 enum AvionicsEvents
 {
     // NO_EVENT is '0'

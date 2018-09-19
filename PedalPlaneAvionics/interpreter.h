@@ -3,8 +3,14 @@
 #ifndef _interpreter_h
 #define _interpreter_h
 
-
 #include <SerialCommand.h>
+
+/*
+    Monitor a serial device for simple commands.
+    Most commands end up sending an event.
+    Commands are defined in interpreter.cpp.
+
+*/
 
 class SerialInterpreter
 {

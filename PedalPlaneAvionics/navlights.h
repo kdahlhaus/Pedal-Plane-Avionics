@@ -5,6 +5,13 @@
 
 #include <LEDFader.h>
 
+/*
+
+   Controls the navigation lights.
+   They fade on and off.
+
+*/
+
 class Navlights
 {
     public:
