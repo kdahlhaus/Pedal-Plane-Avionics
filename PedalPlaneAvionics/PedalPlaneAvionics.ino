@@ -52,9 +52,11 @@ SerialInterpreter *bluetoothInterpreter;
 
 void setup()
 {
+    // USB terminal
     Serial.begin(9600);
     while(!Serial && !Serial.available()){}
 
+    // bluetooth
     Serial1.begin(9600);
     while(!Serial1 && !Serial1.available()){}
 
@@ -87,11 +89,10 @@ void loop()
 {
     static bool is_first_loop = true;
 
-    // play 'startup_wav' at power up
+    // play 'startup_wav' once at power up
     if (is_first_loop)
     {
-        void *handle = theSoundManager->play("startup.wav", STARTUP_PRIORITY, false);
-        Log.trace(F("startup handle = %d\n"), (int)handle);
+        theSoundManager->play("startup.wav", STARTUP_PRIORITY, false);
         is_first_loop = false;
         Log.trace(F("Free mem: %d\n"), FreeMem());
     }
