@@ -6,7 +6,6 @@
 #include <EventDispatcher.h>
 //#include <Tasker.h>
 
-#include "accelerometer.h"
 #include "avionics_events.h"
 #include "interpreter.h"
 #include "machineguns.h"
@@ -17,6 +16,7 @@
 #include "sound_manager.h"
 #include "sound_priorities.h"
 #include "switch.h"
+#include "zoom.h"
 
 //Tasker tasker;
 extern EventDispatcher event_dispatcher;
@@ -25,7 +25,6 @@ extern EventDispatcher event_dispatcher;
 Switch *motor_switch;
 Switch *machinegun_switch;
 Switch *bombdrop_switch;
-Accelerometer *accelerometer;
 
 // domain objects
 // allocated dynamically from setup() so they
@@ -34,9 +33,7 @@ Accelerometer *accelerometer;
 MachineGuns *machineguns;
 Motor *motor;
 Sound *bomb_drop;
-Sound *zoom1;
-Sound *zoom2;
-Sound *zoom3;
+Zoom *zoom;
 
 // output objects
 Output *onboard_LED;
@@ -62,15 +59,12 @@ void setup()
     motor_switch = new Switch(2, INPUT_PULLUP,  MOTOR_STARTER_START, MOTOR_STARTER_STOP);
     machinegun_switch = new Switch(3, INPUT_PULLUP,  MACHINEGUNS_START, MACHINEGUNS_STOP);
     bombdrop_switch = new Switch(4, INPUT_PULLUP, DROP_BOMB); 
-    accelerometer = new Accelerometer();
 
     // Domain Objects0
     machineguns = new MachineGuns();
     motor = new Motor();
     bomb_drop = new Sound("bombdrop.wav", BOMB_DROP_PRIORITY, false, DROP_BOMB, 0.20);
-    zoom1 = new Sound("zoom1.wav", ZOOM_PRIORITY, false, ZOOM1);
-    zoom2 = new Sound("zoom2.wav", ZOOM_PRIORITY, false, ZOOM2, 0.5);
-    zoom3 = new Sound("zoom3.wav", ZOOM_PRIORITY, false, ZOOM3, 0.5);
+    zoom = new Zoom();
  
 
     //outputs
@@ -127,5 +121,5 @@ void loop()
     bluetoothInterpreter->update();
     motor->update();
     navlights->update();
-    accelerometer->update();
+    zoom->update();
 }
