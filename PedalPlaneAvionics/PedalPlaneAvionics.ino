@@ -6,6 +6,7 @@
 #include <EventDispatcher.h>
 //#include <Tasker.h>
 
+#include "accelerometer.h"
 #include "avionics_events.h"
 #include "interpreter.h"
 #include "machineguns.h"
@@ -24,7 +25,7 @@ extern EventDispatcher event_dispatcher;
 Switch *motor_switch;
 Switch *machinegun_switch;
 Switch *bombdrop_switch;
-
+Accelerometer *accelerometer;
 
 // domain objects
 // allocated dynamically from setup() so they
@@ -61,6 +62,7 @@ void setup()
     motor_switch = new Switch(2, INPUT_PULLUP,  MOTOR_STARTER_START, MOTOR_STARTER_STOP);
     machinegun_switch = new Switch(3, INPUT_PULLUP,  MACHINEGUNS_START, MACHINEGUNS_STOP);
     bombdrop_switch = new Switch(4, INPUT_PULLUP, DROP_BOMB); 
+    accelerometer = new Accelerometer();
 
     // Domain Objects0
     machineguns = new MachineGuns();
@@ -125,4 +127,5 @@ void loop()
     bluetoothInterpreter->update();
     motor->update();
     navlights->update();
+    accelerometer->update();
 }
