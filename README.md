@@ -1,75 +1,101 @@
-# Pedal-Plane Avionics
-Firmware for a pedal-plane special-effects controller.  It will do things like control the motor sound, machine gun lights and sound, and navigation lights.
+        ____           __      __   ____  __                    ___        _             _          
+       / __ \___  ____/ /___ _/ /  / __ \/ /___ _____  ___     /   |_   __(_)___  ____  (_)_________
+      / /_/ / _ \/ __  / __ `/ /  / /_/ / / __ `/ __ \/ _ \   / /| | | / / / __ \/ __ \/ / ___/ ___/
+     / ____/  __/ /_/ / /_/ / /  / ____/ / /_/ / / / /  __/  / ___ | |/ / / /_/ / / / / / /__(__  ) 
+    /_/    \___/\__,_/\__,_/_/  /_/   /_/\__,_/_/ /_/\___/  /_/  |_|___/_/\____/_/ /_/_/\___/____/  
 
-This is very much a work-in-progress.
+    
+
+# Pedal-Plane Avionics
+This is a design and firmware for a pedal-plane special-effects controller based on the Teensy 3.2 microcontroller.  Pedal planes are small pedal-powered airplanes for children aged about 3-7.   Some sources of pedal plane kits and plans are [PuddleJumpSquadron](https://www.etsy.com/shop/PuddlejumpSquadron?ref=l2-shopheader-name), [Experimental Aircraft Association](https://www.eaa.org/en/eaa-shop/kids-apparel-and-collectibles/pedal-airplane-plans),  and [Aviation Products, Inc.](http://www.pedalplanekits.com/).
+
+![P-51 Pedal Plane](https://i.pinimg.com/originals/aa/81/22/aa812234470c6a0a591d3ea2acb93481.jpg "P-51 Pedal Plane")
+
+## Features
+* Complex engine sound (starter, startup, idle, various RPMs)
+* Machine gun sound
+* Bomb-drop sound
+* Navigation lights
+* Gyro spool-up sound on master power up
+* Bluetooth interface 
+* Android app (TODO)
+* Landing lights (TODO)
+* 'Zoom' flyby sound (TODO)
 
 ## Libraries
-    1. cd to your Arduino libs directory.
+1. cd to your Arduino libs directory.
         (The default is ~/Arduino/libraries on Linux
         or ~/Documents/Arduino/libraries on Windows)
-    2. clone https://github.com/kdahlhaus/EventSystem                
-    3. clone https://github.com/kdahlhaus/Arduino-SerialCommand
-        (note that this is not the one in the Arduino lib manager)
-    4. clone https://github.com/thomasfredericks/Bounce2.git
-    5. clone https://github.com/adafruit/Adafruit_Sensor.git
-    6. clone https://github.com/adafruit/Adafruit_LIS3DH
-    7  clone https://github.com/janelia-arduino/Functor.git
-    8. clone https://github.com/jgillick/arduino-LEDFader.git LEDFader 
-        (note that library must be in dir LEDFader due to the name of the include files it contains)
-    9. Use the library manager to add:
-        * ArduinoLog (or https://github.com/thijse/Arduino-Log/)
-        * Tasker
+2. clone https://github.com/kdahlhaus/EventSystem                
+3. clone https://github.com/kdahlhaus/Arduino-SerialCommand
+    (note that this is not the one in the Arduino lib manager)
+4. clone https://github.com/thomasfredericks/Bounce2.git
+5. clone https://github.com/adafruit/Adafruit_Sensor.git
+6. clone https://github.com/adafruit/Adafruit_LIS3DH
+7  clone https://github.com/janelia-arduino/Functor.git
+8. clone https://github.com/jgillick/arduino-LEDFader.git LEDFader 
+    (note that library must be in dir LEDFader due to the name of the include files it contains)
+9. Use the library manager to add:
+    * ArduinoLog (or https://github.com/thijse/Arduino-Log/)
 
+### Note:
+You can optionally clone the git repositories somewhere else and make a symbolic link to the library under the IDE's libraries directory.  For example:
+ Windows: *mklink /D C:\Users\kevin\Documents\Arduino\libraries\Arduino-SerialCommand C:\Users\kevin\prog\arduino\libs\Arduino-SerialCommand*
+Linux: *ln -s ~/prog/arduino/libs/Arduino-SerialCommand/ ~/apps/arduino-1.8.5/libraries/*
 
-* You can optionally clone the git repositories somewhere else and make a symbolic link to the library under the IDE's libraries directory.  For example:
-    Windows:
-        mklink /D C:\Users\kevin\Documents\Arduino\libraries\Arduino-SerialCommand C:\Users\kevin\prog\arduino\libs\Arduino-SerialCommand
-    Linux:
-        ln -s ~/prog/arduino/libs/Arduino-SerialCommand/ ~/apps/arduino-1.8.5/libraries/
-
-* If you use UECIDE, replace the Arduino directory above with "UECIDE"
+(If you use *UECIDE*, replace the Arduino directory above with "UECIDE")
 
 
 ## Sounds                                                         
 
-    If using TMRpcm, sounds must be WAV files, 8 bit, 32000 Hz sample rate, mono.
+Sounds are 16-bit PCM WAV files at 44100 kHz sample rate.
+
+All sounds are located in the root directory of the SD card with the following names:
+
+bombdrop.wav
+crash.wav
+idle.wav
+machguns.wav
+morun.wav
+mostart.wav
+mostop.wav
+rpm1.wav
+starters.wav # starter start
+starterl.wav # starter loop
+starting.wav
+startup.wav
+stop.wav
+zoom1.wav
+zoom2.wav
+zoom3.wav
+
+## Firmware Design
+The main aspects of the code's architecture are:
+1. Event-Driven
+2. Object-Managed Setup
+3. Code Conventions
+
+### Event Driven
+Components generally communicate through events.  An event is a comination of an event number (defined in avionics_events.h) and an optional parameter.  There can be an arbritary number of sources and responders for a given event.  Most of the time, the sources for an event are a switch and the serial interfaces.  The most common pattern of event usage within the program is that a given event is generated by a switch and the serial interfaces and handled by a single domain object.  DROP_BOMB is a good example of an event that follows this pattern. 
+
+### Object-managed Setup
+The common pattern in Arduino sketches is to implement a function called 'setup' that contains hardware-related setup such as setting input / outuput pins.  I wanted objects in the system to control and setup the hardware they use as appropriate.  For example, a Switch object sets the pin it uses as an input.  I have handled this by dynamically allocating these objects within the 'setup' function and having the constructors of the objects set the hardware configuration as appropriate.  This means that these objects must be constructed within the context of the 'setup' call.  This is not enforced by code but creating objects outside of setup may not work as desired.   Memory fragmentation is not a concern because these objects live the entire lifetime of the program and are not deleted and recreated during execution.
+
+### Code Conventions
+1. Hardware configuration in the constructor
+    * Objects should handle their own hardware configuration in the constructor.
+    * Objects are dynamically allocated within 'setup.'
+2. Update
+    * Objects that need to 'run' or be periodically updated implement a member function called 'update.'  This is added to the 'loop' function in PedalPlaneAvionics.ino.
+3. Events
+    * Domain objects communicate or are triggered by events defined in 'avionics_events.h'
+    * Events should have a command defined in 'interpreter.cpp'
 
 
-    All sounds are located in the root directory of the SD card with the following names:
+## Credits
+* [Pedal Plane Group on Facebook](https://www.facebook.com/groups/PedalPlanes/) Lots of ideas on features and motivation to pursue this project.  I've used ideas from [Mike Badger](https://www.facebook.com/vadger/videos/10155459934356465/) and [Alex Romero](https://www.facebook.com/groups/PedalPlanes/permalink/10156602338668427/) in particular. Thanks!
+* [Open Panzer](https://github.com/OpenPanzerProject/OP-Sound) is an open-source Teensy-based sound system for model tanks.  I've used ideas from it (no code) in designing the Pedal Plane Avionics. 
 
-        "startup.wav" - played automatically once on power up.   I use the sound of gyro winding up.
-        "machguns.wav" - machine guns
-        "mostart.wav" - motor start sound
-        "morun.wav" - motor running sound
-        "mostop.wav" - motor stopping sound
-        "bombdrop.wav" - bomb dropping sound
+## Licensing
+This project is licensed under the GNU GPL 3.0.   My intent is for it to be freely used and modified.  If you distribute modified code though you have to make your modifications available in source form.
 
-        bombdrop.wav
-        crash.wav
-        idle.wav
-        machguns.wav
-        morun.wav
-        mostart.wav
-        mostop.wav
-        rpm1.wav
-        starters.wav # starter start
-        starterl.wav # starter loop
-        starting.wav
-        startup.wav
-        stop.wav
-        System Volume Information
-        zoom1.wav
-        zoom2.wav
-        zoom3.wav
-
-
-
-    Future:
-        12345678.wav
-        mostart1
-        moidle1
-        morrun11
-        morrun12
-        morrun13
-        morrun13
-        mostop1
