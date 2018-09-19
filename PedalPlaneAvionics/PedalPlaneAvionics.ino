@@ -4,9 +4,9 @@
 
 #include <ArduinoLog.h>
 #include <EventDispatcher.h>
-//#include <Tasker.h>
 
 #include "avionics_events.h"
+#include "free_mem.h"
 #include "interpreter.h"
 #include "machineguns.h"
 #include "motor.h"
@@ -18,8 +18,17 @@
 #include "switch.h"
 #include "zoom.h"
 
-//Tasker tasker;
 extern EventDispatcher event_dispatcher;
+
+
+/*
+    Many objects are allocated dynamically from setup()
+    so they can control their own initialization, but this
+    initialization must often take place within the call to
+    setup.  While dynamically allocated, objects are generally
+    not deleted so memory fragmentation is not an issue here.
+*/
+
 
 // input objects
 Switch *motor_switch;
@@ -27,9 +36,6 @@ Switch *machinegun_switch;
 Switch *bombdrop_switch;
 
 // domain objects
-// allocated dynamically from setup() so they
-// can initialize pins and things as 
-// needed. 
 MachineGuns *machineguns;
 Motor *motor;
 Sound *bomb_drop;
@@ -51,7 +57,6 @@ void setup()
 
     Serial1.begin(9600);
     while(!Serial1 && !Serial1.available()){}
-    //delay(10) // alternative if it hangs
 
     Log.begin(LOG_LEVEL_VERBOSE, &Serial);
 
@@ -66,7 +71,6 @@ void setup()
     bomb_drop = new Sound("bombdrop.wav", BOMB_DROP_PRIORITY, false, DROP_BOMB, 0.20);
     zoom = new Zoom();
  
-
     //outputs
     onboard_LED = new Output(LED_BUILTIN, ONBOARD_LED_ON, ONBOARD_LED_OFF);
     navlights = new Navlights();
@@ -75,31 +79,15 @@ void setup()
     serialInterpreter = new SerialInterpreter();
     bluetoothInterpreter = new SerialInterpreter(Serial1);
 
-    //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_START);}, 3500); // TESTING DELETE ME
-    //tasker.setInterval([&q](){q.enqueueEvent(MACHINEGUNS_STOP);}, 3750); // TESTING DELETE ME
     Log.trace(F("setup complete\n"));
-}
-
-uint32_t FreeMem(){ // for Teensy 3.0
-    uint32_t stackTop;
-    uint32_t heapTop;
-
-    // current position of the stack.
-    stackTop = (uint32_t) &stackTop;
-
-    // current position of heap.
-    void* hTop = malloc(1);
-    heapTop = (uint32_t) hTop;
-    free(hTop);
-
-    // The difference is (approximately) the free, available ram.
-    return stackTop - heapTop;
 }
 
 
 void loop()
 {
     static bool is_first_loop = true;
+
+    // play 'startup_wav' at power up
     if (is_first_loop)
     {
         void *handle = theSoundManager->play("startup.wav", STARTUP_PRIORITY, false);
@@ -108,18 +96,18 @@ void loop()
         Log.trace(F("Free mem: %d\n"), FreeMem());
     }
 
-    event_dispatcher.run();
-    //tasker.loop();
-
     // debounce and send events for switches
     motor_switch->update();
     machinegun_switch->update();
     bombdrop_switch->update();
 
+    // update system objects
     theSoundManager->update();
     serialInterpreter->update();
     bluetoothInterpreter->update();
     motor->update();
     navlights->update();
     zoom->update();
+
+    event_dispatcher.run();
 }
