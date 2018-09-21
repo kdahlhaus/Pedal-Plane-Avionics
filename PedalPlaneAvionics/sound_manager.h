@@ -12,6 +12,8 @@
 class SoundManager 
 {
     public:
+        SoundManager() { setup(); }
+
         // play the sound given the file name
         // return a HANDLE to the sound for future queries
         // or null if the sound can't be found or played
@@ -23,11 +25,17 @@ class SoundManager
 
         bool is_playing(void *handle);
 
-        void setGain(void *handle, float gain);
-
-        void setup();
-
+        void setGain(float gain);
+        void setGain(void *handle, float gain){}; // TODO: implement or remove
         void update();
+        float readVolumePotentiometer();
+
+    protected:
+        float currentVolume;
+
+    private:
+        // called by ctor so no need to call manually
+        void setup();
 
 };
 

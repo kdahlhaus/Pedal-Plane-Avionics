@@ -10,30 +10,38 @@
 #include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
-AudioPlaySdWav           motorSdWav2;     //xy=172,314
-AudioPlaySdWav           playSdWav1;     //xy=173,175
-AudioPlaySdWav           playSdWav0;     //xy=174,118
-AudioPlaySdWav           motorSdWav1;     //xy=174,253
-AudioEffectFade          motorFade1;          //xy=347,252
-AudioEffectFade          motorFade2;          //xy=348,314
+AudioPlaySdWav           playSdWav2;     //xy=173,175
+AudioPlaySdWav           playSdWav1;     //xy=174,118
+AudioPlaySdWav           playSdWav3;     //xy=174,239
+AudioPlaySdWav           motorSdWav2;     //xy=208,473
+AudioPlaySdWav           motorSdWav1;     //xy=210,412
 AudioMixer4              sfxMixer1;         //xy=368,143
-AudioMixer4              finalMixer;         //xy=754,283
-AudioOutputI2S           i2s1;           //xy=900,284
-AudioConnection          patchCord1(motorSdWav2, 0, motorFade2, 0);
-AudioConnection          patchCord2(motorSdWav2, 1, motorFade2, 0);
-AudioConnection          patchCord3(playSdWav1, 0, sfxMixer1, 2);
-AudioConnection          patchCord4(playSdWav1, 1, sfxMixer1, 3);
-AudioConnection          patchCord5(playSdWav0, 0, sfxMixer1, 0);
-AudioConnection          patchCord6(playSdWav0, 1, sfxMixer1, 1);
-AudioConnection          patchCord7(motorSdWav1, 0, motorFade1, 0);
-AudioConnection          patchCord8(motorSdWav1, 1, motorFade1, 0);
-AudioConnection          patchCord9(motorFade1, 0, finalMixer, 1);
-AudioConnection          patchCord10(motorFade2, 0, finalMixer, 2);
+AudioMixer4              mixer2;         //xy=370,259
+AudioEffectFade          motorFade1;          //xy=383,411
+AudioEffectFade          motorFade2;          //xy=384,473
+AudioMixer4              finalMixer;         //xy=689,283
+AudioAmplifier           amp1;           //xy=845,283
+AudioOutputI2S           i2s1;           //xy=996,284
+AudioConnection          patchCord1(playSdWav2, 0, sfxMixer1, 2);
+AudioConnection          patchCord2(playSdWav2, 1, sfxMixer1, 3);
+AudioConnection          patchCord3(playSdWav1, 0, sfxMixer1, 0);
+AudioConnection          patchCord4(playSdWav1, 1, sfxMixer1, 1);
+AudioConnection          patchCord5(playSdWav3, 0, mixer2, 0);
+AudioConnection          patchCord6(playSdWav3, 1, mixer2, 1);
+AudioConnection          patchCord7(motorSdWav2, 0, motorFade2, 0);
+AudioConnection          patchCord8(motorSdWav2, 1, motorFade2, 0);
+AudioConnection          patchCord9(motorSdWav1, 0, motorFade1, 0);
+AudioConnection          patchCord10(motorSdWav1, 1, motorFade1, 0);
 AudioConnection          patchCord11(sfxMixer1, 0, finalMixer, 0);
-AudioConnection          patchCord12(finalMixer, 0, i2s1, 0);
-AudioConnection          patchCord13(finalMixer, 0, i2s1, 1);
-AudioControlSGTL5000     sgtl5000_1;     //xy=905,361
+AudioConnection          patchCord12(mixer2, 0, finalMixer, 1);
+AudioConnection          patchCord13(motorFade1, 0, finalMixer, 2);
+AudioConnection          patchCord14(motorFade2, 0, finalMixer, 3);
+AudioConnection          patchCord15(finalMixer, amp1);
+AudioConnection          patchCord16(amp1, 0, i2s1, 0);
+AudioConnection          patchCord17(amp1, 0, i2s1, 1);
+AudioControlSGTL5000     sgtl5000_1;     //xy=882,396
 // GUItool: end automatically generated code
+
 
 
 // Use these with the Teensy Audio Shield
@@ -53,7 +61,7 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=905,361
 
 
 // # of SFX sounds that can play at once
-#define NUMBER_OF_CHANNELS 2 
+#define NUMBER_OF_CHANNELS 3 
 
 #define NO_CHANNEL -1
 #define NO_PRIORITY -1
@@ -69,15 +77,15 @@ typedef struct ChannelInfo_s {
 } ChannelInfo;
 
 ChannelInfo channels[] = {
-    ChannelInfo(playSdWav0),
-    ChannelInfo(playSdWav1)
+    ChannelInfo(playSdWav1),
+    ChannelInfo(playSdWav2),
+    ChannelInfo(playSdWav3)
 };
 
 
 void *SoundManager::play(const char *filename, int priority, bool loop, float gain)
 {
     char fbuf[10];
-    sprintf(fbuf, "%f", gain);
     dtostrf(gain, 4, 2, fbuf);
     Log.trace(F("play(%s, pri=%d, loop=%b, gain=%s)\n"), filename, priority, loop, fbuf);
 
@@ -87,12 +95,13 @@ void *SoundManager::play(const char *filename, int priority, bool loop, float ga
     int channel_of_equal_priority = NO_CHANNEL;
 
     // find candidate channel
-    for (int i=0; i<= NUMBER_OF_CHANNELS; i++)
+    for (int i=0; i< NUMBER_OF_CHANNELS; i++)
     {
         // first not playing channel
         if (!channels[i].sdWav.isPlaying())
         {
             min_priority_channel = i;
+            Log.trace(F("found not playing channel %d\n"), i);
             break;
         }
     }
@@ -113,7 +122,7 @@ void *SoundManager::play(const char *filename, int priority, bool loop, float ga
     if (min_priority_channel == NO_CHANNEL)
     {
         // find channel of equal priority
-        for (int i=0; i<= NUMBER_OF_CHANNELS; i++)
+        for (int i=0; i< NUMBER_OF_CHANNELS; i++)
         {
             if (channels[i].priority == priority)
             {
@@ -131,6 +140,13 @@ void *SoundManager::play(const char *filename, int priority, bool loop, float ga
         return (void *)0;
     }
 
+    
+    // start playing on channel 'min_priority_channel'
+    Log.trace(F("starting snd on %d"), min_priority_channel);
+    if (channels[min_priority_channel].sdWav.isPlaying()) {
+        channels[min_priority_channel].sdWav.stop(); 
+        Log.trace(F("stopped sound to make room for new one\n"));
+    }
     channels[min_priority_channel].priority = priority;
     channels[min_priority_channel].sdWav.play(filename);
     channels[min_priority_channel].loop = loop;
@@ -152,24 +168,25 @@ void *SoundManager::play(const char *filename, int priority, bool loop, float ga
     return (void *)(min_priority_channel + 1); // sound 'handle' is channel + 1
 }
 
-void SoundManager::setGain(void *handle, float gain)
+void SoundManager::setGain(float gain)
 {
-    if (is_playing(handle))
-    {
-        Log.trace(F("SM.setGain(%d, %F)\n"), HANDLE_TO_INDEX(handle), gain);
-        sfxMixer1.gain(HANDLE_TO_INDEX(handle)*2, gain);
-        sfxMixer1.gain(HANDLE_TO_INDEX(handle)*2+1, gain);
-    }
+    amp1.gain(gain);
+    char fbuf[10];
+    dtostrf(gain, 4, 2, fbuf); 
+    Log.trace(F("SM.setGain(%s) 1\n"), fbuf);
 }
 
 
 void SoundManager::update()
 {
-    // comment this if the optional volume
-    // pot was not added to the audio board
-    float vol = analogRead(15);
-    vol = vol / 1024;
-    sgtl5000_1.volume(vol); 
+
+    //sgtl5000_1.volume(vol); 
+    float newVol = readVolumePotentiometer();
+
+    if (abs(newVol - currentVolume)>0.01) {
+        currentVolume = newVol;
+        setGain(currentVolume);
+    }
 
     // handle 'loop' sounds
     for (int i=0; i<NUMBER_OF_CHANNELS; i++)
@@ -230,83 +247,15 @@ void SoundManager::setup()
           delay(500);
         }
     } 
+
+    currentVolume = readVolumePotentiometer();
+    setGain(currentVolume);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifdef ARDUINO_AVR_NANO
-
-// Arudino NANO prototyping using the TMRpcm library
-
-#include <SD.h>
-#define SD_ChipSelectPin 10
-#include <TMRpcm.h>
-#include <SPI.h>
-
-TMRpcm tmrpcm;
-
-int current_priority = -1;
-
-void SoundManager::setup()
+float SoundManager::readVolumePotentiometer() 
 {
-    tmrpcm.speakerPin = 9; //5,6,11 or 46 on Mega, 9 on Uno, Nano, etc
-    if (!SD.begin(SD_ChipSelectPin)) 
-    {  
-        Log.trace("SD fail\n");
-        while (true) {};
-    }
-    else
-    {
-        Log.trace("SD OK\n");
-    }
-}
-
-void *SoundManager::play(const char *filename, int priority, bool loop)
-{
-    Log.trace("play\n");
-    if (!tmrpcm.isPlaying() || (tmrpcm.isPlaying() && current_priority <= priority))
-    {
-        Log.trace(F("starting new sound %s\n"), filename);
-        tmrpcm.stopPlayback();
-        current_priority = priority;
-        tmrpcm.play((char *)filename);
-        return (void *)1;
-    }
-    Log.trace(F("requested but did not start sound %s\n"), filename);
-    return (void *)0;
-}
-
-void SoundManager::stop(void *handle)
-{
-    tmrpcm.stopPlayback();
-}
-
-bool SoundManager::is_playing(void *handle)
-{
-    return tmrpcm.isPlaying();
-}
-
-#endif
-
-
-SoundManager _theSoundManager;
-SoundManager *theSoundManager = &_theSoundManager;
+    // comment this if the optional volume
+    // pot was not added to the audio board
+    float vol = analogRead(15);
+    return vol / 1024; 
+} 

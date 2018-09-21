@@ -48,7 +48,7 @@ Navlights *navlights;
 // other
 SerialInterpreter *serialInterpreter;
 SerialInterpreter *bluetoothInterpreter;
-
+SoundManager *theSoundManager;
 
 void setup()
 {
@@ -77,7 +77,7 @@ void setup()
     onboard_LED = new Output(LED_BUILTIN, ONBOARD_LED_ON, ONBOARD_LED_OFF);
     navlights = new Navlights();
 
-    theSoundManager->setup();
+    theSoundManager = new SoundManager();
     serialInterpreter = new SerialInterpreter();
     bluetoothInterpreter = new SerialInterpreter(Serial1);
 

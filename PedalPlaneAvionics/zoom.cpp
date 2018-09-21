@@ -32,12 +32,11 @@ void Zoom::update()
     lis3dh.read();
     // using raw for now  
     // TODO: move to normalized #'s to see if it fixes the accel touchiness
-    Log.trace("accel x:%d y:%d\n", lis3dh.x, lis3dh.y);
     if ((abs(lis3dh.y) >= RAW_ACCEL_TO_TRIGGER_ZOOM || abs(lis3dh.x) >= RAW_ACCEL_TO_TRIGGER_ZOOM) &&
         millis() > timeOfLastZoom + MIN_TIME_BETWEEN_TRIGGERS) {
         //send_event(ZOOM2);
         sounds[2]->start(); // TODO: use a random zoom
         timeOfLastZoom = millis();
-        Log.trace("zoom!\n");
+        Log.trace("Zoom! accel x:%d y:%d\n", lis3dh.x, lis3dh.y);
     }
 }

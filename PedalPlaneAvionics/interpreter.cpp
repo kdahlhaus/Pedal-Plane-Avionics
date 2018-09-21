@@ -7,6 +7,7 @@
 #include "motor.h"
 #include "machineguns.h"
 #include "sound.h"
+#include "sound_manager.h"
 
 //for changing fader alg
 #include "Navlights.h"
@@ -53,17 +54,19 @@ void motor_set_speed()
 
 void set_gain()
 {
-    char *obj = serialInterpreter->serial_command.next();
-    if (obj)
-    {
+    //char *obj = serialInterpreter->serial_command.next();
+    //if (obj)
+    //{
         char *gain_str = serialInterpreter->serial_command.next();
         if (gain_str)
         {
             float gain = atof(gain_str);
-            //if (strcmp(obj, "mos")==0) { motor->setStartGain(gain); };
-            Log.trace(F("set_gain: id:%s gain: %s %d\n"), obj, gain_str, (int)gain*100);
+            theSoundManager->setGain(gain);
+            ////if (strcmp(obj, "mos")==0) { motor->setStartGain(gain); };
+            //Log.trace(F("set_gain: id:%s gain: %s %d\n"), obj, gain_str, (int)gain*100);
+            
         }
-    }
+    //}
 }
 
 void zoom1() { send_event(ZOOM1); }
@@ -114,4 +117,5 @@ SerialInterpreter::SerialInterpreter(Stream &serialToUse) :
 }
 
 
+ 
  
