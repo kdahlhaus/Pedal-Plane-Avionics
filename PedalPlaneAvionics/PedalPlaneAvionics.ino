@@ -16,6 +16,7 @@
 #include "sound_manager.h"
 #include "sound_priorities.h"
 #include "switch.h"
+#include "tachometer.h"
 #include "zoom.h"
 
 extern EventDispatcher event_dispatcher;
@@ -34,6 +35,7 @@ extern EventDispatcher event_dispatcher;
 Switch *motor_switch;
 Switch *machinegun_switch;
 Switch *bombdrop_switch;
+Tachometer *tachometer;
 
 // domain objects
 MachineGuns *machineguns;
@@ -66,6 +68,7 @@ void setup()
     motor_switch = new Switch(2, INPUT_PULLUP,  MOTOR_STARTER_START, MOTOR_STARTER_STOP);
     machinegun_switch = new Switch(3, INPUT_PULLUP,  MACHINEGUNS_START, MACHINEGUNS_STOP);
     bombdrop_switch = new Switch(4, INPUT_PULLUP, DROP_BOMB); 
+    tachometer = new Tachometer();
 
     // Domain Objects0
     machineguns = new MachineGuns();
@@ -101,6 +104,7 @@ void loop()
     motor_switch->update();
     machinegun_switch->update();
     bombdrop_switch->update();
+    tachometer->update();
 
     // update system objects
     theSoundManager->update();

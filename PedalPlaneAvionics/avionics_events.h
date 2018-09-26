@@ -30,6 +30,10 @@ enum AvionicsEvents
 
     ONBOARD_LED_ON,
     ONBOARD_LED_OFF,
+
+    TACH_STARTED_MOVING,
+    TACH_STOPPED_MOVING,
+    TACH_RPM,
 };
 
 #endif
