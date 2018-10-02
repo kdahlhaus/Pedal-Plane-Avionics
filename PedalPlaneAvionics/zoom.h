@@ -1,3 +1,6 @@
+
+// Copyright 2018 by Kevin Dahlhausen
+
 #ifndef _zoom_h_
 #define _zoom_h_
 
