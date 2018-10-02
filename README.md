@@ -22,6 +22,11 @@ This is a design and firmware for a pedal-plane special-effects controller based
 * Landing lights (TODO)
 * 'Zoom' flyby sound (TODO)
 
+## Hardware
+
+The system is built around a Teensy 3.2 microcontroller.  The code should run fine or with minimal changes on other large Arduino-like controllers.  A [google docs spreadsheet](https://docs.google.com/spreadsheets/d/1WeCcuZLrt08O3oWe9VnZAMBnWO3cXGibphIcXRtGH-A/edit?usp=sharing) contains the [roadmap, bill of materials, and pin connections](https://docs.google.com/spreadsheets/d/1WeCcuZLrt08O3oWe9VnZAMBnWO3cXGibphIcXRtGH-A/edit?usp=sharing).
+
+
 ## Libraries
 1. cd to your Arduino libs directory.
         (The default is ~/Arduino/libraries on Linux
@@ -100,11 +105,9 @@ The downside is that high-level objects must be dynamically allocated within the
     * Domain objects communicate or are triggered by events defined in 'avionics_events.h'
     * Events should have a command defined in 'interpreter.cpp'
 
-
 ## Credits
 * [Pedal Plane Group on Facebook](https://www.facebook.com/groups/PedalPlanes/) Lots of ideas on features and motivation to pursue this project.  I've used ideas from [Mike Badger](https://www.facebook.com/vadger/videos/10155459934356465/) and [Alex Romero](https://www.facebook.com/groups/PedalPlanes/permalink/10156602338668427/) in particular. Thanks!
 * [Open Panzer](https://github.com/OpenPanzerProject/OP-Sound) is an open-source Teensy-based sound system for model tanks.  I've used ideas from it (no code) in designing the Pedal Plane Avionics. 
 
 ## Licensing
 This project is licensed under the GNU GPL 3.0.   My intent is for it to be freely used and modified.  If you distribute modified code though you have to make your modifications available in source form.
-
