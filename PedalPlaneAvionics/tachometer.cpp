@@ -12,7 +12,14 @@
 #define CHANGES_PER_ROTATION 4
 #define TIME_BETWEEN_RPM_UPDATE_EVENTS_MS 500
 
-Tachometer::Tachometer()
+
+MeanFilter<int> rpm_filter3(3);
+MeanFilter<int> rpm_filter7(7);
+MeanFilter<int> rpm_filter9(9);
+ 
+
+Tachometer::Tachometer() :
+    rpm_filter(5)
 {
     pinMode(IOPIN, INPUT_PULLUP);
     last_state = digitalRead(IOPIN);
@@ -20,6 +27,10 @@ Tachometer::Tachometer()
     is_moving = false;
     rpm = 0;
     time_of_last_rpm_event = 0;
+    rpm_filter.setAllTo(0);
+    rpm_filter3.setAllTo(0);
+    rpm_filter7.setAllTo(0);
+    rpm_filter9.setAllTo(0);
 }
 
 void Tachometer::update()
@@ -32,6 +43,10 @@ void Tachometer::update()
 
         if (is_moving) {
             rpm = 60000 / ( CHANGES_PER_ROTATION * (current_time - time_of_last_state_change));            
+            rpm_filter.add(rpm);
+            rpm_filter3.add(rpm);
+            rpm_filter7.add(rpm);
+            rpm_filter9.add(rpm);
         }
 
         if (!is_moving) {
@@ -53,15 +68,19 @@ void Tachometer::update()
             Log.trace("stopped moving\n");
             is_moving = false;
             rpm = 0;
+            rpm_filter.setAllTo(0);
+            rpm_filter3.setAllTo(0);
+            rpm_filter7.setAllTo(0);
+            rpm_filter9.setAllTo(0);
         }
     }
 
 #if 0
     // send RPM every TIME_BETWEEN_RPM_UPDATE_EVENTS_MS ms
     if (current_time - time_of_last_rpm_event >= TIME_BETWEEN_RPM_UPDATE_EVENTS_MS) {
-        send_event(TACH_RPM, (void *)rpm);
+        //send_event(TACH_RPM, (void *)rpm);
         time_of_last_rpm_event = current_time;
-        //Log.trace("rpm: %d\n", rpm);
+        Log.trace("  rpm: %d f3: %d, f5: %d, f7: %d, f9: %d\n", rpm, rpm_filter3.mean(), rpm_filter.mean(), rpm_filter7.mean(),rpm_filter9.mean() );
     }
 #endif
 }

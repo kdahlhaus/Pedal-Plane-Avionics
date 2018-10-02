@@ -3,7 +3,8 @@
 #ifndef tachometer_h
 #define tachometer_h
 
-#include <Bounce2.h>
+#include "meanfilter.h"
+
 
 /*
     IR sensor against the prop axle to determine if the plane is moving.
@@ -27,6 +28,8 @@ class Tachometer
         unsigned long time_of_last_rpm_event;
         bool is_moving;
         int rpm;
+
+        MeanFilter<int> rpm_filter;
 
 
 };

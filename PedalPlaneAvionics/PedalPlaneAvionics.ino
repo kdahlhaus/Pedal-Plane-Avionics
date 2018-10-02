@@ -1,7 +1,5 @@
 // Copyright 2018 by Kevin Dahlhausen
 
-#define SERIALCOMMAND_DEBUG 1
-
 #include <ArduinoLog.h>
 #include <EventDispatcher.h>
 
@@ -19,11 +17,13 @@
 #include "tachometer.h"
 #include "zoom.h"
 
+// Architecture:  See ../README.md
+
 extern EventDispatcher event_dispatcher;
 
 
 /*
-    Many objects are allocated dynamically from setup()
+    Major objects are allocated dynamically from setup()
     so they can control their own initialization, but this
     initialization must often take place within the call to
     setup.  While dynamically allocated, objects are generally
@@ -70,7 +70,7 @@ void setup()
     bombdrop_switch = new Switch(4, INPUT_PULLUP, DROP_BOMB); 
     tachometer = new Tachometer();
 
-    // Domain Objects0
+    // Domain Objects
     machineguns = new MachineGuns();
     motor = new Motor();
     bomb_drop = new Sound("bombdrop.wav", BOMB_DROP_PRIORITY, false, DROP_BOMB, 0.20);

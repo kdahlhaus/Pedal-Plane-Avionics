@@ -169,11 +169,16 @@ void Motor::update()
                                  
         case starter_starting:
             if (soundStartDelayHasPassed() && !currentChannelIsPlaying()) {
+                if (!shouldLoopStarter) { 
+                    changeFromStarterToStarting();
+                }
+                else {
                 // change to starterl
-                currentChannel->sdWav.play("staterl.wav"); // TODO: fix typo in sound
-                currentChannel->timeStarted = millis();
-                state = starter_looping;
-                Log.trace(F("change to starter looping\n"));
+                    currentChannel->sdWav.play("staterl.wav"); // TODO: fix typo in sound
+                    currentChannel->timeStarted = millis();
+                    state = starter_looping;
+                    Log.trace(F("change to starter looping\n"));
+                }
                 
             }
             break;
