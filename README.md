@@ -57,22 +57,22 @@ Sounds are 16-bit PCM WAV files at 44100 kHz sample rate.
 
 All sounds are located in the root directory of the SD card with the following names:
 
-bombdrop.wav
-crash.wav
-idle.wav
-machguns.wav
-morun.wav
-mostart.wav
-mostop.wav
-rpm1.wav
-starters.wav # starter start
-starterl.wav # starter loop
-starting.wav
-startup.wav
-stop.wav
-zoom1.wav
-zoom2.wav
-zoom3.wav
+* bombdrop.wav
+* crash.wav
+* idle.wav
+* machguns.wav
+* morun.wav
+* mostart.wav
+* mostop.wav
+* rpm1.wav
+* starters.wav # starter start
+* starterl.wav # starter loop
+* starting.wav
+* startup.wav
+* stop.wav
+* zoom1.wav
+* zoom2.wav
+* zoom3.wav
 
 ## Firmware Design
 The main aspects of the code's architecture are:
