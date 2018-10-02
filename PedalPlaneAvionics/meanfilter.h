@@ -1,3 +1,5 @@
+// Copyright 2018 by Kevin Dahlhausen
+
 #ifndef _meanfilter_h
 #define _meanfilter_h 
 
@@ -7,17 +9,19 @@ class MeanFilter
 
     public:
 
-        
         MeanFilter(short theSize);
          ~MeanFilter(void);
 
         void add(T value);
 
         T mean(void);
+        // return mean value in the filter
+
+        void setAllTo(const T& newValue);
+        // set all values in the filter to 'newValue'
 
         T newest(void);
 
-        void setAllTo(const T& newValue);
 
     protected:
 
