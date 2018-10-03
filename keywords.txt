@@ -1,0 +1,10 @@
+MachineGuns	KEYWORD1
+Motor	KEYWORD1
+Navlights	KEYWORD1
+Output	KEYWORD1
+SerialInterpreter	KEYWORD1
+Sound	KEYWORD1
+SoundManager	KEYWORD1
+Switch	KEYWORD1
+Tachometer	KEYWORD1
+Zoom	KEYWORD1
