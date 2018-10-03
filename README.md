@@ -11,6 +11,8 @@ This is a design and firmware for a pedal-plane special-effects controller based
 
 ![P-51 Pedal Plane](https://i.pinimg.com/originals/aa/81/22/aa812234470c6a0a591d3ea2acb93481.jpg "P-51 Pedal Plane")
 
+See [examples/p-51/](https://github.com/kdahlhaus/Pedal-Plane-Avionics/blob/master/examples/p-51/p-51.ino) for a working example.
+
 ## Features
 * Complex engine sound (starter, startup, idle, various RPMs)
 * Machine gun sound
@@ -31,16 +33,17 @@ The system is built around a Teensy 3.2 microcontroller.  The code should run fi
 1. cd to your Arduino libs directory.
         (The default is ~/Arduino/libraries on Linux
         or ~/Documents/Arduino/libraries on Windows)
-2. clone https://github.com/kdahlhaus/EventSystem                
-3. clone https://github.com/kdahlhaus/Arduino-SerialCommand
+2. clone https://github.com/kdahlhaus/Pedal-Plane-Avionics/
+3. clone https://github.com/kdahlhaus/EventSystem                
+4. clone https://github.com/kdahlhaus/Arduino-SerialCommand
     (note that this is not the one in the Arduino lib manager)
-4. clone https://github.com/thomasfredericks/Bounce2.git
-5. clone https://github.com/adafruit/Adafruit_Sensor.git
-6. clone https://github.com/adafruit/Adafruit_LIS3DH
-7  clone https://github.com/janelia-arduino/Functor.git
-8. clone https://github.com/jgillick/arduino-LEDFader.git LEDFader 
+5. clone https://github.com/thomasfredericks/Bounce2.git
+6. clone https://github.com/adafruit/Adafruit_Sensor.git
+7. clone https://github.com/adafruit/Adafruit_LIS3DH
+8  clone https://github.com/janelia-arduino/Functor.git
+9. clone https://github.com/jgillick/arduino-LEDFader.git LEDFader 
     (note that library must be in dir LEDFader due to the name of the include files it contains)
-9. Use the library manager to add:
+10. Use the library manager to add:
     * ArduinoLog (or https://github.com/thijse/Arduino-Log/)
 
 ### Note:

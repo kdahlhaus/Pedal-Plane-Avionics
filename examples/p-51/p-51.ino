@@ -17,7 +17,7 @@
 #include "tachometer.h"
 #include "zoom.h"
 
-// Architecture:  See ../README.md
+// Architecture:  See ../../README.md
 
 extern EventDispatcher event_dispatcher;
 
