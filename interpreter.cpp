@@ -19,7 +19,11 @@ extern Motor *motor;
 extern MachineGuns *machineguns;
 extern Sound *bomb_drop;
 
+
 void unrecognized(const char *command) { Log.trace(F("unrecognized command: %s\n"), command); }
+
+
+// These functions implement the interpreter commands.  
 void onboard_LED_on() { Log.trace(F("sending on\n")); send_event(ONBOARD_LED_ON); }
 void onboard_LED_off() { Log.trace(F("sending off\n")); send_event(ONBOARD_LED_OFF); }
 void motor_start() { send_event(MOTOR_START); }
@@ -77,6 +81,7 @@ void motor_starter_start() { send_event(MOTOR_STARTER_START); }
 void motor_starter_stop() { send_event(MOTOR_STARTER_STOP); }
 
 
+
 void addInterpreterCommands(SerialCommand &serial_command) 
 {
     serial_command.setDefaultHandler(unrecognized);
@@ -115,7 +120,3 @@ SerialInterpreter::SerialInterpreter(Stream &serialToUse) :
 {
     addInterpreterCommands(serial_command);
 }
-
-
- 
- 

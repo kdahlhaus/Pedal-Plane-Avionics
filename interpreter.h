@@ -1,5 +1,5 @@
 // Copyright 2018 by Kevin Dahlhausen
-//
+
 #ifndef _interpreter_h
 #define _interpreter_h
 
@@ -8,8 +8,8 @@
 /*
     Monitor a serial device for simple commands.
     Most commands end up sending an event.
-    Commands are defined in interpreter.cpp.
-
+    The list of commands is in 'addInterpreterCommands' defined in interpreter.cpp.
+    This is used to process both USB and bluetooth serial commands.
 */
 
 class SerialInterpreter
@@ -29,7 +29,5 @@ class SerialInterpreter
     protected:
         SerialCommand serial_command;
 };
-
-
 
 #endif

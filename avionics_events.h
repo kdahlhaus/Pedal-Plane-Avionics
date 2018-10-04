@@ -10,7 +10,7 @@
 
 enum AvionicsEvents
 {
-    // NO_EVENT is '0'
+    // NO_EVENT is 0
 
     MOTOR_START = 1,
     MOTOR_STOP,

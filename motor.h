@@ -1,13 +1,5 @@
 // Copyright 2018 by Kevin Dahlhausen
 
-/*
- * starter.wav
- * starting.wav
- * idle.wav
- * run.wav
- * stop.wav
- */
-
 #include <ArduinoLog.h>
 #include <Audio.h>
 
@@ -18,7 +10,7 @@
  
    Handles the motor sound.
    Starter sound plays as long as start-button held down.
-   Then transitions to starting sound for once play,
+   Then transitions to starting sound for one play,
    then to idle.
 
 */
@@ -29,17 +21,18 @@ class Motor
 
         Motor();
 
-        void start(bool viaStarter=false);
         // viaStarter = if true, will run the 'starting' sound
         // until MOTOR_STARTER_STOP event received
         // otherwise will run the start sound once and transition
         // to starting sound
+        void start(bool viaStarter=false);
+
         void stopStarter();
         
         void stop();
 
-        void setSpeed(int speed);
         // 0 - 100, TODO: define 0 speed, idle speed etc
+        void setSpeed(int speed);
         
         void onEvent(int event, void *param);
         void update();
@@ -107,6 +100,4 @@ class Motor
 
         void changeFromStarterToStarting();
         // this is done in multiple places so refctored to a func.
-
-
 };

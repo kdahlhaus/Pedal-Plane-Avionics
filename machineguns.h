@@ -5,6 +5,11 @@
 /*
     Plays the machine-gun sound on MACHINEGUNS_START event 
     or call to start().
+    Stops on MACHINEGUNS_STOP event or call to stop().
+
+    (This functionality is not just a 'Sound' instance because
+     I expect to have it also control barrel lights in the 
+     future.)
 */
 
 class MachineGuns

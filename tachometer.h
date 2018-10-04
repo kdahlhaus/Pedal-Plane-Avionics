@@ -7,22 +7,29 @@
 
 
 /*
-    IR sensor against the prop axle to determine if the plane is moving.
+    A sensor against the prop axle to determine if the plane is moving.
 */
 
 class Tachometer
 {
     public:
 
-        Tachometer();
+        /*
+            pin = pin number, pinMode will be set in the ctor
+            changes_per_rotation = total number of low->high and high->low
+              transitions per rotation
+        */
+        Tachometer(int pin=5, int changes_per_rotation=4);
 
         bool isMoving() { return is_moving; }
         int RPM() { return rpm; }
 
+        // Update,  debounce the tachometer and send events as appropriate.
         void update();
-        // Update and debounce the tachometer and send events as appropriate.
 
     protected:
+        int pin;
+        int changes_per_rotation;
         int last_state;
         unsigned long time_of_last_state_change;
         unsigned long time_of_last_rpm_event;

@@ -7,6 +7,7 @@
 
 /*
     A generic output that responds to events.
+    The constructor will set the pin mode. 
 */
 
 class Output

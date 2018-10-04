@@ -19,13 +19,25 @@ void MachineGuns::start()
 {
     handle = theSoundManager->play("machguns.wav", MACHINEGUN_PRIORITY, true, gain);
     Log.trace(F("MachineGuns::start h=%d\n"), (int)handle);
-    // MACHINEGUN_PRIORITY
 }
 
 void MachineGuns::stop()
 {
-    theSoundManager->stop(handle);
-    Log.trace(F("MachineGuns::stop\n"));
+    if (handle) {
+        theSoundManager->stop(handle);
+        handle = 0;
+
+        /*
+         * tried this but not sure if it adds much fun
+         * score a 'hit' - explosion then plane crash sound
+         * TODO: set random seed in setup() 
+         */
+        if (random(100) > 80) { 
+            theSoundManager->play("crash.wav", MACHINEGUN_PRIORITY, false, gain);
+        }
+
+        Log.trace(F("MachineGuns::stop\n"));
+    }
 }
 
 void MachineGuns::onEvent(int event, void *param)

@@ -17,7 +17,6 @@
 #include "tachometer.h"
 #include "zoom.h"
 
-// Architecture:  See ../../README.md
 
 extern EventDispatcher event_dispatcher;
 
@@ -32,20 +31,13 @@ extern EventDispatcher event_dispatcher;
 
 
 // input objects
-Switch *motor_switch;
-Switch *machinegun_switch;
-Switch *bombdrop_switch;
-Tachometer *tachometer;
+//Switch *motor_switch;
 
 // domain objects
-MachineGuns *machineguns;
-Motor *motor;
-Sound *bomb_drop;
-Zoom *zoom;
+//Motor *motor;
 
 // output objects
-Output *onboard_LED;
-Navlights *navlights; 
+//Output *onboard_LED;
 
 // other
 SerialInterpreter *serialInterpreter;
@@ -65,20 +57,13 @@ void setup()
     Log.begin(LOG_LEVEL_VERBOSE, &Serial);
 
     // Inputs
-    motor_switch = new Switch(3, INPUT_PULLUP,  MOTOR_STARTER_START, MOTOR_STARTER_STOP);  // TODO: set back to 2
-    machinegun_switch = new Switch(2, INPUT_PULLUP,  MACHINEGUNS_START, MACHINEGUNS_STOP); // TODO: set back to 3
-    bombdrop_switch = new Switch(4, INPUT_PULLUP, DROP_BOMB); 
-    tachometer = new Tachometer();
+    //motor_switch = new Switch(2, INPUT_PULLUP,  MOTOR_STARTER_START, MOTOR_STARTER_STOP);
 
     // Domain Objects
-    machineguns = new MachineGuns();
-    motor = new Motor();
-    bomb_drop = new Sound("bombdrop.wav", BOMB_DROP_PRIORITY, false, DROP_BOMB, 0.20);
-    zoom = new Zoom();
+    //motor = new Motor();
  
     //outputs
-    onboard_LED = new Output(LED_BUILTIN, ONBOARD_LED_ON, ONBOARD_LED_OFF);
-    navlights = new Navlights();
+    //onboard_LED = new Output(LED_BUILTIN, ONBOARD_LED_ON, ONBOARD_LED_OFF);
 
     theSoundManager = new SoundManager();
     serialInterpreter = new SerialInterpreter();
@@ -102,17 +87,12 @@ void loop()
 
     // debounce and send events for switches
     motor_switch->update();
-    machinegun_switch->update();
-    bombdrop_switch->update();
-    tachometer->update();
 
     // update system objects
     theSoundManager->update();
     serialInterpreter->update();
     bluetoothInterpreter->update();
-    motor->update();
-    navlights->update();
-    zoom->update();
+    //motor->update();
 
     event_dispatcher.run();
 }

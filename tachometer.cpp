@@ -7,9 +7,7 @@
 #include "send_event.h"
 
 
-#define IOPIN 5
 #define MILLIS_SAME_TO_CONSIDER_STOPPED 1500
-#define CHANGES_PER_ROTATION 4
 #define TIME_BETWEEN_RPM_UPDATE_EVENTS_MS 500
 
 
@@ -18,11 +16,13 @@ MeanFilter<int> rpm_filter7(7);
 MeanFilter<int> rpm_filter9(9);
  
 
-Tachometer::Tachometer() :
-    rpm_filter(5)
+Tachometer::Tachometer(int thePin, int changes_per_rotation) :
+    pin(thePin),
+    rpm_filter(thePin)
 {
-    pinMode(IOPIN, INPUT_PULLUP);
-    last_state = digitalRead(IOPIN);
+    this->changes_per_rotation = changes_per_rotation;
+    pinMode(pin, INPUT_PULLUP);
+    last_state = digitalRead(pin);
     time_of_last_state_change = millis();
     is_moving = false;
     rpm = 0;
@@ -35,14 +35,14 @@ Tachometer::Tachometer() :
 
 void Tachometer::update()
 {
-    int current_state = digitalRead(IOPIN);
+    int current_state = digitalRead(pin);
     unsigned long current_time = millis();
 
     if (current_state != last_state) {
         // saw input state change
 
         if (is_moving) {
-            rpm = 60000 / ( CHANGES_PER_ROTATION * (current_time - time_of_last_state_change));            
+            rpm = 60000 / ( changes_per_rotation * (current_time - time_of_last_state_change));            
             rpm_filter.add(rpm);
             rpm_filter3.add(rpm);
             rpm_filter7.add(rpm);
