@@ -7,9 +7,10 @@ Sound::Sound(const char *file_name, int priority, bool loop, int start_event, fl
     file_name(file_name), start_event(start_event), stop_event(stop_event),
     handle(0), priority(priority), loop(false), gain(gain)
 {
-    register_event_listener(start_event, makeFunctor((EventListener *)0, (*this), &Sound::onEvent));
-    if (stop_event > 0)
-    {
+    if (start_event) {
+        register_event_listener(start_event, makeFunctor((EventListener *)0, (*this), &Sound::onEvent));
+    }
+    if (stop_event > 0) {
         register_event_listener(stop_event, makeFunctor((EventListener *)0, (*this), &Sound::onEvent));
     } 
 }
@@ -24,8 +25,7 @@ void Sound::start()
 void Sound::stop()
 {
     Log.trace(F("Sound('%s').stop handle:%d\n"), file_name, (int)handle);
-    if (theSoundManager->is_playing(handle))
-    {
+    if (theSoundManager->is_playing(handle)) {
         theSoundManager->stop(handle);
         handle = 0;
     }
@@ -40,8 +40,7 @@ void Sound::setGain(float gain)
 {
     Log.trace(F("Sound setGain=%F\n"), gain);
     this->gain=gain;
-    if (is_playing())
-    {
+    if (is_playing()) {
         theSoundManager->setGain(handle, gain);
     }
 }
@@ -49,8 +48,7 @@ void Sound::setGain(float gain)
 void Sound::onEvent(int event, void *param)
 {
     Log.trace(F("Sound('%s') event: %d\n"), file_name, event);
-    if (event == start_event) {
-        start();
+    if (event == start_event) { start();
     }
     else if (event == stop_event) {
         stop();
