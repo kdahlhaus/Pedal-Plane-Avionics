@@ -32,7 +32,7 @@ void MachineGuns::stop()
          * score a 'hit' - explosion then plane crash sound
          * TODO: set random seed in setup() 
          */
-        if (random(100) > 80) { 
+        if (random(100) > 90) { 
             theSoundManager->play("crash.wav", MACHINEGUN_PRIORITY, false, gain);
         }
 

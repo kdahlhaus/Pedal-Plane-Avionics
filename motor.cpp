@@ -20,7 +20,7 @@ extern AudioEffectFade motorFade2;
 
 
 Motor::Motor() :
-    state(stopped), starterGain(1.7), startingGain(1.7), idleGain(1.0), runGain(1.0),
+    state(stopped), starterGain(1.7), startingGain(1.7), idleGain(1.0), runGain(1.00),
     channel1({.sdWav=motorSdWav1, .fader=motorFade1}), channel2({.sdWav=motorSdWav2, .fader=motorFade2}),
     speed(0), shouldStop(false)
 {
@@ -224,7 +224,7 @@ void Motor::update()
         case running:
             //Log.trace(F("warning -> handle running state\n"));
             if (soundStartDelayHasPassed() && !currentChannelIsPlaying()) {
-                currentChannel->sdWav.play("rpm1.wav");
+                currentChannel->sdWav.play("rpm3.wav");  // TODO:  loop to the correct sound -> motor loops to high speed now
                 currentChannel->timeStarted = millis();
 
                 // TODO add code for transition to running - maybe time or movment?

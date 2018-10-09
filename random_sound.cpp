@@ -1,4 +1,3 @@
-
 #include "random_sound.h"
 
 #include <ArduinoLog.h>
@@ -21,6 +20,7 @@ RandomSound::RandomSound(const char *directory, int priority, bool loop, int sta
     numberOfSounds = getNumberOfSoundsInDirectory(directory);
     indexOfNextSound = random(numberOfSounds);
     setNextSoundToPlay();
+    Log.trace(F("RandomSound found %d in %s\n"), numberOfSounds, directory);
 
 }
 
@@ -28,9 +28,10 @@ RandomSound::RandomSound(const char *directory, int priority, bool loop, int sta
 void RandomSound::start()
 {
     if (numberOfSounds) {
-    float gain = 1.0; // TODO handle gain in RandomSound
-    handle = theSoundManager->play(absoluteSoundFileName, priority, loop, gain);        
-    Log.trace(F("RandomSound('%s').started: pri:%d, loop=%T handle:%d gain:%F\n"), absoluteSoundFileName, priority, loop, (int)handle, gain);
+        float gain = 1.0; // TODO handle gain in RandomSound
+        handle = theSoundManager->play(absoluteSoundFileName, priority, loop, gain);        
+        Log.trace(F("RandomSound('%s').started: pri:%d, loop=%T handle:%d gain:%F\n"), absoluteSoundFileName, priority, loop, (int)handle, gain);
+        setNextSoundToPlay();
     }
     else {
         Log.error(F("found no sounds in '%s' to play\n"), directory);

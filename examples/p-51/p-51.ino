@@ -78,7 +78,6 @@ void setup()
     machineguns = new MachineGuns();
     motor = new Motor();
     bomb_drop = new Sound("bombdrop.wav", BOMB_DROP_PRIORITY, false, DROP_BOMB, 0.20);
-    zoom = new Zoom();
  
     //outputs
     onboard_LED = new Output(LED_BUILTIN, ONBOARD_LED_ON, ONBOARD_LED_OFF);
@@ -99,7 +98,8 @@ void loop()
     // play 'startup_wav' once at power up
     if (is_first_loop)
     {
-        radio = new Radio(); // TODO: fix radio so that it can be constructed in setup() (SD card fails to find files when initited in ctor)
+        radio = new Radio(); // TODO: fix radio so that it can be constructed in setup() (SD card fails to find files when initialized in ctor)
+        zoom = new Zoom(); // TODO: fix radio so that it can be constructed in setup() (SD card fails to find files when inititialized in ctor) 
 
         theSoundManager->play("startup.wav", STARTUP_PRIORITY, false);
         is_first_loop = false;

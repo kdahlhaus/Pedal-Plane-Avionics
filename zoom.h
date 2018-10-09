@@ -4,9 +4,11 @@
 #ifndef _zoom_h_
 #define _zoom_h_
 
-#include "sound.h"
+#include "random_sound.h"
 
 #include <Adafruit_LIS3DH.h>
+
+
 
 /*
 
@@ -23,9 +25,10 @@ class Zoom
         void update();
 
     private:
+        RandomSound sounds;
+
         Adafruit_LIS3DH lis3dh;    
         uint32_t timeOfLastZoom;
-        Sound *sounds[3];
 
 };
 
