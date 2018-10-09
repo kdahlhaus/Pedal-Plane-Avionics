@@ -1,12 +1,14 @@
 
-#include "sound.h"
+#include "random_sound.h"
 
 #include <ArduinoLog.h>
+#include <SD.h>
+
 #include "register_event_listener.h"
 
-RandomSound::RandomSound(const char *directory, int priority, bool loop, int start_event, float gain, int stop_event):
+RandomSound::RandomSound(const char *directory, int priority, bool loop, int start_event, int stop_event):
     directory(directory), start_event(start_event), stop_event(stop_event),
-    handle(0), priority(priority), loop(false), gain(gain)
+    handle(0), priority(priority), loop(false)
 {
     if (start_event) {
         register_event_listener(start_event, makeFunctor((EventListener *)0, (*this), &RandomSound::onEvent));
@@ -25,33 +27,30 @@ RandomSound::RandomSound(const char *directory, int priority, bool loop, int sta
 
 void RandomSound::start()
 {
-    handle = theRandomSoundManager->play(directory, priority, loop, gain);        
-    Log.trace(F("RandomSound('%s').start: pri:%d, loop=%T handle:%d gain:%F\n"), directory, priority, loop, (int)handle, gain);
+    if (numberOfSounds) {
+    float gain = 1.0; // TODO handle gain in RandomSound
+    handle = theSoundManager->play(absoluteSoundFileName, priority, loop, gain);        
+    Log.trace(F("RandomSound('%s').started: pri:%d, loop=%T handle:%d gain:%F\n"), absoluteSoundFileName, priority, loop, (int)handle, gain);
+    }
+    else {
+        Log.error(F("found no sounds in '%s' to play\n"), directory);
+    }
 }
 
 void RandomSound::stop()
 {
     Log.trace(F("RandomSound('%s').stop handle:%d\n"), directory, (int)handle);
-    if (theRandomSoundManager->is_playing(handle)) {
-        theRandomSoundManager->stop(handle);
+    if (theSoundManager->is_playing(handle)) {
+        theSoundManager->stop(handle);
         handle = 0;
     }
 }
 
-bool RandomSound::is_playing()
+bool RandomSound::isPlaying()
 {
-    return handle && theRandomSoundManager->is_playing(handle);
+    return handle && theSoundManager->is_playing(handle);
 }
 
-void RandomSound::setGain(float gain)
-{
-    Log.trace(F("RandomSound setGain=%F\n"), gain);
-    this->gain=gain;
-    if (is_playing()) {
-        theRandomSoundManager->setGain(handle, gain);
-    }
-}
- 
 void RandomSound::onEvent(int event, void *param)
 {
     Log.trace(F("RandomSound('%s') event: %d\n"), directory, event);
@@ -74,13 +73,16 @@ void RandomSound::setNextSoundToPlay()
     while (true) {
         File entry = dir.openNextFile();              
         if (!entry) {
-            Log.error(F("Error find the %d sound in %s\n"), indexOfNextSound, directory);
+            Log.error(F("Error finding the %d sound in %s\n"), indexOfNextSound, directory);
             return;
         }
         if (num==indexOfNextSound) {
             //entry.close();
             strncpy(absoluteSoundFileName, directory, MAX_SOUND_FILENAME_LENGTH);
-            stncat(absoluteSoundFileName, entry.name(), MAX_SOUND_FILENAME_LENGTH);
+            Log.trace(F("entry.name=%s\n"), entry.name());
+            strncat(absoluteSoundFileName, "/", MAX_SOUND_FILENAME_LENGTH);
+            strncat(absoluteSoundFileName, entry.name(), MAX_SOUND_FILENAME_LENGTH);
+            Log.trace(F("absoluteSoundFileName: '%s'\n"), absoluteSoundFileName);
             entry.close(); 
             return;
         } else {

@@ -1,7 +1,7 @@
 #include "interpreter.h"
 
 #include <ArduinoLog.h>
-#
+
 #include "avionics_events.h"
 #include "send_event.h"
 #include "motor.h"
@@ -80,6 +80,8 @@ void zoom3() { send_event(ZOOM3); }
 void motor_starter_start() { send_event(MOTOR_STARTER_START); }
 void motor_starter_stop() { send_event(MOTOR_STARTER_STOP); }
 
+void radio_start_chatter() { send_event(RADIO_CHATTER_ON); }
+void radio_stop_chatter() { send_event(RADIO_CHATTER_OFF); }
 
 
 void addInterpreterCommands(SerialCommand &serial_command) 
@@ -110,6 +112,9 @@ void addInterpreterCommands(SerialCommand &serial_command)
     serial_command.addCommand("z1", zoom1);
     serial_command.addCommand("z2", zoom2);
     serial_command.addCommand("z3", zoom3);
+
+    serial_command.addCommand("rc1", radio_start_chatter);
+    serial_command.addCommand("rc0", radio_stop_chatter);
 
     serial_command.addCommand("sg", set_gain);
 } 

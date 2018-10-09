@@ -6,12 +6,17 @@
 #include "sound_manager.h"
 
 /*
-    Play a random sound from a directory of sound clips.
+    Play a psueudo-random sound from a directory of sound clips.
+    Randomly picks a place in the list of sounds to start,
+    then plays the sounds in sequence after that, looping
+    back to the first in the dir after the last is played.
 */
 
 
-//   '/12345678/12345678/12345678/12345678.123\0
+// '/12345678/12345678/12345678/12345678.123\0 arbritrary limit 
+// to the depth of directories in our file structure
 #define MAX_SOUND_FILENAME_LENGTH 45
+
 
 class RandomSound
 {
@@ -33,10 +38,8 @@ class RandomSound
 
         void start();
         void stop();
-        bool is_playing();
- 
+        bool isPlaying();
         void onEvent(int event, void *param);
-
 
     protected:
         const char *directory;
@@ -51,8 +54,6 @@ class RandomSound
         const char *fileNameOfNextSoundToPlay;
         int numberOfSounds;
         int indexOfNextSound;
-
-
 
         // determine the next sound to play 
         // and set fileNameOfNextSoundToPlay appropriately

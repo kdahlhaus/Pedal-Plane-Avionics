@@ -142,7 +142,7 @@ void *SoundManager::play(const char *filename, int priority, bool loop, float ga
 
     
     // start playing on channel 'min_priority_channel'
-    Log.trace(F("starting snd on %d"), min_priority_channel);
+    Log.trace(F("sound_manager: starting snd on %d\n"), min_priority_channel);
     if (channels[min_priority_channel].sdWav.isPlaying()) {
         channels[min_priority_channel].sdWav.stop(); 
         Log.trace(F("stopped sound to make room for new one\n"));

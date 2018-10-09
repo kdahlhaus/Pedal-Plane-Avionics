@@ -10,6 +10,7 @@
 #include "motor.h"
 #include "navlights.h"
 #include "output.h"
+#include "radio.h"
 #include "sound.h"
 #include "sound_manager.h"
 #include "sound_priorities.h"
@@ -40,6 +41,7 @@ Tachometer *tachometer;
 // domain objects
 MachineGuns *machineguns;
 Motor *motor;
+Radio *radio;
 Sound *bomb_drop;
 Zoom *zoom;
 
@@ -63,6 +65,8 @@ void setup()
     while(!Serial1 && !Serial1.available()){}
 
     Log.begin(LOG_LEVEL_VERBOSE, &Serial);
+
+    randomSeed(analogRead(13));
 
     // Inputs
     motor_switch = new Switch(3, INPUT_PULLUP,  MOTOR_STARTER_START, MOTOR_STARTER_STOP);  // TODO: set back to 2
@@ -95,6 +99,8 @@ void loop()
     // play 'startup_wav' once at power up
     if (is_first_loop)
     {
+        radio = new Radio(); // TODO: fix radio so that it can be constructed in setup() (SD card fails to find files when initited in ctor)
+
         theSoundManager->play("startup.wav", STARTUP_PRIORITY, false);
         is_first_loop = false;
         Log.trace(F("Free mem: %d\n"), FreeMem());
@@ -113,6 +119,7 @@ void loop()
     motor->update();
     navlights->update();
     zoom->update();
+    radio->update();
 
     event_dispatcher.run();
 }
