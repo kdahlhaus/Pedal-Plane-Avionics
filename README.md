@@ -126,6 +126,7 @@ The downside is that high-level objects must be dynamically allocated within the
 3. Events
     * Domain objects communicate or are triggered by events defined in 'avionics_events.h'
     * Events should have a command defined in 'interpreter.cpp'
+4. Code style.  I'll start off by apologizing for the mixture of camel-case and underscores separating the words.  I've been out of the C/C++ world for some time and so went back and forth a bit when starting this project.  My intention is to stay with camel-case and to slowly refactor any underscored variable or function names.  A similar case exisits for brackets.
 
 ## Credits
 * [Pedal Plane Group on Facebook](https://www.facebook.com/groups/PedalPlanes/) Lots of ideas on features and motivation to pursue this project.  I've used ideas from [Mike Badger](https://www.facebook.com/vadger/videos/10155459934356465/) and [Alex Romero](https://www.facebook.com/groups/PedalPlanes/permalink/10156602338668427/) in particular. Thanks!
