@@ -42,7 +42,7 @@ The system is built around a Teensy 3.2 microcontroller.  The code should run fi
 5. clone https://github.com/thomasfredericks/Bounce2.git
 6. clone https://github.com/adafruit/Adafruit_Sensor.git
 7. clone https://github.com/adafruit/Adafruit_LIS3DH
-8  clone https://github.com/janelia-arduino/Functor.git
+8. clone https://github.com/janelia-arduino/Functor.git
 9. clone https://github.com/jgillick/arduino-LEDFader.git LEDFader 
     (note that library must be in dir LEDFader due to the name of the include files it contains)
 10. Use the library manager to add:
@@ -88,9 +88,12 @@ Radio chatter sounds can have any name and are located in:
 
 
 ### Locating Sounds
-This is the biggest challenge.  I unfortunately do not have the license to distribute the sounds I use.  Here are some links to sources of sounds.  I use the (Audacity Sound Editor)[https://www.audacityteam.org/] for editing the sounds.  Note that with Audacity, you must "export" the sound as a wav file as the "Save" function saves the sound as an Audacity sound project. Most edits include cropping, amplification, fade-in, and fade-out.  Some of the youtube videos have a B-17 drone sound effect.  Applying a 151 Hz notch filter to the sound decreases that noise.  
-*(P-51 Sounds for the Flight Gear Simulator)[https://github.com/onox/p51d/tree/master/Sounds] TODO: These could actually be distributed as sample sounds.  
-*(IL-2 1946 B-17 Mission)[https://www.youtube.com/watch?v=CHPc3t4F1Kk] This is good for radio chatter.
+This is the biggest challenge.  I unfortunately do not have the license to distribute the sounds I use. I use the [Audacity Sound Editor](https://www.audacityteam.org/) for editing the sounds.  Note that with Audacity, you must "export" the sound as a wav file as the "Save" function saves the sound as an Audacity sound project. Most edits include cropping, amplification, fade-in, and fade-out.  Some of the youtube videos have a B-17 drone sound effect.  Applying a 151 Hz notch filter to the sound decreases that noise.  Here are some links to sources of sounds: 
+
+
+* [P-51 Sounds for the Flight Gear Simulator](https://github.com/onox/p51d/tree/master/Sounds) TODO: These could actually be distributed as sample sounds.  
+* [IL-2 1946 B-17 Mission](https://www.youtube.com/watch?v=CHPc3t4F1Kk) This is good for radio chatter.  
+
 
 
 ## Firmware Design
