@@ -65,7 +65,7 @@ Sounds are 16-bit PCM WAV files at 44100 kHz sample rate.
 
 
 ### Layout on the SD Card
-All sounds are generally located in the root directory of the SD card with the following names:
+All sounds are located in the root directory of the SD card or in a directory off of the root.  These are the required names:
 
 * bombdrop.wav
 * startup.wav  # played once on avionics start (the gyro spool-up)

@@ -98,8 +98,8 @@ void loop()
     // play 'startup_wav' once at power up
     if (is_first_loop)
     {
-        radio = new Radio(); // TODO: fix radio so that it can be constructed in setup() (SD card fails to find files when initialized in ctor)
-        zoom = new Zoom(); // TODO: fix radio so that it can be constructed in setup() (SD card fails to find files when inititialized in ctor) 
+        radio = new Radio(); // TODO: fix Radio/RandomSound so that it can be constructed in setup() (SD card fails to find files when initialized in ctor)
+        zoom = new Zoom(); // TODO: fix Zoom/RandomSound so that it can be constructed in setup() (SD card fails to find files when inititialized in ctor) 
 
         theSoundManager->play("startup.wav", STARTUP_PRIORITY, false);
         is_first_loop = false;
