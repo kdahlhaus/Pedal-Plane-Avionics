@@ -27,11 +27,11 @@ class RandomSound
                       higher numbered priorities will replace those with lower numbered
                       priorities if too many sounds are played at once.
             loop: loop the sound until stopped if true
-            start_event:  id of event that starts sound when received
-            stop_event: id of event that stops sound when received
+            start_event:  id of event that starts sound when received, 0 to ignore events
+            stop_event: id of event that stops sound when received, 0 to ignore events
 
             e.g.:
-                RandomSound *radio = new Sound("radio", RADIO_PRIORITY, false, RADIO_CLIP_PLAY, 0.20);
+                RandomSound *radio = new Sound("/radio", RADIO_PRIORITY, false, RADIO_CLIP_PLAY, 0.20);
                 
         */
         RandomSound(const char *directory, int priority = 1, bool loop = false, int start_event = 0, int stop_event = 0);

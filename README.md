@@ -20,9 +20,11 @@ See [examples/p-51/](https://github.com/kdahlhaus/Pedal-Plane-Avionics/blob/mast
 * Navigation lights
 * Gyro spool-up sound on master power up
 * Bluetooth interface 
+* Random radio 'chatter' e.g.: "Two 109's 12:00 high"
 * Android app (TODO)
 * Landing lights (TODO)
 * 'Zoom' flyby sound (TODO)
+
 
 ## Hardware
 
@@ -56,9 +58,12 @@ Linux: *ln -s ~/prog/arduino/libs/Arduino-SerialCommand/ ~/apps/arduino-1.8.5/li
 
 ## Sounds                                                         
 
+### Format
 Sounds are 16-bit PCM WAV files at 44100 kHz sample rate.
 
-All sounds are located in the root directory of the SD card with the following names:
+
+### Layout on the SD Card
+All sounds are generally located in the root directory of the SD card with the following names:
 
 * bombdrop.wav
 * crash.wav
@@ -76,6 +81,17 @@ All sounds are located in the root directory of the SD card with the following n
 * zoom1.wav
 * zoom2.wav
 * zoom3.wav
+
+Radio chatter sounds can have any name and are located in:
+
+* /radio/
+
+
+### Locating Sounds
+This is the biggest challenge.  I unfortunately do not have the license to distribute the sounds I use.  Here are some links to sources of sounds.  I use the (Audacity Sound Editor)[https://www.audacityteam.org/] for editing the sounds.  Note that with Audacity, you must "export" the sound as a wav file as the "Save" function saves the sound as an Audacity sound project. Most edits include cropping, amplification, fade-in, and fade-out.  Some of the youtube videos have a B-17 drone sound effect.  Applying a 151 Hz notch filter to the sound decreases that noise.  
+*(P-51 Sounds for the Flight Gear Simulator)[https://github.com/onox/p51d/tree/master/Sounds] TODO: These could actually be distributed as sample sounds.  
+*(IL-2 1946 B-17 Mission)[https://www.youtube.com/watch?v=CHPc3t4F1Kk] This is good for radio chatter.
+
 
 ## Firmware Design
 The main aspects of the code's architecture are:
