@@ -58,6 +58,13 @@ Linux: *ln -s ~/prog/arduino/libs/Arduino-SerialCommand/ ~/apps/arduino-1.8.5/li
 (If you use *UECIDE*, replace the Arduino directory above with "UECIDE")
 
 
+## SD-Card
+The limiting factor on the number of sounds that can be played at once is the SD card.  You should use a high-quality SD card, such as the
+SanDisk Ultra Micro SD card. The maximum size the system supports is 32 GB.
+
+The card must be formatted using a FAT32 file system.
+
+
 ## Sounds                                                         
 
 ### Format
