@@ -92,6 +92,7 @@ This is the biggest challenge.  I unfortunately do not have the license to distr
 
 
 * [P-51 Sounds for the Flight Gear Simulator](https://github.com/onox/p51d/tree/master/Sounds) TODO: These could actually be distributed as sample sounds.  
+* [Gee-Bee Sounds for the Flight Gear Simulator](https://github.com/FGMEMBERS/Gee-Bee/tree/master/Sounds) TODO: These could also be distrubuted as sample sounds. 
 * [IL-2 1946 B-17 Mission](https://www.youtube.com/watch?v=CHPc3t4F1Kk) This is good for radio chatter.  
 
 
