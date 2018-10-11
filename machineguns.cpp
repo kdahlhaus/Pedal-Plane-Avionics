@@ -57,7 +57,7 @@ void MachineGuns::onEvent(int event, void *param)
 void MachineGuns::setGain(float gain)
 {
     this->gain=gain;
-    if (theSoundManager->is_playing(handle))
+    if (theSoundManager->isPlaying(handle))
     {
         theSoundManager->setGain(handle, gain);
     }

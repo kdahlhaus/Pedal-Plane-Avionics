@@ -221,7 +221,7 @@ void SoundManager::stop(void *handle)
     }
 }
 
-bool SoundManager::is_playing(void *handle)
+bool SoundManager::isPlaying(void *handle)
 {
     bool ip = handle && channels[HANDLE_TO_INDEX(handle)].sdWav.isPlaying(); 
     //Log.trace("ip(%d)=%b\n", (int)(handle), ip);

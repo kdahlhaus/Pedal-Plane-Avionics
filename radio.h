@@ -4,10 +4,13 @@
 #define _radio_h_
 
 /*
-    Plays radio "chatter" every so-often.
+    Plays "radioon.wav" on startChatter, then a random sound
+    from "/radio" every so often.  Plays "radiooff.wav" on
+    stopChatter.
 */
 
 #include "random_sound.h"
+#include "sound.h"
 
 class Radio
 {
@@ -22,7 +25,9 @@ class Radio
 
         void startNextSound();
 
-        RandomSound sounds;
+        Sound onSound;
+        Sound offSound;
+        RandomSound chatterSounds;
         bool chatterIsEnabled;
         long timeOfNextSound;
 };

@@ -7,7 +7,7 @@
     
 
 # Pedal-Plane Avionics
-This is a design and firmware for a pedal-plane special-effects controller based on the Teensy 3.2 microcontroller.  Pedal planes are small pedal-powered airplanes for children aged about 3-7.   Some sources of pedal plane kits and plans are [PuddleJumpSquadron](https://www.etsy.com/shop/PuddlejumpSquadron?ref=l2-shopheader-name), [Experimental Aircraft Association](https://www.eaa.org/en/eaa-shop/kids-apparel-and-collectibles/pedal-airplane-plans),  and [Aviation Products, Inc.](http://www.pedalplanekits.com/).
+This is the design and firmware for a pedal-plane special-effects controller based on the Teensy 3.2 microcontroller.  Pedal planes are small pedal-powered airplanes for children aged about 3-7.   Some sources of pedal plane kits and plans are [PuddleJumpSquadron](https://www.etsy.com/shop/PuddlejumpSquadron?ref=l2-shopheader-name), [Experimental Aircraft Association](https://www.eaa.org/en/eaa-shop/kids-apparel-and-collectibles/pedal-airplane-plans),  and [Aviation Products, Inc.](http://www.pedalplanekits.com/).
 
 ![P-51 Pedal Plane](https://i.pinimg.com/originals/aa/81/22/aa812234470c6a0a591d3ea2acb93481.jpg "P-51 Pedal Plane")
 
@@ -108,7 +108,9 @@ This is the biggest challenge.  I unfortunately do not have the license to distr
 * [Gee-Bee Sounds for the Flight Gear Simulator](https://github.com/FGMEMBERS/Gee-Bee/tree/master/Sounds) TODO: These could also be distrubuted as sample sounds. 
 * [IL-2 1946 B-17 Mission](https://www.youtube.com/watch?v=CHPc3t4F1Kk) This is good for radio chatter.  
 * [P-51 Startup / Fly By](https://www.youtube.com/watch?v=UCyHCzWUgKI)
+* [Radio on / off](https://www.zapsplat.com/music/radio-switch-on-receive-static-then-off/)
 
+[Soundbible.com](http://soundbible.com/suggest.php?q=machine+gun&x=0&y=0) has many free sounds, many licensed so that they can be distrubuted if attriubtion if given to the author.
 
 ## Firmware Design
 The main aspects of the code's architecture are:

@@ -41,7 +41,7 @@ void RandomSound::start()
 void RandomSound::stop()
 {
     Log.trace(F("RandomSound('%s').stop handle:%d\n"), directory, (int)handle);
-    if (theSoundManager->is_playing(handle)) {
+    if (theSoundManager->isPlaying(handle)) {
         theSoundManager->stop(handle);
         handle = 0;
     }
@@ -49,7 +49,7 @@ void RandomSound::stop()
 
 bool RandomSound::isPlaying()
 {
-    return handle && theSoundManager->is_playing(handle);
+    return handle && theSoundManager->isPlaying(handle);
 }
 
 void RandomSound::onEvent(int event, void *param)

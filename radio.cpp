@@ -9,8 +9,13 @@
 #define MIN_MS_BETWEEN_SOUNDS 30000
 #define MS_RANGE_ADDED_TO_MIN 60000
 
+#define MIN_MS_BEFORE_INITIAL_SOUND 8000
+#define MS_RANGE_FOR_INITIAL_SOUND 10000
+
 Radio::Radio() :
-    sounds("/radio", RADIO_CHATTER_PRIORITY), chatterIsEnabled(false)
+    onSound("radioon.wav", RADIO_CHATTER_PRIORITY),
+    offSound("radiooff.wav", RADIO_CHATTER_PRIORITY),
+    chatterSounds("/radio", RADIO_CHATTER_PRIORITY), chatterIsEnabled(false)
 {
     register_event_listener(RADIO_CHATTER_ON, makeFunctor((EventListener *)0, (*this), &Radio::onEvent));
     register_event_listener(RADIO_CHATTER_OFF, makeFunctor((EventListener *)0, (*this), &Radio::onEvent));
@@ -20,7 +25,8 @@ void Radio::startChatter()
 {
     if (!chatterIsEnabled) {
         Log.trace(F("Radio startChatter\n"));
-        startNextSound();
+        onSound.start();
+        timeOfNextSound = millis() +  MIN_MS_BEFORE_INITIAL_SOUND + random(0, MS_RANGE_FOR_INITIAL_SOUND);
         chatterIsEnabled = true;
     }
 }
@@ -28,17 +34,19 @@ void Radio::startChatter()
 void Radio::stopChatter()
 {
     Log.trace(F("Radio stopChatter\n"));
-    if (sounds.isPlaying()) {
-        sounds.stop();
-    }
     chatterIsEnabled = false;
+    if (onSound.isPlaying()) { onSound.stop();}
+    if (chatterSounds.isPlaying()) {
+        chatterSounds.stop();
+    }
+    if (!offSound.isPlaying()) { offSound.start(); }
 }
 
 void Radio::startNextSound() {
     /* start playing the next sound and determine time of next */
     Log.trace(F("Radio starting next sound\n"));
-    if (!sounds.isPlaying()) {
-        sounds.start();
+    if (!chatterSounds.isPlaying()) {
+        chatterSounds.start();
     }
     timeOfNextSound = millis() + MIN_MS_BETWEEN_SOUNDS + random(0, MS_RANGE_ADDED_TO_MIN);
 }

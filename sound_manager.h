@@ -23,7 +23,7 @@ class SoundManager
 
         void stop(void *handle);
 
-        bool is_playing(void *handle);
+        bool isPlaying(void *handle);
 
         void setGain(float gain);
         void setGain(void *handle, float gain){}; // TODO: implement or remove

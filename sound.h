@@ -30,7 +30,7 @@ class Sound
 
         void start();
         void stop();
-        bool is_playing();
+        bool isPlaying();
         void setGain(float gain);
  
         void onEvent(int event, void *param);

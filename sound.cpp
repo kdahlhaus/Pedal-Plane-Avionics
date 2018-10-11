@@ -25,22 +25,22 @@ void Sound::start()
 void Sound::stop()
 {
     Log.trace(F("Sound('%s').stop handle:%d\n"), file_name, (int)handle);
-    if (theSoundManager->is_playing(handle)) {
+    if (theSoundManager->isPlaying(handle)) {
         theSoundManager->stop(handle);
         handle = 0;
     }
 }
 
-bool Sound::is_playing()
+bool Sound::isPlaying()
 {
-    return handle && theSoundManager->is_playing(handle);
+    return handle && theSoundManager->isPlaying(handle);
 }
 
 void Sound::setGain(float gain)
 {
     Log.trace(F("Sound setGain=%F\n"), gain);
     this->gain=gain;
-    if (is_playing()) {
+    if (isPlaying()) {
         theSoundManager->setGain(handle, gain);
     }
 }
