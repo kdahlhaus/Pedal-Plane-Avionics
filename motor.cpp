@@ -4,6 +4,7 @@
 
 #include <ArduinoLog.h>
 #include "avionics_events.h"
+#include "config.h"
 #include "sound_manager.h"
 #include "sound_priorities.h"
 #include "register_event_listener.h"

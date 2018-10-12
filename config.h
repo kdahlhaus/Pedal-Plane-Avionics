@@ -3,9 +3,6 @@
 #ifndef _config_h_
 #define _config_h_
 
-#include <iostream>
-
-
 /*
     A versioned system config.
 */
@@ -26,10 +23,7 @@ class Config
         void motorGain(float gain) { _motorGain = gain; }
 
         float machineGunGain() { return _machineGunGain; }
-        void machineGunGain(float gain) { return _motorGain; }
-
-        friend ostream &operator<<( ostream &output, const Const &c );
-        friend istream &operator>>( istream  &input, Const &c )
+        void machineGunGain(float gain) { _motorGain=gain; }
 
     protected:                                 
 
@@ -37,5 +31,9 @@ class Config
         float _machineGunGain;
 
 };
+
+
+// global Config instance
+extern Config c;
 
 #endif

@@ -3,6 +3,7 @@
 #include <ArduinoLog.h>
 
 #include "avionics_events.h"
+#include "config.h"
 #include "send_event.h"
 #include "motor.h"
 #include "machineguns.h"
@@ -100,8 +101,8 @@ void set_config() {
 void get_config() {
     char *field = serialInterpreter->serial_command.next();  
     if (field) {
-        if (!strcmp(field, "motorgain")) { c.motorGain(gain); }
-        if (!strcmp(field, "machinegungain")) { c.motorGain(gain); }
+        if (!strcmp(field, "motorgain")) {  }
+        if (!strcmp(field, "machinegungain")) {  }
     }
 }
 

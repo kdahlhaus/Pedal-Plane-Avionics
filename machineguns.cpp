@@ -2,6 +2,7 @@
 #include <ArduinoLog.h>
 
 #include "machineguns.h"
+#include "config.h"
 #include "avionics_events.h"
 #include "register_event_listener.h"
 #include "sound_manager.h"

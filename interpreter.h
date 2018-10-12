@@ -25,6 +25,10 @@ class SerialInterpreter
     friend void navlights_curve();
     friend void set_gain();
     friend void motor_set_speed();
+    friend void set_config();
+    friend void get_config();
+    friend void write_config();
+
 
     protected:
         SerialCommand serial_command;
