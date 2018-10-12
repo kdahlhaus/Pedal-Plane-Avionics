@@ -17,6 +17,7 @@ MachineGuns::MachineGuns() :
 
 void MachineGuns::start()
 {
+    //handle = theSoundManager->play("machguns.wav", MACHINEGUN_PRIORITY, true, c.machineGunGain());
     handle = theSoundManager->play("machguns.wav", MACHINEGUN_PRIORITY, true, gain);
     Log.trace(F("MachineGuns::start h=%d\n"), (int)handle);
 }
