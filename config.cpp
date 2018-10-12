@@ -1,7 +1,12 @@
 #include "config.h"
 
 /*
-    sc motorgain value
+    sc motorgain 0.75
+    sc float motorgain 0.75
+
+    sc autozoom 1
+    sc bool autozoom true
+
     gc motorgain 
     wc // write config to EEPROM
 

@@ -14,7 +14,7 @@
 #include <Curve.h>
 
 extern Navlights  *navlights;
-extern SerialInterpreter *serialInterpreter;
+extern SerialInterpreter *serialInterpreter;                           
 extern Motor *motor;
 extern MachineGuns *machineguns;
 extern Sound *bomb_drop;
@@ -84,6 +84,32 @@ void radio_start_chatter() { send_event(RADIO_CHATTER_ON); }
 void radio_stop_chatter() { send_event(RADIO_CHATTER_OFF); }
 
 
+
+void set_config() {
+    char *field = serialInterpreter->serial_command.next();  
+    if (field) {
+        char *gain_str = serialInterpreter->serial_command.next();
+        if (gain_str) {                                                                 
+            float gain = atof(gain_str);
+            if (!strcmp(field, "motorgain")) { c.motorGain(gain); }
+            if (!strcmp(field, "machinegungain")) { c.machineGunGain(gain); }
+        }
+    }
+}                                   
+
+void get_config() {
+    char *field = serialInterpreter->serial_command.next();  
+    if (field) {
+        if (!strcmp(field, "motorgain")) { c.motorGain(gain); }
+        if (!strcmp(field, "machinegungain")) { c.motorGain(gain); }
+    }
+}
+
+void write_config() {
+    c.save();
+}
+
+
 void addInterpreterCommands(SerialCommand &serial_command) 
 {
     serial_command.setDefaultHandler(unrecognized);
@@ -117,6 +143,12 @@ void addInterpreterCommands(SerialCommand &serial_command)
     serial_command.addCommand("rc0", radio_stop_chatter);
 
     serial_command.addCommand("sg", set_gain);
+
+    // config stuff
+    serial_command.addCommand("sc", set_config);
+    serial_command.addCommand("gc", get_config);
+    serial_command.addCommand("wc", write_config);
+
 } 
 
 
