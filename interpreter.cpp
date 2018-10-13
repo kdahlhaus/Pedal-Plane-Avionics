@@ -101,8 +101,8 @@ void set_config() {
 void get_config() {
     char *field = serialInterpreter->serial_command.next();  
     if (field) {
-        if (!strcmp(field, "motorgain")) {  }
-        if (!strcmp(field, "machinegungain")) {  }
+        if (!strcmp(field, "motorgain")) { serialInterpreter->serial_command.stream().print(c.motorGain()); }
+        if (!strcmp(field, "machinegungain")) { serialInterpreter->serial_command.stream().print(c.machineGunGain()); }
     }
 }
 
