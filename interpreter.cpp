@@ -11,7 +11,7 @@
 #include "sound_manager.h"
 
 //for changing fader alg
-#include "Navlights.h"
+#include "navlights.h"
 #include <Curve.h>
 
 extern Navlights  *navlights;
