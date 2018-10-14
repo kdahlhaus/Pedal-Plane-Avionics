@@ -4,6 +4,7 @@
 #include <EventDispatcher.h>
 
 #include "avionics_events.h"
+#include "config.h"
 #include "free_mem.h"
 #include "interpreter.h"
 #include "machineguns.h"
@@ -98,6 +99,9 @@ void loop()
     // play 'startup_wav' once at power up
     if (is_first_loop)
     {
+        //load config from EEPROM
+        c.load();
+
         radio = new Radio(); // TODO: fix Radio/RandomSound so that it can be constructed in setup() (SD card fails to find files when initialized in ctor)
         zoom = new Zoom(); // TODO: fix Zoom/RandomSound so that it can be constructed in setup() (SD card fails to find files when inititialized in ctor) 
 

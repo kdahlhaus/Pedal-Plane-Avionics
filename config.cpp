@@ -59,6 +59,7 @@ void Config::save()
     out.print((int)(CURRENT_VERSION)); out.print(','); 
     out.print(_motorGain); out.print(',');
     out.print(_machineGunGain); out.print(',');
+    out.flush();
 
     Log.trace("saved config\n");
  }

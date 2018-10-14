@@ -30,8 +30,16 @@ See [examples/p-51/](https://github.com/kdahlhaus/Pedal-Plane-Avionics/blob/mast
 
 The system is built around a Teensy 3.2 microcontroller.  The code should run fine or with minimal changes on other large Arduino-like controllers.  A [google docs spreadsheet](https://docs.google.com/spreadsheets/d/1WeCcuZLrt08O3oWe9VnZAMBnWO3cXGibphIcXRtGH-A/edit?usp=sharing) contains the [roadmap, bill of materials, and pin connections](https://docs.google.com/spreadsheets/d/1WeCcuZLrt08O3oWe9VnZAMBnWO3cXGibphIcXRtGH-A/edit?usp=sharing).
 
+## Requirements
 
-## Libraries
+
+### Arduino IDE
+    Version 1.87 from https://www.arduino.cc/en/Main/Software
+
+### Teensyduino
+    Version 1.44 from https://www.pjrc.com/teensy/td_download.html
+
+### Libraries
 This project leverages a few Arduino libraries.  Please follow the instructions below to install them.
 
 1. cd to your Arduino libs directory.
@@ -51,7 +59,7 @@ This project leverages a few Arduino libraries.  Please follow the instructions 
 11. Use the library manager to add:
     * ArduinoLog (or https://github.com/thijse/Arduino-Log/)
 
-### Note:
+#### Note:
 You can optionally clone the git repositories somewhere else and make a symbolic link to the library under the IDE's libraries directory.  For example:
  Windows: *mklink /D C:\Users\kevin\Documents\Arduino\libraries\Arduino-SerialCommand C:\Users\kevin\prog\arduino\libs\Arduino-SerialCommand*
 Linux: *ln -s ~/prog/arduino/libs/Arduino-SerialCommand/ ~/apps/arduino-1.8.6/libraries/*
