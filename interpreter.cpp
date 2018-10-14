@@ -94,6 +94,11 @@ void set_config() {
             float gain = atof(gain_str);
             if (!strcmp(field, "motorgain")) { c.motorGain(gain); }
             if (!strcmp(field, "machinegungain")) { c.machineGunGain(gain); }
+            if (!strcmp(field, "bompdropgain")) { c.bombDropGain(gain); }
+            if (!strcmp(field, "zoomgain")) { c.zoomGain(gain); }
+            if (!strcmp(field, "radiogain")) { c.radioGain(gain); }
+            if (!strcmp(field, "startupgain")) { c.startupGain(gain); }
+
         }
     }
 }                                   
@@ -101,15 +106,18 @@ void set_config() {
 void get_config() {
     char *field = serialInterpreter->serial_command.next();  
     if (field) {
-        if (!strcmp(field, "motorgain")) { serialInterpreter->serial_command.stream().print(c.motorGain()); }
-        if (!strcmp(field, "machinegungain")) { serialInterpreter->serial_command.stream().print(c.machineGunGain()); }
+        if (!strcmp(field, "motorgain")) { serialInterpreter->serial_command.stream().println(c.motorGain()); }
+        if (!strcmp(field, "machinegungain")) { serialInterpreter->serial_command.stream().println(c.machineGunGain()); }
+        if (!strcmp(field, "bombdropgain")) { serialInterpreter->serial_command.stream().println(c.bombDropGain()); }
+        if (!strcmp(field, "zoomgain")) { serialInterpreter->serial_command.stream().println(c.zoomGain()); }
+        if (!strcmp(field, "radiogain")) { serialInterpreter->serial_command.stream().println(c.radioGain()); }
+        if (!strcmp(field, "startupgain")) { serialInterpreter->serial_command.stream().println(c.startupGain()); }
+
     }
 }
 
-void write_config() {
-    c.save();
-}
-
+void write_config() { c.save(); } 
+void load_config() { c.load(); } 
 
 void addInterpreterCommands(SerialCommand &serial_command) 
 {
@@ -120,7 +128,7 @@ void addInterpreterCommands(SerialCommand &serial_command)
 
     serial_command.addCommand("mo1", motor_start);
     serial_command.addCommand("mo0", motor_stop);
-
+                                                                                        
     serial_command.addCommand("moss", motor_set_speed);
 
     serial_command.addCommand("mos1", motor_starter_start);
@@ -149,6 +157,7 @@ void addInterpreterCommands(SerialCommand &serial_command)
     serial_command.addCommand("sc", set_config);
     serial_command.addCommand("gc", get_config);
     serial_command.addCommand("wc", write_config);
+    serial_command.addCommand("lc", load_config); // TODO: can remove this after testing
 
 } 
 

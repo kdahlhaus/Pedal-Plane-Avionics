@@ -40,7 +40,7 @@ protected:
     while ( current >= end_address )
     {
       current -= end_address;
-      overflow = true;
+      overflow = true;                      
     }
     return result;
   }
@@ -52,10 +52,11 @@ public:
   template <class T> void write(const T& object) 
   {
     overflow = false;
-    int i = sizeof(T);
+    int i = sizeof(T);                                                 
     const uint8_t* current = reinterpret_cast<const uint8_t*>(&object);
-    while (i--)
+    while (i--) {
       EEPROM.write(start_address + next(current_address),*current++);
+    }
   }
   template <class T> void read(T& object)
   {

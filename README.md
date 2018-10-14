@@ -55,9 +55,8 @@ This project leverages a few Arduino libraries.  Please follow the instructions 
 8. clone https://github.com/janelia-arduino/Functor.git
 9. clone https://github.com/jgillick/arduino-LEDFader.git LEDFader 
     (note that library must be in dir LEDFader due to the name of the include files it contains)
-10. clone https://github.com/lasselukkari/EepromStream
-11. Use the library manager to add:
-    * ArduinoLog (or https://github.com/thijse/Arduino-Log/)
+10. Use the library manager to add:
+    * n ArduinoLog (or https://github.com/thijse/Arduino-Log/)
 
 #### Note:
 You can optionally clone the git repositories somewhere else and make a symbolic link to the library under the IDE's libraries directory.  For example:
