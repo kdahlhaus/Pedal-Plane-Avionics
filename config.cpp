@@ -52,27 +52,27 @@ void Config::load()
 
         in.read(_motorGain);
         dtostrf(_motorGain, 4, 2, buffer);
-        Log.trace("read motor gain  %s\n", buffer);
+        Log.trace("read motorgain  %s\n", buffer);
 
         in.read(_machineGunGain);
         dtostrf(_machineGunGain, 4, 2, buffer);
-        Log.trace("read machine gun gain %s\n", buffer);                                                     
+        Log.trace("read machinegungain %s\n", buffer);                                                     
 
         in.read(_bombDropGain);
         dtostrf(_bombDropGain, 4, 2, buffer);
-        Log.trace("read bombDrop gain  %s\n", buffer);
+        Log.trace("read bombdropgain  %s\n", buffer);
  
         in.read(_zoomGain);
         dtostrf(_zoomGain, 4, 2, buffer);
-        Log.trace("read zoom gain  %s\n", buffer);
+        Log.trace("read zoomgain  %s\n", buffer);
                                             
         in.read(_radioGain);
         dtostrf(_radioGain, 4, 2, buffer);
-        Log.trace("read radio gain  %s\n", buffer);
+        Log.trace("read radiogain  %s\n", buffer);
 
         in.read(_startupGain);
         dtostrf(_startupGain, 4, 2, buffer);
-        Log.trace("read startup gain  %s\n", buffer);
+        Log.trace("read startupgain  %s\n", buffer);
  
  
     } else {
