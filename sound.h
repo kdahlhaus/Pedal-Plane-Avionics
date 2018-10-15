@@ -11,6 +11,14 @@
     A sound that is started/stopped by events or calls to start()/stop().
 */
 
+
+/*
+    used to pass an object / member function pair into the sound for access to the gain. 
+    Use like this:  GAIN_FUNCTION(c, Config::bombDropGain)
+*/
+#define GAIN_FUNCTION(o, class_function) makeFunctor((Functor0wRet<float> *)0, o, &class_function)
+
+
 class Sound
 {
     public:
@@ -24,6 +32,7 @@ class Sound
             gain: adjust volume of playback by this (%)
             gainFunction: (optional) a functor that takes no arguments and returns the float to use for gain.  This overrides 'gain' if it is set.
                 e.g. makeFunctor((Functor0wRet<float> *)0, (c), &Config::motorGain)
+                There is a #define that makes this cleaner: GAIN_FUNCTION(c, Config::motorGain)
             stop_event: id of event that stops sound when received
 
             e.g.:

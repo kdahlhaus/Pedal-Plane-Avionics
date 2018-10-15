@@ -5,6 +5,7 @@
 #include "avionics_events.h"
 #include "register_event_listener.h"
 #include "sound_priorities.h"
+#include "config.h"
 
 #define MIN_MS_BETWEEN_SOUNDS 30000
 #define MS_RANGE_ADDED_TO_MIN 60000
@@ -15,7 +16,7 @@
 Radio::Radio() :
     onSound("radioon.wav", RADIO_CHATTER_PRIORITY),
     offSound("radiooff.wav", RADIO_CHATTER_PRIORITY),
-    chatterSounds("/radio", RADIO_CHATTER_PRIORITY), chatterIsEnabled(false)
+    chatterSounds("/radio", RADIO_CHATTER_PRIORITY, GAIN_FUNCTION(c, Config::radioGain)), chatterIsEnabled(false)
 {
     register_event_listener(RADIO_CHATTER_ON, makeFunctor((EventListener *)0, (*this), &Radio::onEvent));
     register_event_listener(RADIO_CHATTER_OFF, makeFunctor((EventListener *)0, (*this), &Radio::onEvent));

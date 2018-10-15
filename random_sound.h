@@ -3,6 +3,7 @@
 #ifndef random_sound_h_
 #define random_sound_h_
 
+#include "sound.h"
 #include "sound_manager.h"
 
 /*
@@ -29,12 +30,15 @@ class RandomSound
             loop: loop the sound until stopped if true
             start_event:  id of event that starts sound when received, 0 to ignore events
             stop_event: id of event that stops sound when received, 0 to ignore events
+            gainFunction: (optional) a functor that takes no arguments and returns the float to use for gain.  This overrides 'gain' if it is set.
+                e.g. makeFunctor((Functor0wRet<float> *)0, (c), &Config::motorGain)
+                    There is a #define that makes this cleaner: GAIN_FUNCTION(c, Config::motorGain)
 
             e.g.:
                 RandomSound *radio = new Sound("/radio", RADIO_PRIORITY, false, RADIO_CLIP_PLAY, 0.20);
                 
         */
-        RandomSound(const char *directory, int priority = 1, bool loop = false, int start_event = 0, int stop_event = 0);
+        RandomSound(const char *directory, int priority=1, Functor0wRet<float> gainFunction=0, bool loop=false, int start_event=0, int stop_event=0);
 
         void start();
         void stop();
@@ -48,7 +52,7 @@ class RandomSound
         void *handle;
         int priority;
         bool loop;
-
+        Functor0wRet<float> gainFunction;
 
         char absoluteSoundFileName[MAX_SOUND_FILENAME_LENGTH];
         const char *fileNameOfNextSoundToPlay;

@@ -3,6 +3,7 @@
 #include "avionics_events.h"
 #include "send_event.h"
 #include "sound_priorities.h"
+#include "config.h"
 
 #include <ArduinoLog.h>
 
@@ -15,7 +16,7 @@
 
 
 Zoom::Zoom() :
-    sounds("/zoom", ZOOM_PRIORITY),  lis3dh(), timeOfLastZoom(0)
+    sounds("/zoom", ZOOM_PRIORITY, GAIN_FUNCTION(c, Config::zoomGain)),  lis3dh(), timeOfLastZoom(0)
 {
     if (!lis3dh.begin(LIS3DH_I2C_ADDRESS)) {
         Log.error("Could not find LIS3DH at %h", LIS3DH_I2C_ADDRESS);

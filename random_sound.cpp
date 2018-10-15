@@ -5,9 +5,9 @@
 
 #include "register_event_listener.h"
 
-RandomSound::RandomSound(const char *directory, int priority, bool loop, int start_event, int stop_event):
+RandomSound::RandomSound(const char *directory, int priority, Functor0wRet<float> gainFunction, bool loop, int start_event, int stop_event):
     directory(directory), start_event(start_event), stop_event(stop_event),
-    handle(0), priority(priority), loop(false)
+    handle(0), priority(priority), loop(false), gainFunction(gainFunction)
 {
     if (start_event) {
         register_event_listener(start_event, makeFunctor((EventListener *)0, (*this), &RandomSound::onEvent));
@@ -29,7 +29,7 @@ void RandomSound::start()
 {
     if (numberOfSounds) {
         float gain = 1.0; // TODO handle gain in RandomSound
-        handle = theSoundManager->play(absoluteSoundFileName, priority, loop, gain);        
+        handle = theSoundManager->play(absoluteSoundFileName, priority, loop, (gainFunction ? gainFunction() : gain));
         Log.trace(F("RandomSound('%s').started: pri:%d, loop=%T handle:%d gain:%F\n"), absoluteSoundFileName, priority, loop, (int)handle, gain);
         setNextSoundToPlay();
     }
