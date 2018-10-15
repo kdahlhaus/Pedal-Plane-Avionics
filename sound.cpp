@@ -3,9 +3,9 @@
 #include <ArduinoLog.h>
 #include "register_event_listener.h"
 
-Sound::Sound(const char *file_name, int priority, bool loop, int start_event, float gain, int stop_event):
+Sound::Sound(const char *file_name, int priority, bool loop, int start_event, float gain, Functor0wRet<float> gainFunction, int stop_event):
     file_name(file_name), start_event(start_event), stop_event(stop_event),
-    handle(0), priority(priority), loop(false), gain(gain)
+    handle(0), priority(priority), loop(false), gain(gain), gainFunction(gainFunction)
 {
     if (start_event) {
         register_event_listener(start_event, makeFunctor((EventListener *)0, (*this), &Sound::onEvent));
@@ -18,7 +18,8 @@ Sound::Sound(const char *file_name, int priority, bool loop, int start_event, fl
 
 void Sound::start()
 {
-    handle = theSoundManager->play(file_name, priority, loop, gain);        
+    float gainToUse = (gainFunction ? gainFunction() : gain);
+    handle = theSoundManager->play(file_name, priority, loop, gainToUse);
     Log.trace(F("Sound('%s').start: pri:%d, loop=%T handle:%d gain:%F\n"), file_name, priority, loop, (int)handle, gain);
 }
 

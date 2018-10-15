@@ -23,15 +23,18 @@
  
 */
 
-#define CURRENT_VERSION 1
+#define CURRENT_VERSION 2
                                                                             
 Config::Config() :                                                  
+    _gain(1),
     _motorGain(1),                                                          
     _machineGunGain(1),
+    _crashGain(1),
     _bombDropGain(1),
     _zoomGain(1),
     _radioGain(1),
-    _startupGain(1)
+    _startupGain(1),
+    _machineGunHit(5)
 {
 }
 
@@ -48,7 +51,10 @@ void Config::load()
 
         char buffer[100];
 
-        Log.trace("about to read motor gain\n");
+        Log.trace("about to read gain\n");
+        in.read(_gain);
+        dtostrf(_gain, 4, 2, buffer);
+        Log.trace("read gain  %s\n", buffer);
 
         in.read(_motorGain);
         dtostrf(_motorGain, 4, 2, buffer);
@@ -58,6 +64,10 @@ void Config::load()
         dtostrf(_machineGunGain, 4, 2, buffer);
         Log.trace("read machinegungain %s\n", buffer);                                                     
 
+        in.read(_crashGain);
+        dtostrf(_crashGain, 4, 2, buffer);
+        Log.trace("read crashgain %s\n", buffer);                                                     
+ 
         in.read(_bombDropGain);
         dtostrf(_bombDropGain, 4, 2, buffer);
         Log.trace("read bombdropgain  %s\n", buffer);
@@ -73,6 +83,12 @@ void Config::load()
         in.read(_startupGain);
         dtostrf(_startupGain, 4, 2, buffer);
         Log.trace("read startupgain  %s\n", buffer);
+
+        if (version >=2 ) {
+            in.read(_machineGunHit);
+            dtostrf(_machineGunHit, 4, 2, buffer);
+            Log.trace("read machinegunhit %s\n", buffer);
+        }
  
  
     } else {
@@ -87,12 +103,15 @@ void Config::save()
 
     EepromStream out(0, 1024);
     out.write((int)(CURRENT_VERSION));
+    out.write(_gain);
     out.write(_motorGain);
     out.write(_machineGunGain);
+    out.write(_crashGain);
     out.write(_bombDropGain);
     out.write(_zoomGain);
     out.write(_radioGain);
     out.write(_startupGain);
+    out.write(_machineGunHit);
 
     Log.trace("saved config\n");
  }

@@ -14,6 +14,7 @@ extern AudioPlaySdWav motorSdWav2;
 extern AudioEffectFade motorFade1;
 extern AudioEffectFade motorFade2;
 
+extern AudioMixer4 finalMixer; // for setting gain
 
 // returns num elements in array x
 #define NUM_ELEMENTS(x)  (sizeof(x) / sizeof((x)[0]))  
@@ -21,8 +22,9 @@ extern AudioEffectFade motorFade2;
 
 
 Motor::Motor() :
-    state(stopped), starterGain(1.7), startingGain(1.7), idleGain(1.0), runGain(1.00),
-    channel1({.sdWav=motorSdWav1, .fader=motorFade1}), channel2({.sdWav=motorSdWav2, .fader=motorFade2}),
+    state(stopped), 
+    channel1({.sdWav=motorSdWav1, .fader=motorFade1, .finalMixerChannel=2}),
+    channel2({.sdWav=motorSdWav2, .fader=motorFade2, .finalMixerChannel=3}),
     speed(0), shouldStop(false)
 {
     currentChannel = &channel1;
@@ -47,6 +49,7 @@ void Motor::start(bool viaStarter)
         currentChannel->fader.fadeIn(1);
         currentChannel->timeStarted = millis();
         currentChannel->loop = viaStarter;
+        finalMixer.gain(currentChannel->finalMixerChannel, c.motorGain());
         state = starter_starting;
         shouldStop = false;
     }
@@ -95,7 +98,7 @@ void Motor::setSpeed(int speed)
             // TODO: eliminate idle state and make it rpm0
             State nextState = (i == 0) ? idle : running;
             int fadeTimeMs = (i == 0) ? SHORT_FADE_TIME_MS : LONG_FADE_TIME_MS;
-            fadeTo(speed_map[i].filename, 1.0, true, nextState, fadeTimeMs);
+            fadeTo(speed_map[i].filename, c.motorGain(), true, nextState, fadeTimeMs);
             return;
         }
     }
@@ -113,6 +116,7 @@ void Motor::fadeTo( const char *fileName, float gain, bool loop,  State nextStat
     nextChannel->sdWav.play(fileName); 
     nextChannel->timeStarted = millis();
     nextChannel->fader.fadeIn(fadeTimeMs);
+    finalMixer.gain(nextChannel->finalMixerChannel, gain); 
     currentChannel->fader.fadeOut(fadeTimeMs);
     currentChannel->timeStarted = millis();
 
@@ -128,6 +132,7 @@ void Motor::changeFromStarterToStarting()
     currentChannel->sdWav.play("starting.wav");
     currentChannel->timeStarted = millis();
     currentChannel->loop = false;
+    finalMixer.gain(currentChannel->finalMixerChannel, c.motorGain()); 
     state = starting;
 }
 
@@ -136,7 +141,7 @@ void Motor::update()
 {
     if ((state != fading) && shouldStop) {
         shouldStop = false;
-        fadeTo("stop.wav", 1.0, false, stopped, LONG_FADE_TIME_MS);
+        fadeTo("stop.wav", c.motorGain(), false, stopped, LONG_FADE_TIME_MS);
     }
 
     switch (state) {
@@ -177,6 +182,7 @@ void Motor::update()
                 // change to starterl
                     currentChannel->sdWav.play("staterl.wav"); // TODO: fix typo in sound
                     currentChannel->timeStarted = millis();
+                    finalMixer.gain(currentChannel->finalMixerChannel, c.motorGain()); 
                     state = starter_looping;
                     Log.trace(F("change to starter looping\n"));
                 }
@@ -191,6 +197,7 @@ void Motor::update()
                     if (!currentChannelIsPlaying()) {
                         currentChannel->sdWav.play("staterl.wav"); // TODO fix typo in sound
                         currentChannel->timeStarted = millis();
+                        finalMixer.gain(currentChannel->finalMixerChannel, c.motorGain()); 
                         Log.trace(F("starter loop restart\n"));
                     }
                 }
@@ -208,7 +215,7 @@ void Motor::update()
             if (soundStartDelayHasPassed() && (
                 (currentChannel->sdWav.positionMillis() >= (currentChannel->sdWav.lengthMillis()-SHORT_FADE_TIME_MS)) ||
                 !currentChannelIsPlaying())) {  
-                    fadeTo("idle.wav", idleGain, true, idle); 
+                    fadeTo("idle.wav", c.motorGain(), true, idle); 
              }
             break;
             
@@ -217,6 +224,7 @@ void Motor::update()
             if (soundStartDelayHasPassed() && !currentChannelIsPlaying()) {
                 currentChannel->sdWav.play("idle.wav");
                 currentChannel->timeStarted = millis();
+                finalMixer.gain(currentChannel->finalMixerChannel, c.motorGain()); 
 
                 // TODO add code for transition to running - maybe time or movment?
             }
@@ -227,6 +235,7 @@ void Motor::update()
             if (soundStartDelayHasPassed() && !currentChannelIsPlaying()) {
                 currentChannel->sdWav.play("rpm3.wav");  // TODO:  loop to the correct sound -> motor loops to high speed now
                 currentChannel->timeStarted = millis();
+                finalMixer.gain(currentChannel->finalMixerChannel, c.motorGain()); 
 
                 // TODO add code for transition to running - maybe time or movment?
             }
@@ -267,4 +276,3 @@ void Motor::onEvent(int event, void *param)
             break;
     }
 } 
-

@@ -57,23 +57,6 @@ void motor_set_speed()
     send_event(MOTOR_SET_SPEED, (void *)speed);
 }
 
-void set_gain()
-{
-    //char *obj = serialInterpreter->serial_command.next();
-    //if (obj)
-    //{
-        char *gain_str = serialInterpreter->serial_command.next();
-        if (gain_str)
-        {
-            float gain = atof(gain_str);
-            theSoundManager->setGain(gain);
-            ////if (strcmp(obj, "mos")==0) { motor->setStartGain(gain); };
-            //Log.trace(F("set_gain: id:%s gain: %s %d\n"), obj, gain_str, (int)gain*100);
-            
-        }
-    //}
-}
-
 void zoom1() { send_event(ZOOM1); }
 void zoom2() { send_event(ZOOM2); }
 void zoom3() { send_event(ZOOM3); }
@@ -84,20 +67,21 @@ void motor_starter_stop() { send_event(MOTOR_STARTER_STOP); }
 void radio_start_chatter() { send_event(RADIO_CHATTER_ON); }
 void radio_stop_chatter() { send_event(RADIO_CHATTER_OFF); }
 
-
-
 void set_config() {
     char *field = serialInterpreter->serial_command.next();  
     if (field) {
         char *gain_str = serialInterpreter->serial_command.next();
         if (gain_str) {                                                                 
             float gain = atof(gain_str);
+            if (!strcmp(field, "gain")) { c.gain(gain); }
             if (!strcmp(field, "motorgain")) { c.motorGain(gain); }
             if (!strcmp(field, "machinegungain")) { c.machineGunGain(gain); }
+            if (!strcmp(field, "crashgain")) { c.crashGain(gain); }
             if (!strcmp(field, "bompdropgain")) { c.bombDropGain(gain); }
             if (!strcmp(field, "zoomgain")) { c.zoomGain(gain); }
             if (!strcmp(field, "radiogain")) { c.radioGain(gain); }
             if (!strcmp(field, "startupgain")) { c.startupGain(gain); }
+            if (!strcmp(field, "machinegunhit")) { c.machineGunHit(gain); }
 
         }
     }
@@ -106,12 +90,15 @@ void set_config() {
 void get_config() {
     char *field = serialInterpreter->serial_command.next();  
     if (field) {
+        if (!strcmp(field, "gain")) { serialInterpreter->serial_command.stream().println(c.gain()); }
         if (!strcmp(field, "motorgain")) { serialInterpreter->serial_command.stream().println(c.motorGain()); }
         if (!strcmp(field, "machinegungain")) { serialInterpreter->serial_command.stream().println(c.machineGunGain()); }
+        if (!strcmp(field, "crashgain")) { serialInterpreter->serial_command.stream().println(c.crashGain()); }
         if (!strcmp(field, "bombdropgain")) { serialInterpreter->serial_command.stream().println(c.bombDropGain()); }
         if (!strcmp(field, "zoomgain")) { serialInterpreter->serial_command.stream().println(c.zoomGain()); }
         if (!strcmp(field, "radiogain")) { serialInterpreter->serial_command.stream().println(c.radioGain()); }
         if (!strcmp(field, "startupgain")) { serialInterpreter->serial_command.stream().println(c.startupGain()); }
+        if (!strcmp(field, "machinegunhit")) { serialInterpreter->serial_command.stream().println(c.machineGunHit()); }
 
     }
 }
@@ -150,8 +137,6 @@ void addInterpreterCommands(SerialCommand &serial_command)
 
     serial_command.addCommand("rc1", radio_start_chatter);
     serial_command.addCommand("rc0", radio_stop_chatter);
-
-    serial_command.addCommand("sg", set_gain);
 
     // config stuff
     serial_command.addCommand("sc", set_config);

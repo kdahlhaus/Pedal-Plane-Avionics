@@ -25,8 +25,11 @@ class SoundManager
 
         bool isPlaying(void *handle);
 
-        void setGain(float gain);
-        void setGain(void *handle, float gain){}; // TODO: implement or remove
+        // set overall gain
+        void setOverallGain(float gain);
+
+        void setGain(void *handle, float gain);
+
         void update();
         float readVolumePotentiometer();
 

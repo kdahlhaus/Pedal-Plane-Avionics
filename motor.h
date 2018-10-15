@@ -53,16 +53,12 @@ class Motor
         };
         State state;
 
-        float starterGain;
-        float startingGain;
-        float idleGain;
-        float runGain;
-
         int speed; // 0-100?
 
         typedef struct {
             AudioPlaySdWav &sdWav;
             AudioEffectFade &fader;
+            char finalMixerChannel;  // for setting gain
             bool loop;
             uint32_t timeStarted;
         } SoundChannel;

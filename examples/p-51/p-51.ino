@@ -78,7 +78,7 @@ void setup()
     // Domain Objects
     machineguns = new MachineGuns();
     motor = new Motor();
-    bomb_drop = new Sound("bombdrop.wav", BOMB_DROP_PRIORITY, false, DROP_BOMB, 0.20);
+    bomb_drop = new Sound("bombdrop.wav", BOMB_DROP_PRIORITY, false, DROP_BOMB, 0, makeFunctor((Functor0wRet<float> *)0, c, &Config::bombDropGain));
  
     //outputs
     onboard_LED = new Output(LED_BUILTIN, ONBOARD_LED_ON, ONBOARD_LED_OFF);

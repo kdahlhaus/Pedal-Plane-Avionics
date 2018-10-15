@@ -9,7 +9,7 @@
 #include "sound_priorities.h"
 
 MachineGuns::MachineGuns() :
-    handle(0), gain(0.6)
+    handle(0)
 {
     register_event_listener(MACHINEGUNS_START, makeFunctor((EventListener *)0, (*this), &MachineGuns::onEvent));
     register_event_listener(MACHINEGUNS_STOP, makeFunctor((EventListener *)0, (*this), &MachineGuns::onEvent));
@@ -18,8 +18,7 @@ MachineGuns::MachineGuns() :
 
 void MachineGuns::start()
 {
-    //handle = theSoundManager->play("machguns.wav", MACHINEGUN_PRIORITY, true, c.machineGunGain());
-    handle = theSoundManager->play("machguns.wav", MACHINEGUN_PRIORITY, true, gain);
+    handle = theSoundManager->play("machguns.wav", MACHINEGUN_PRIORITY, true, c.machineGunGain());
     Log.trace(F("MachineGuns::start h=%d\n"), (int)handle);
 }
 
@@ -34,8 +33,8 @@ void MachineGuns::stop()
          * score a 'hit' - explosion then plane crash sound
          * TODO: set random seed in setup() 
          */
-        if (random(100) > 90) { 
-            theSoundManager->play("crash.wav", MACHINEGUN_PRIORITY, false, gain);
+        if (random(100) <= c.machineGunHit()) { 
+            theSoundManager->play("crash.wav", MACHINEGUN_PRIORITY, false, c.crashGain());
         }
 
         Log.trace(F("MachineGuns::stop\n"));
@@ -53,14 +52,5 @@ void MachineGuns::onEvent(int event, void *param)
         case MACHINEGUNS_STOP:
             this->stop();
             break;
-    }
-}
-
-void MachineGuns::setGain(float gain)
-{
-    this->gain=gain;
-    if (theSoundManager->isPlaying(handle))
-    {
-        theSoundManager->setGain(handle, gain);
     }
 }
