@@ -23,7 +23,7 @@ See [examples/p-51/](https://github.com/kdahlhaus/Pedal-Plane-Avionics/blob/mast
 * Gyro spool-up sound on master power up
 * Bluetooth interface 
 * Random radio 'chatter' e.g.: *Two 109's 12:00 high*
-* Android app (prototyped)
+* Android app
 * Landing lights (TODO)
 * 'Zoom' flyby sound
     * 'Zoom' plays when pilot turns plane hard (needs tweaking)
