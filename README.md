@@ -26,7 +26,10 @@ See [examples/p-51/](https://github.com/kdahlhaus/Pedal-Plane-Avionics/blob/mast
 * Landing lights (TODO)
 * 'Zoom' flyby sound
     * 'Zoom' plays when pilot turns plane hard (needs tweaking)
-
+* Configuration stored to EEPROM
+    * overall gain
+    * gain for various sounds
+    * machine gun accuracy
 
 ## Hardware
 
@@ -111,7 +114,7 @@ Zoom sounds can have any name and are located in;
 
 
 ### Locating Sounds
-This is the biggest challenge.  I unfortunately do not have the license to distribute the sounds I use. I use the [Audacity Sound Editor](https://www.audacityteam.org/) for editing the sounds.  Note that with Audacity, you must "export" the sound as a wav file as the "Save" function saves the sound as an Audacity sound project. Most edits include cropping, amplification, fade-in, and fade-out.  Some of the youtube videos have a B-17 drone sound effect.  Applying a 151 Hz notch filter to the sound decreases that noise.  Here are some links to sources of sounds: 
+This is the biggest challenge.  I unfortunately do not have the license to distribute all of the sounds I use. I use the [Audacity Sound Editor](https://www.audacityteam.org/) for editing the sounds.  Note that with Audacity, you must "export" the sound as a wav file as the "Save" function saves the sound as an Audacity sound project. Most edits include cropping, amplification, fade-in, and fade-out.  Some of the youtube videos have a B-17 drone sound effect.  Applying a 151 Hz notch filter to the sound decreases that noise.  Here are some links to sources of sounds: 
 
 
 * [P-51 Sounds for the Flight Gear Simulator](https://github.com/onox/p51d/tree/master/Sounds) TODO: These could actually be distributed as sample sounds.  
