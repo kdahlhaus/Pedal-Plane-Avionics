@@ -46,6 +46,7 @@ void Motor::start(bool viaStarter)
     if (state == stopped || (state == fading && nextStateAfterFade == stopped)) {
         Log.trace(F("about to play staters.wav\n"));
         currentChannel->sdWav.play("starters.wav");
+        currentChannel->absolutePathToSound = "starters.wav";
         currentChannel->fader.fadeIn(1);
         currentChannel->timeStarted = millis();
         currentChannel->loop = viaStarter;
@@ -114,6 +115,7 @@ void Motor::fadeTo( const char *fileName, float gain, bool loop,  State nextStat
     currentFadeTimeMs = fadeTimeMs;
     nextStateAfterFade = nextState;
     nextChannel->sdWav.play(fileName); 
+    nextChannel->absolutePathToSound = fileName;
     nextChannel->timeStarted = millis();
     nextChannel->fader.fadeIn(fadeTimeMs);
     finalMixer.gain(nextChannel->finalMixerChannel, gain); 
@@ -130,6 +132,7 @@ void Motor::changeFromStarterToStarting()
     Log.trace("starter->starting\n");
     //fadeTo("starting.wav", startingGain, false, starting, SHORT_FADE_TIME_MS);
     currentChannel->sdWav.play("starting.wav");
+    currentChannel->absolutePathToSound = "starting.wav";
     currentChannel->timeStarted = millis();
     currentChannel->loop = false;
     finalMixer.gain(currentChannel->finalMixerChannel, c.motorGain()); 
@@ -181,6 +184,7 @@ void Motor::update()
                 else {
                 // change to starterl
                     currentChannel->sdWav.play("staterl.wav"); // TODO: fix typo in sound
+                    currentChannel->absolutePathToSound = "staterl.wav";
                     currentChannel->timeStarted = millis();
                     finalMixer.gain(currentChannel->finalMixerChannel, c.motorGain()); 
                     state = starter_looping;
@@ -196,6 +200,7 @@ void Motor::update()
                 if (currentChannel->loop) {
                     if (!currentChannelIsPlaying()) {
                         currentChannel->sdWav.play("staterl.wav"); // TODO fix typo in sound
+                        currentChannel->absolutePathToSound = "staterl.wav"; // TODO fix typo in sound
                         currentChannel->timeStarted = millis();
                         finalMixer.gain(currentChannel->finalMixerChannel, c.motorGain()); 
                         Log.trace(F("starter loop restart\n"));
@@ -223,6 +228,7 @@ void Motor::update()
         case idle:
             if (soundStartDelayHasPassed() && !currentChannelIsPlaying()) {
                 currentChannel->sdWav.play("idle.wav");
+                currentChannel->absolutePathToSound = "idle.wav";
                 currentChannel->timeStarted = millis();
                 finalMixer.gain(currentChannel->finalMixerChannel, c.motorGain()); 
 
@@ -233,7 +239,7 @@ void Motor::update()
         case running:
             //Log.trace(F("warning -> handle running state\n"));
             if (soundStartDelayHasPassed() && !currentChannelIsPlaying()) {
-                currentChannel->sdWav.play("rpm3.wav");  // TODO:  loop to the correct sound -> motor loops to high speed now
+                currentChannel->sdWav.play(currentChannel->absolutePathToSound);
                 currentChannel->timeStarted = millis();
                 finalMixer.gain(currentChannel->finalMixerChannel, c.motorGain()); 
 

@@ -61,6 +61,7 @@ class Motor
             char finalMixerChannel;  // for setting gain
             bool loop;
             uint32_t timeStarted;
+            const char *absolutePathToSound;
         } SoundChannel;
 
         SoundChannel channel1;

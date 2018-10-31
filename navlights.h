@@ -3,6 +3,7 @@
 #define _navlights_h
 
 #include <LEDFader.h>
+#include <SerialCommand.h>
 
 /*
 
@@ -14,7 +15,7 @@
 class Navlights
 {
     public:
-        Navlights(int pin=6);
+        Navlights(int out_pin=6);
         void on();
         void off();
         void onEvent(int event, void *param);
@@ -22,7 +23,7 @@ class Navlights
 
         // used by interpreter to change the fade
         // curve via command.
-        friend void navlights_curve();
+        friend void navlights_curve(SerialCommand &);
 
     protected:
         bool lights_on;

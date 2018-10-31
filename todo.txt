@@ -1,0 +1,3 @@
+* bombdrop, crash, radio not honoring gain
+* motor starter loop doesn't work well w/kpd set
+

@@ -4,6 +4,7 @@
 #include "send_event.h"
 #include "sound_priorities.h"
 #include "config.h"
+#include "register_event_listener.h"
 
 #include <ArduinoLog.h>
 
@@ -22,7 +23,16 @@ Zoom::Zoom() :
         Log.error("Could not find LIS3DH at %h", LIS3DH_I2C_ADDRESS);
     }
     lis3dh.setRange(LIS3DH_RANGE_4_G);   // 2, 4, 8 or 16 G!
+    register_event_listener(ZOOM, makeFunctor((EventListener *)0, (*this), &Zoom::onEvent)); 
 }
+
+void Zoom::onEvent(int event, void *param) 
+{
+    if (!sounds.isPlaying()) {
+        sounds.start();
+    }
+}
+
 
 void Zoom::update()
 {

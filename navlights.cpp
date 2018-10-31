@@ -8,8 +8,8 @@
 
 #define FADE_TIME_MS 1160
 
-Navlights::Navlights(int pin) :
-    lights_on(false), fader(pin)
+Navlights::Navlights(int out_pin) :
+    lights_on(false), fader(out_pin)
 {
     off();
     fader.set_curve(Curve::exponential);

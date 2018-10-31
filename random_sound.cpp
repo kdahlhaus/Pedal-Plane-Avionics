@@ -28,8 +28,16 @@ RandomSound::RandomSound(const char *directory, int priority, Functor0wRet<float
 void RandomSound::start()
 {
     if (numberOfSounds) {
-        float gain = 1.0; // TODO handle gain in RandomSound
-        handle = theSoundManager->play(absoluteSoundFileName, priority, loop, (gainFunction ? gainFunction() : gain));
+        //float gain = gainFunction ? gainFunction() : 1.0;
+        
+        // TODO: replace following with previous
+        float gain = 1.0;
+        if (gainFunction) { 
+            Log.trace(F("calling gainFunction for gain"));
+            gain = gainFunction();
+        }
+
+        handle = theSoundManager->play(absoluteSoundFileName, priority, loop, gain);
         Log.trace(F("RandomSound('%s').started: pri:%d, loop=%T handle:%d gain:%F\n"), absoluteSoundFileName, priority, loop, (int)handle, gain);
         setNextSoundToPlay();
     }

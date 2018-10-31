@@ -1,14 +1,10 @@
-
 // Copyright 2018 by Kevin Dahlhausen
 
 #ifndef _zoom_h_
 #define _zoom_h_
 
 #include "random_sound.h"
-
 #include <Adafruit_LIS3DH.h>
-
-
 
 /*
 
@@ -22,6 +18,7 @@ class Zoom
 {
     public:
         Zoom();
+        void onEvent(int event, void *param); 
         void update();
 
     private:

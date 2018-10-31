@@ -23,7 +23,7 @@ enum AvionicsEvents
 
     DROP_BOMB,
 
-    ZOOM1, ZOOM2, ZOOM3,
+    ZOOM,
 
     NAVLIGHTS_ON,
     NAVLIGHTS_OFF,

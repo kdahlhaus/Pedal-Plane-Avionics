@@ -116,6 +116,7 @@ This is the biggest challenge.  I unfortunately do not have the license to distr
 * [Gee-Bee Sounds for the Flight Gear Simulator](https://github.com/FGMEMBERS/Gee-Bee/tree/master/Sounds) TODO: These could also be distrubuted as sample sounds. 
 * [IL-2 1946 B-17 Mission](https://www.youtube.com/watch?v=CHPc3t4F1Kk) This is good for radio chatter.  
 * [P-51 Startup / Fly By](https://www.youtube.com/watch?v=UCyHCzWUgKI)
+* [Radio turning] (https://www.audiomicro.com/tuning-old-tube-radio-electronics-appliances-tuning-old-tube-radio-free-sound-effects-45484)
 * [Radio on / off](https://www.zapsplat.com/music/radio-switch-on-receive-static-then-off/)
 
 [Soundbible.com](http://soundbible.com/suggest.php?q=machine+gun&x=0&y=0) has many free sounds, many licensed so that they can be distrubuted if attriubtion if given to the author.

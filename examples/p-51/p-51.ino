@@ -37,6 +37,8 @@ extern EventDispatcher event_dispatcher;
 Switch *motor_switch;
 Switch *machinegun_switch;
 Switch *bombdrop_switch;
+Switch *radio_switch;
+Switch *navlights_switch;
 Tachometer *tachometer;
 
 // domain objects
@@ -59,7 +61,9 @@ void setup()
 {
     // USB terminal
     Serial.begin(9600);
-    while(!Serial && !Serial.available()){}
+
+    uint32_t start_serial_delay = millis();
+    while(!Serial && !Serial.available() && millis() - start_serial_delay < 900){}
 
     // bluetooth
     Serial1.begin(9600);
@@ -73,6 +77,8 @@ void setup()
     motor_switch = new Switch(3, INPUT_PULLUP,  MOTOR_STARTER_START, MOTOR_STARTER_STOP);  // TODO: set back to 2
     machinegun_switch = new Switch(2, INPUT_PULLUP,  MACHINEGUNS_START, MACHINEGUNS_STOP); // TODO: set back to 3
     bombdrop_switch = new Switch(4, INPUT_PULLUP, DROP_BOMB); 
+    radio_switch = new Switch(24, INPUT_PULLUP, RADIO_CHATTER_ON, RADIO_CHATTER_OFF);
+    navlights_switch = new Switch(27, INPUT_PULLUP, NAVLIGHTS_ON, NAVLIGHTS_OFF);
     tachometer = new Tachometer();
 
     // Domain Objects
@@ -100,7 +106,7 @@ void loop()
     if (is_first_loop)
     {
         //load config from EEPROM
-        //c.load();  // TODO uncomment c.load
+        c.load();
 
         radio = new Radio(); // TODO: fix Radio/RandomSound so that it can be constructed in setup() (SD card fails to find files when initialized in ctor)
         zoom = new Zoom(); // TODO: fix Zoom/RandomSound so that it can be constructed in setup() (SD card fails to find files when inititialized in ctor) 
@@ -114,6 +120,8 @@ void loop()
     motor_switch->update();
     machinegun_switch->update();
     bombdrop_switch->update();
+    radio_switch->update();
+    navlights_switch->update();
     tachometer->update();
 
     // update system objects
