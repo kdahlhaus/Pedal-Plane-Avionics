@@ -15,7 +15,8 @@ See [examples/p-51/](https://github.com/kdahlhaus/Pedal-Plane-Avionics/blob/mast
 
 ## Features
 * Complex engine sound (starter, startup, idle, various RPMs)
-* Machine gun sound
+* Machine gun sound 
+    * occasionally plays 'hit' and 'plane crash' sounds
 * Bomb-drop sound
 * Navigation lights
 * Gyro spool-up sound on master power up
@@ -23,7 +24,8 @@ See [examples/p-51/](https://github.com/kdahlhaus/Pedal-Plane-Avionics/blob/mast
 * Random radio 'chatter' e.g.: *Two 109's 12:00 high*
 * Android app (prototyped)
 * Landing lights (TODO)
-* 'Zoom' flyby sound (needs tweaking)
+* 'Zoom' flyby sound
+    * 'Zoom' plays when pilot turns plane hard (needs tweaking)
 
 
 ## Hardware
