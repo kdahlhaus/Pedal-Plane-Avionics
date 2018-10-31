@@ -15,6 +15,7 @@ See [examples/p-51/](https://github.com/kdahlhaus/Pedal-Plane-Avionics/blob/mast
 
 ## Features
 * Complex engine sound (starter, startup, idle, various RPMs)
+    * The engine can 'auto-start' when the plane begins to move
 * Machine gun sound 
     * occasionally plays 'hit' and 'plane crash' sounds
 * Bomb-drop sound
